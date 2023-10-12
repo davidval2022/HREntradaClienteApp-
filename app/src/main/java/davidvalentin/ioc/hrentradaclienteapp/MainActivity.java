@@ -2,6 +2,9 @@ package davidvalentin.ioc.hrentradaclienteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -9,11 +12,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 ///
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import model.LoginConsulta;
 
 
@@ -22,14 +30,20 @@ public class MainActivity extends AppCompatActivity {
     EditText editIp;
     EditText editUsuario;
     EditText editPass;
-    String ip = "127.0.0.1";
+    EditText editPuerto;
+    String ip = "192.168.1.12";
     String usuario = "0";
     String pass = "0";
+    String puerto = "8888";
     LoginConsulta lconsulta;
     String codigoGlobal = "0";
     Socket socket;
     ObjectOutputStream outObjeto;
     ObjectInputStream inObjeto;
+    static String log_msg;
+    boolean salir = false;
+    String codigo = "0";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,135 +53,14 @@ public class MainActivity extends AppCompatActivity {
         editIp = findViewById(R.id.edit_ip);
         editUsuario = findViewById((R.id.edit_usuario));
         editPass = findViewById(R.id.edit_pass);
+        editPuerto = findViewById(R.id.edit_puerto);
+
+        //iniciamos el sharedPreferences y añadimos la ip guardada
+        cargarIpDeShared(editIp);
+
+
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .permitNetwork().build());
-        ///////////////////////////////////////////////////
-        //ip = "192.168.1.12";
-        //usuario= "gus";
-        //pass = "123";
-        /*
-        try {
-            // login(); //Realizar aquí tu proceso!
-            lconsulta.setInfoDelServer("Pruebas de funcionamiento");
-            mostrarToast(lconsulta.getInfoDelServer());
-            try{
-                ip = "192.168.1.12";
-                usuario= "gus";
-                pass = "123";
-                socket = new Socket(ip, 8888);
-                ObjectOutputStream outObjeto = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream inObjeto = new ObjectInputStream(socket.getInputStream());
-                lconsulta = (LoginConsulta) inObjeto.readObject();//recibimos mensaje 1 del server////////////////////////////////////////////////////////
-                mostrarToast(lconsulta.getInfoDelServer());
-
-                String codigo = lconsulta.getCodigo();
-
-                //////
-                // System.out.println(lconsulta.getInfoDelServer());
-                if(codigo.equalsIgnoreCase("0")){//si no tenemos codigo enviamos un objeto con el usuario y contraseña para hacer login y que nos envien un codigo
-                    lconsulta.setUsuario(usuario);
-                    lconsulta.setContraseña(pass);
-                    //ahora acabamos el objeto lconsulta y lo enviamos al server para que nos logee y nos envie un codigo
-                    lconsulta.setTipoDeLogin("1");//como vamos a hacer que nos logee el tipo de login es 1
-                    outObjeto.writeObject(lconsulta);//envio mensaje 1 al server////////////////////////////////////////////////////////
-                    //ahora esperamos el codigo que nos debe de enviar si las credenciales son correctas.
-                    //Para hacer esto  lo que hará será coger nuestro objeto y añadirle el codigo.
-                    lconsulta =(LoginConsulta) inObjeto.readObject();//recibo mensaje 2 del server////////////////////////////////////////////////////////
-                    //ahora vamos a leer  y guardar el codigo, si no nos envía ningun error, ya que si ya estamos registrados nos enviará un error
-                    if(lconsulta.getError().equalsIgnoreCase("0")){
-                        codigo = lconsulta.getCodigo();
-                        codigoGlobal = codigo;
-                        //ahora cerramos la conexion. La siguiente vez que conectemos ya enviaremos el codigo, no hará falta enviar usuario y contraseña
-                        mostrarToast("Mensaje del server: \n"+lconsulta.getInfoDelServer()+ " El codigo adjudicado es: "+codigo);
-                    }else{
-                        //System.out.println("A ocurrido un error, el codigo del error es: "+lconsulta.getError());
-                        //System.out.println(lconsulta.getInfoDelServer());
-                    }
-
-
-
-                }else{
-                    //System.out.println("El codigo adjudicados es: "+codigo + "Así que tenemos que enviarlo en el objeto");
-
-                }
-
-                socket.close();
-
-            }catch(IOException | ClassNotFoundException e){
-                //mostrarToast("Error de entrada/salida");
-            }
-
-
-
-
-        } catch (Exception e) {
-            Log.e("Error", "Exception: " + e.getMessage());
-        }
-        */
-
-    /*
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                   // login(); //Realizar aquí tu proceso!
-                    try{
-                        //ip = "192.168.1.12";
-                        //usuario= "gus";
-                        //pass = "123";
-                        socket = new Socket(ip, 8888);
-                        outObjeto = new ObjectOutputStream(socket.getOutputStream());
-                        inObjeto = new ObjectInputStream(socket.getInputStream());
-                        lconsulta = (LoginConsulta) inObjeto.readObject();//recibimos mensaje 1 del server////////////////////////////////////////////////////////
-                        mostrarToast(lconsulta.getInfoDelServer());
-
-                        String codigo = lconsulta.getCodigo();
-
-                        //////
-                        // System.out.println(lconsulta.getInfoDelServer());
-                        if(codigo.equalsIgnoreCase("0")){//si no tenemos codigo enviamos un objeto con el usuario y contraseña para hacer login y que nos envien un codigo
-                            lconsulta.setUsuario(usuario);
-                            lconsulta.setContraseña(pass);
-                            //ahora acabamos el objeto lconsulta y lo enviamos al server para que nos logee y nos envie un codigo
-                            lconsulta.setTipoDeLogin("1");//como vamos a hacer que nos logee el tipo de login es 1
-                            outObjeto.writeObject(lconsulta);//envio mensaje 1 al server////////////////////////////////////////////////////////
-                            //ahora esperamos el codigo que nos debe de enviar si las credenciales son correctas.
-                            //Para hacer esto  lo que hará será coger nuestro objeto y añadirle el codigo.
-                            lconsulta =(LoginConsulta) inObjeto.readObject();//recibo mensaje 2 del server////////////////////////////////////////////////////////
-                            //ahora vamos a leer  y guardar el codigo, si no nos envía ningun error, ya que si ya estamos registrados nos enviará un error
-                            if(lconsulta.getError().equalsIgnoreCase("0")){
-                                codigo = lconsulta.getCodigo();
-                                codigoGlobal = codigo;
-                                //ahora cerramos la conexion. La siguiente vez que conectemos ya enviaremos el codigo, no hará falta enviar usuario y contraseña
-                                mostrarToast("Mensaje del server: \n"+lconsulta.getInfoDelServer()+ " El codigo adjudicado es: "+codigo);
-                            }else{
-                                //System.out.println("A ocurrido un error, el codigo del error es: "+lconsulta.getError());
-                                //System.out.println(lconsulta.getInfoDelServer());
-                            }
-
-
-
-                        }else{
-                            //System.out.println("El codigo adjudicados es: "+codigo + "Así que tenemos que enviarlo en el objeto");
-
-                        }
-
-                        socket.close();
-
-                    }catch(IOException | ClassNotFoundException e){
-                        //mostrarToast("Error de entrada/salida");
-                    }
-
-
-
-
-                } catch (Exception e) {
-                    Log.e("Error", "Exception: " + e.getMessage());
-                }
-            }
-        });
-
-*/
+               .permitNetwork().build());
 
 
 
@@ -175,37 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     public void enviarDatosLogin(View view){
         ip = editIp.getText().toString();
         usuario = editUsuario.getText().toString();
         pass = editPass.getText().toString();
-
-        mostrarToast(lconsulta.getInfoDelServer());
+        //hacemos el login
         login();
-        /*
-        ip = "192.168.1.12";
-        usuario= "gus";
-        pass = "123";
-        mostrarToast("ip:"+ip + " usuario: "+usuario+ " pass: "+pass);
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        login();
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(
-                                        getBaseContext(),
-                                        "¡Funcionando el login!",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                }
-        ).start();
-        */
 
 
 
@@ -237,52 +108,49 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     // login(); //Realizar aquí tu proceso!
                     try{
-                        //ip = "192.168.1.12";
-                        //usuario= "gus";
-                        //pass = "123";
                         socket = new Socket(ip, 8888);
-                        outObjeto = new ObjectOutputStream(socket.getOutputStream());
-                        inObjeto = new ObjectInputStream(socket.getInputStream());
-                        lconsulta = (LoginConsulta) inObjeto.readObject();//recibimos mensaje 1 del server////////////////////////////////////////////////////////
-                        mostrarToast(lconsulta.getInfoDelServer());
+                        BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));//flujo lectura del server
+                        BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));//flujo envio al server
+                        //en principio lo mostraré en el log
+                        String mensajeServer = lector.readLine();   //leemos el mensaje de bienvenidoa del server
+                        Log.d(log_msg, "Mensaje del server 1: "+mensajeServer);
+                        mostrarToast("Mensaje del server 1: "+mensajeServer);
+                        //ahora escribimos en servidor , enviandole el login
+                        escriptor.write(usuario+":"+pass);
+                        escriptor.newLine();
+                        escriptor.flush();
+                        //leemos la respuesta, nos enviará un codigo
+                        mensajeServer = lector.readLine();   //leemos ya la respuesta del server,    nos envia un código
+                        Log.d(log_msg, "Mensaje del server 2: "+mensajeServer);
 
-                        String codigo = lconsulta.getCodigo();
+                        if(mensajeServer.equalsIgnoreCase("-1")){
+                            System.out.println("Codigo = -1 .El login es erroneo");//vemos el código
+                            Log.d(log_msg, "Mensaje del server 2: "+"Codigo = -1 .El login es erroneo");
+                            salir = true;
+                            lector.close();
+                            escriptor.close();
+                            socket.close();
 
-                        //////
-                        // System.out.println(lconsulta.getInfoDelServer());
-                        if(codigo.equalsIgnoreCase("0")){//si no tenemos codigo enviamos un objeto con el usuario y contraseña para hacer login y que nos envien un codigo
-                            lconsulta.setUsuario(usuario);
-                            lconsulta.setContraseña(pass);
-                            //ahora acabamos el objeto lconsulta y lo enviamos al server para que nos logee y nos envie un codigo
-                            lconsulta.setTipoDeLogin("1");//como vamos a hacer que nos logee el tipo de login es 1
-                            outObjeto.writeObject(lconsulta);//envio mensaje 1 al server////////////////////////////////////////////////////////
-                            //ahora esperamos el codigo que nos debe de enviar si las credenciales son correctas.
-                            //Para hacer esto  lo que hará será coger nuestro objeto y añadirle el codigo.
-                            lconsulta =(LoginConsulta) inObjeto.readObject();//recibo mensaje 2 del server////////////////////////////////////////////////////////
-                            //ahora vamos a leer  y guardar el codigo, si no nos envía ningun error, ya que si ya estamos registrados nos enviará un error
-                            if(lconsulta.getError().equalsIgnoreCase("0")){
-                                codigo = lconsulta.getCodigo();
-                                codigoGlobal = codigo;
-                                //ahora cerramos la conexion. La siguiente vez que conectemos ya enviaremos el codigo, no hará falta enviar usuario y contraseña
-                                mostrarToast("Mensaje del server: \n"+lconsulta.getInfoDelServer()+ " El codigo adjudicado es: "+codigo);
-                            }else{
-                                //System.out.println("A ocurrido un error, el codigo del error es: "+lconsulta.getError());
-                                //System.out.println(lconsulta.getInfoDelServer());
-                            }
-
-
-
+                        }else if(mensajeServer.equalsIgnoreCase("-2")){
+                            System.out.println("Codigo = -2 .El usuario ya esta conectado");//vemos el código
+                            Log.d(log_msg, "Mensaje del server 2: "+"Codigo = -2 .El usuario ya esta conectado");
+                            salir = true;
+                            lector.close();
+                            escriptor.close();
+                            socket.close();
                         }else{
-                            //System.out.println("El codigo adjudicados es: "+codigo + "Así que tenemos que enviarlo en el objeto");
-
+                            guardarIpEnShared(editIp);
+                            codigo = mensajeServer;
+                            Log.d(log_msg, "Codigo usuario válido = "+codigo);
+                            mostrarToast("Codigo = "+codigo);
                         }
+
 
                         socket.close();
 
-                    }catch(IOException | ClassNotFoundException e){
-                        //mostrarToast("Error de entrada/salida");
+                    }catch(IOException e) {
+                        Log.d(log_msg, "Error entrada salida: " + e);
                     }
-
 
 
 
@@ -292,6 +160,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+
+    public void cargarIpDeShared(View v){
+        SharedPreferences preferencias=getSharedPreferences("datos",Context.MODE_PRIVATE);
+        editIp.setText(preferencias.getString("ip",Utilidades.ip));
+
+    }
+    public void guardarIpEnShared(View v) {
+        SharedPreferences preferencias=getSharedPreferences("datos",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferencias.edit();
+        editor.putString("ip", editIp.getText().toString());
+        editor.commit();
 
     }
 
