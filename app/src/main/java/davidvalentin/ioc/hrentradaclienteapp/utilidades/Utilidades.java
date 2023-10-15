@@ -7,6 +7,7 @@ public class Utilidades {
     public static final String puerto = "8888";
     public static  String codigo = "0";
     public static SocketManager socketManager;
+    public static int tipoUser  = 1;//por defecto será solo usuario
 
 
 

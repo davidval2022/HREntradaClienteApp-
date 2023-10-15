@@ -3,28 +3,25 @@ package davidvalentin.ioc.hrentradaclienteapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 ///
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.Conexion;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.ConexionAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SocketManager;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
-import model.LoginConsulta;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     EditText editUsuario;
     EditText editPass;
     EditText editPuerto;
+    TextView textLogeado;
     String ip = "192.168.1.12";
     String usuario = "0";
     String pass = "0";
     String puerto = "8888";
-    LoginConsulta lconsulta;
     String codigoGlobal = "0";
     Socket socket;
     ObjectOutputStream outObjeto;
@@ -46,8 +43,10 @@ public class MainActivity extends AppCompatActivity {
     static String mensaje;
     boolean salir = false;
     //static String codigo = "0";
+    String mensajeLogeado = "";
+    Button btnMenu;
 
-    static SocketManager socketManager;
+    //static SocketManager socketManager;
 
 
 
@@ -56,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lconsulta = new LoginConsulta();
         editIp = findViewById(R.id.edit_ip);
         editUsuario = findViewById((R.id.edit_usuario));
         editPass = findViewById(R.id.edit_pass);
         editPuerto = findViewById(R.id.edit_puerto);
-
+        textLogeado = findViewById(R.id.TextViewOkLogin);
+        btnMenu = findViewById(R.id.btn_menu);
 
 
         //iniciamos el sharedPreferences y añadimos la ip guardada
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         usuario = editUsuario.getText().toString();
         pass = editPass.getText().toString();
         //hacemos el login
-        login3();
+        login();
 
 
 
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void login(){
+    public void login1(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -233,18 +232,28 @@ public class MainActivity extends AppCompatActivity {
     }
 */
 
-    public void login3(){
+    public void login(){
         try{
-            socketManager = new SocketManager(ip,Integer.parseInt(puerto) );
-            socketManager.openSocket();
-            Conexion conexion = new Conexion(socketManager,usuario,pass,getApplicationContext());
-            conexion.execute();
+            Utilidades.socketManager = new SocketManager(ip,Integer.parseInt(puerto) );
+            Utilidades.socketManager.openSocket();
+            ConexionAsyn conexionAsyn = new ConexionAsyn(Utilidades.socketManager,usuario,pass,getApplicationContext(),textLogeado,btnMenu);
+            conexionAsyn.execute();
 
             //mostrarToast("Codigo en MainActivity: "+Utilidades.codigo);
 
 
         }catch(Exception e){
-            Log.d("Error","Errores en login3: "+e);
+            Log.d("Error","Errores en login: "+e);
+        }
+
+    }
+
+    public void logout(){
+        try{
+            LogoutAsyn logout = new LogoutAsyn(Utilidades.socketManager,getApplicationContext());
+            Log.d("Correcto","Voy a LogoutAsyn ");
+        }catch(Exception e){
+            Log.d("Error","Errores en logout: "+e);
         }
 
     }
@@ -269,12 +278,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socketManager.closeSocket();
+        Utilidades.socketManager.closeSocket();
     }
 
 
-    public void pruebas(View v){
-        mostrarToast(Utilidades.codigo);
+    public void menu(View v){
+
+       // mostrarToast(Utilidades.codigo+ " El usuario es de tipo: "+Utilidades.tipoUser);
+        if(Utilidades.tipoUser == 0){
+            Intent intent = new Intent(this, MenuAdminActivity.class);
+            startActivity(intent);
+        }else if(Utilidades.tipoUser == 1){
+            Intent intent = new Intent(this, MenuUserActivity.class);
+            startActivity(intent);
+        }else{
+            mostrarToast( " Error en el tipo de usuario: "+Utilidades.tipoUser);
+        }
+
     }
 
 

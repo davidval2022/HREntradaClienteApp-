@@ -1,7 +1,11 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -13,21 +17,29 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import davidvalentin.ioc.hrentradaclienteapp.MainActivity;
+import davidvalentin.ioc.hrentradaclienteapp.MenuAdminActivity;
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import model.Resultado;
 
-public class Conexion extends AsyncTask<String, Void, String> {
+public class ConexionAsyn extends AsyncTask<String, Void, String> {
     private SocketManager socketManager;
     private String usuario;
     private String pass;
     private Context context;
+    private TextView mensaje;
+    private Button btnMenu;
 
 
-    public Conexion(SocketManager socketManager, String usuario, String pass, Context context) {
+    public ConexionAsyn(SocketManager socketManager, String usuario, String pass, Context context, TextView mensajeLogin, Button btnMenu) {
         this.socketManager = socketManager;
         this.usuario = usuario;
         this.pass = pass;
         this.context = context;
+        this.mensaje = mensajeLogin;
+        this.btnMenu = btnMenu;
     }
+
+
 
 
     @Override
@@ -35,6 +47,7 @@ public class Conexion extends AsyncTask<String, Void, String> {
 
         try {
             Socket socket = socketManager.getSocket();
+
 
             if (socket != null && socket.isConnected()) {
                 BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -76,7 +89,23 @@ public class Conexion extends AsyncTask<String, Void, String> {
             } else {
                 // El inicio de sesión fue exitoso, muestra un mensaje de éxito
                 Toast.makeText(context, "Inicio de sesión exitoso: "+ codigo, Toast.LENGTH_SHORT).show();
+                Log.d("Correcto","Mensaje del server en conexionasyn: "+ codigo);
                 Utilidades.codigo = codigo;
+
+            //comprobar el tipo de usuario
+            if(codigo.charAt(0) == 'A'){
+                //System.out.println("El server indica que eres administrador");
+                Utilidades.tipoUser = 0;
+                mensaje.setText("Estas registrado como Admin");
+                btnMenu.setEnabled(true);
+
+            }else if(codigo.charAt(0) == 'U'){
+                //System.out.println("El server indica que eres usuario normal");
+                Utilidades.tipoUser = 1;
+                mensaje.setText("Estas registrado como User");
+                btnMenu.setEnabled(true);
+            }
+
             }
         } else {
             // Maneja el caso en el que no se pudo obtener el resultado del servidor
