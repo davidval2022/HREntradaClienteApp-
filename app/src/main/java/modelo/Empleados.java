@@ -1,4 +1,4 @@
-package model;
+package modelo;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,19 +15,21 @@ import java.io.Serializable;
 
 
 public class Empleados implements Serializable, Comparable<Empleados> {
+    private static final long serialVersionUID = 6529685098267757690L;
+
     private String dni;
     private String nom;
-    private String apellidos;
+    private String apellido;
     private String nomEmpresa;
     private String departament;
     private int codiCard;
     private String mail;
     private int telefono;
 
-    public Empleados(String dni, String nom, String apellidos, String nomEmpresa, String departament, int codiCard, String mail, int telefono) {
+    public Empleados(String dni, String nom, String apellido, String nomEmpresa, String departament, int codiCard, String mail, int telefono) {
         this.dni = dni;
         this.nom = nom;
-        this.apellidos = apellidos;
+        this.apellido = apellido;
         this.nomEmpresa = nomEmpresa;
         this.departament = departament;
         this.codiCard = codiCard;
@@ -35,10 +37,10 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.telefono = telefono;
     }
 
-    public Empleados(String dni, String nom, String apellidos, String nomEmpresa) {
+    public Empleados(String dni, String nom, String apellido, String nomEmpresa) {
         this.dni = dni;
         this.nom = nom;
-        this.apellidos = apellidos;
+        this.apellido = apellido;
         this.nomEmpresa = nomEmpresa;
     }
 
@@ -62,12 +64,12 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.nom = nom;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public String getNomEmpresa() {

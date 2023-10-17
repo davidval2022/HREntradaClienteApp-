@@ -1,7 +1,6 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
@@ -15,11 +14,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-
-import davidvalentin.ioc.hrentradaclienteapp.MainActivity;
-import davidvalentin.ioc.hrentradaclienteapp.MenuAdminActivity;
-import davidvalentin.ioc.hrentradaclienteapp.R;
-import model.Resultado;
 
 public class ConexionAsyn extends AsyncTask<String, Void, String> {
     private SocketManager socketManager;
@@ -56,7 +50,7 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
                 String codigo = "0";
 
                 String mensajeServer = lector.readLine();   //leemos el mensaje de bienvenidoa del server
-                String palabra = usuario+":"+pass;
+                String palabra = usuario+","+pass;
                 //ahora escribimos en servidor , enviandole el login
                 escriptor.write(palabra);
                 escriptor.newLine();
@@ -70,6 +64,8 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
                     //leemos la respuesta, nos enviará un codigo
                     mensajeServer = lector.readLine();   //leemos ya la respuesta del server,    nos envia un código
                     codigo = mensajeServer;
+                    //tambien vamos a guardar el nombre de usuario para utilizarlo en algunos sitios
+                    Utilidades.nombreUser = usuario;
                 }
                 return codigo;
             }

@@ -278,7 +278,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utilidades.socketManager.closeSocket();
+        if(Utilidades.socketManager != null){
+            Utilidades.socketManager.closeSocket();
+        }
+
     }
 
 

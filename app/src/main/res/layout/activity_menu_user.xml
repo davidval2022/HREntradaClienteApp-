@@ -48,7 +48,8 @@
         android:gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
-        android:text="Empleados" />
+        android:text="Empleados"
+        android:onClick = "empleados"/>
 
     <Button
         android:id="@+id/btnEmpresas"

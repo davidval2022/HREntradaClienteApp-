@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ImageviewLogo"
+            android:layout_width="158dp"
+            android:layout_height="88dp"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:layout_width="421dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="left"
+            android:text="              LOGIN"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/labelIp"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:hint="Ip"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_ip"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Ip"
+            android:text="127.0.0.1"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/LabelPuerto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:hint="Puerto"
+            android:text="Puerto"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/edit_puerto"
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="8888"
+            android:hint="Puerto"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_usuario"
+            android:layout_width="264dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="195dp"
+            android:layout_marginRight="0dp"
+            android:hint="Usuario"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_pass"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="100dp"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_enviar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:onClick="enviarDatosLogin"
+            android:text="Enviar" />
+        <Button
+            android:id="@+id/btn_menu"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="30dp"
+            android:onClick="menu"
+            android:text="Ir a menu"
+            android:enabled="false"/>
+        <Button
+            android:id="@+id/btn_cancelar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:onClick="cancelar"
+            android:text="Cancelar" />
+
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/TextViewOkLogin"
+        android:layout_width="580dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:hint="No logeado"
+        android:textSize="20sp" />
+
+
+
+</LinearLayout>

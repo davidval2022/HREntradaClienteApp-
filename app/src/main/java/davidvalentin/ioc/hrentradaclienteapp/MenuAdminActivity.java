@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 public class MenuAdminActivity extends AppCompatActivity {
@@ -28,5 +29,11 @@ public class MenuAdminActivity extends AppCompatActivity {
         }catch(Exception e){
             Log.d("Error","Errores en logout: "+e);
         }
+    }
+
+    public void empleados(View view){
+        //tambla empleados="0", columna="dni", dni="12345678A", "123556895B" crud="0" que es select
+        SelectEmpleadosAsyn empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0","dni","12345678A","0");
+        empleadosAsyn.execute();
     }
 }
