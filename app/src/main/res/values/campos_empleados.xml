@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="combo_empleados">
+        <item>Selecciona campo</item>
+        <item>dni</item>
+        <item>nom</item>
+        <item>apellido</item>
+        <item>nomempresa</item>
+        <item>departament</item>
+        <item>codicard</item>
+        <item>mail</item>
+        <item>telephon</item>
+    </string-array>
+</resources>
