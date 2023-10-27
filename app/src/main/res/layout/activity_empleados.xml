@@ -14,32 +14,46 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="EMPLEADOS"
-        android:textSize="25sp" />
+        android:textSize="20sp"/>
+
+
+    <Spinner
+        android:id="@+id/spinCamposEmpleados"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/textFiltroEmpl"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Palabra a filtrar"
+        android:textSize="18sp"/>
+    <Button
+        android:id="@+id/btn_filtrarEmpleados"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="filtrarEmpleados"
+        android:layout_marginBottom="10dp"
+        android:text="Filtrar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spinCamposEmpleados"
-            android:layout_width="201dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textct"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:minHeight="25dp"></Spinner>
-
-        <Spinner
-            android:id="@+id/spinMuestraEmpleadosPorCampo"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textct"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:minHeight="25dp"></Spinner>
-
-
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerEmpleados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
+
+
 
 
 

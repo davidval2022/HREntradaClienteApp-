@@ -24,6 +24,7 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
     private Button btnMenu;
 
 
+
     public ConexionAsyn(SocketManager socketManager, String usuario, String pass, Context context, TextView mensajeLogin, Button btnMenu) {
         this.socketManager = socketManager;
         this.usuario = usuario;
@@ -82,11 +83,15 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
             if (codigo.equals("-1")) {
                 // El inicio de sesión falló, muestra un mensaje de error
                 Toast.makeText(context, "Inicio de sesión fallido", Toast.LENGTH_SHORT).show();
-            } else {
+            }else if(codigo.equals("-2")){
+                Toast.makeText(context, "Inicio de sesión fallido,. El usuario ya está registrado", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 // El inicio de sesión fue exitoso, muestra un mensaje de éxito
                 Toast.makeText(context, "Inicio de sesión exitoso: "+ codigo, Toast.LENGTH_SHORT).show();
                 Log.d("Correcto","Mensaje del server en conexionasyn: "+ codigo);
                 Utilidades.codigo = codigo;
+
 
             //comprobar el tipo de usuario
             if(codigo.charAt(0) == 'A'){

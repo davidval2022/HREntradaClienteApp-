@@ -12,7 +12,7 @@ public class Utilidades {
     public static SocketManager socketManager = null;
     public static int tipoUser  = 1;//por defecto será solo usuario
     public static String nombreUser = "";
-    public static List<Empleados> listaEmpleados = new ArrayList<>();
+    public static ArrayList<Empleados> listaEmpleados = new ArrayList<>();
 
 
 

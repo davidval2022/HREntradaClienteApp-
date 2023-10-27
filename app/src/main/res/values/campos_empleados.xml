@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="combo_empleados">
-        <item>Selecciona campo</item>
+        <item>Selecciona campo a filtrar</item>
         <item>dni</item>
         <item>nom</item>
         <item>apellido</item>

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +16,12 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class SelectEmpleadosAsyn extends AsyncTask<String, Void, Void> {
+import davidvalentin.ioc.hrentradaclienteapp.R;
+import modelo.Empleados;
+
+public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Empleados>> {
+
+
     private SocketManager socketManager;
     private Context context;
     private String nombreTabla;
@@ -22,11 +30,19 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, Void> {
     private String orden;
     private Socket socket;
     private String crud;
+    private  RecyclerView recycler;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    //atributos por si buscamos por nombre y apellido
+    private String nombre;
+    private String apellido;
 
 
 
 
-    public SelectEmpleadosAsyn(SocketManager socketManager,Context context,String crud, String nombreTabla,String columna,String filtro,String orden) {
+
+    public SelectEmpleadosAsyn(SocketManager socketManager,Context context,String crud, String nombreTabla,String columna,String filtro,String orden, RecyclerView recycler
+    ,RecyclerView.Adapter mAdapter,RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
@@ -34,13 +50,16 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, Void> {
         this.filtro = filtro;
         this.orden = orden;
         this.crud = crud;
+        this.recycler = recycler;
+        this.mAdapter = mAdapter;
+        this.layoutManager = layoutManager;
 
 
     }
 
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected ArrayList<Empleados> doInBackground(String... params) {
 
         try {
             socket = socketManager.getSocket();
@@ -69,27 +88,37 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, Void> {
                     perEnt = new ObjectInputStream(socket.getInputStream());
                     Utilidades.listaEmpleados = (ArrayList) perEnt.readObject();
 
+
+
                 }
-               // return (ArrayList<Empleados>) listaEmpleados;
+                return Utilidades.listaEmpleados;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return null ;
     }
 
     @Override
-    protected void onPostExecute(Void unused) {
-        //super.onPostExecute(unused);
-        Log.d("Error", "Estamos en onPostExecute pero no ha pasado nada");
-        if(Utilidades.listaEmpleados.size() == 0 ){
-            Log.d("Error", "La cosa no ha ido bien el el onPostExecute, ni al recibir el arrayList");
-        }
-        for(int i=0;i<Utilidades.listaEmpleados.size();i++){
-            //mensaje+="Nombre: " + listaEmpleados.get(i).getNom() + " Apellidos: " + listaEmpleados.get(i).getApellido()+ " DNI: "+listaEmpleados.get(i).getDni()+"\n";
-            Log.d("Correcto","Nombre: " + Utilidades.listaEmpleados.get(i).getNom() + " Apellidos: " + Utilidades.listaEmpleados.get(i).getApellido()+ " DNI: "+Utilidades.listaEmpleados.get(i).getDni()+"\n");
-        }
+    protected void onPostExecute(ArrayList<Empleados> result) {
+        //NOTA: ES AQUÍ DONDE HAY QUE LLENAR EL RECYCLERVIEW DE EMPLEADOSACTIVITY
+        super.onPostExecute(result);
+        //us
+
+
+        // Usar un administrador para el RecyclerView
+        layoutManager = new LinearLayoutManager(context);
+        recycler.setLayoutManager(layoutManager);
+        // Crear un adaptador y establecerlo en el RecyclerView
+        mAdapter = new AdaptadorEmpleados(Utilidades.listaEmpleados); // Asegúrate de reemplazar MyAdapter con tu propio adaptador
+        recycler.setAdapter(mAdapter);
+
+
     }
+
+
+
+
 
 
 

@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
             ConexionAsyn conexionAsyn = new ConexionAsyn(Utilidades.socketManager,usuario,pass,getApplicationContext(),textLogeado,btnMenu);
             conexionAsyn.execute();
 
+
             //mostrarToast("Codigo en MainActivity: "+Utilidades.codigo);
 
 
