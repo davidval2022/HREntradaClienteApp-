@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Empleados;
 
-public class AdaptadorEmpleados extends RecyclerView.Adapter<AdaptadorEmpleados.ViewHolderEmpleados> {
+public class AdaptadorEmpleados extends RecyclerView.Adapter<AdaptadorEmpleados.ViewHolderEmpleados> implements View.OnClickListener {
 
     ArrayList<Empleados> empleados;
+    private View.OnClickListener listener;
 
 
     public AdaptadorEmpleados(ArrayList<Empleados> empleados) {
@@ -26,6 +27,7 @@ public class AdaptadorEmpleados extends RecyclerView.Adapter<AdaptadorEmpleados.
     @Override
     public ViewHolderEmpleados onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empleado,null,false);
+        view.setOnClickListener(this);
         return new ViewHolderEmpleados(view);
     }
 
@@ -34,16 +36,29 @@ public class AdaptadorEmpleados extends RecyclerView.Adapter<AdaptadorEmpleados.
         holder.dni.setText(empleados.get(position).getDni());
         holder.nom.setText(empleados.get(position).getNom());
         holder.apellido.setText(empleados.get(position).getApellido());
-        holder.nomempresa.setText(empleados.get(position).getNomEmpresa());
+        holder.nomempresa.setText(empleados.get(position).getNomempresa());
         holder.departament.setText(empleados.get(position).getDepartament());
-        holder.codicard.setText(String.valueOf(empleados.get(position).getCodiCard()));
+        holder.codicard.setText(String.valueOf(empleados.get(position).getCodicard()));
         holder.mail.setText(empleados.get(position).getMail());
-        holder.telephon.setText(String.valueOf(empleados.get(position).getTelefono()));
+        holder.telephon.setText(String.valueOf(empleados.get(position).getTelephon()));
     }
 
     @Override
     public int getItemCount() {
         return empleados.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(listener!=null){
+            listener.onClick(view);
+        }
+
     }
 
     public class ViewHolderEmpleados extends RecyclerView.ViewHolder {

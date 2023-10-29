@@ -15,15 +15,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Empleados;
+import modelo.Users;
 
-public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Empleados>> {
+public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
 
 
     private SocketManager socketManager;
@@ -35,7 +34,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     private Socket socket;
     private String crud;
     private  RecyclerView recycler;
-    private AdaptadorEmpleados mAdapter;
+    private AdaptadorUsers mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -43,8 +42,8 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
 
-    public SelectEmpleadosAsyn(SocketManager socketManager,Context context,String crud, String nombreTabla,String columna,String filtro,String orden, RecyclerView recycler
-    ,AdaptadorEmpleados mAdapter,RecyclerView.LayoutManager layoutManager) {
+    public SelectUsersAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna, String filtro, String orden, RecyclerView recycler
+    , AdaptadorUsers mAdapter, RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
@@ -61,7 +60,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
     @Override
-    protected ArrayList<Empleados> doInBackground(String... params) {
+    protected ArrayList<Users> doInBackground(String... params) {
 
         try {
             socket = socketManager.getSocket();
@@ -92,7 +91,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     Object receivedData = perEnt.readObject();
 
                     if (receivedData instanceof List) {
-                        Utilidades.listaEmpleados = (ArrayList) receivedData;
+                        Utilidades.listaUsers = (ArrayList) receivedData;
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
@@ -100,11 +99,11 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     }
 
 
-                   // Utilidades.listaEmpleados = (ArrayList) perEnt.readObject();
+
 
 
                 }
-                return Utilidades.listaEmpleados;
+                return Utilidades.listaUsers;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -113,18 +112,18 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Empleados> result) {
+    protected void onPostExecute(ArrayList<Users> result) {
         //NOTA: ES AQUÍ DONDE HAY QUE LLENAR EL RECYCLERVIEW DE EMPLEADOSACTIVITY
         super.onPostExecute(result);
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
         // Crear un adaptador y establecerlo en el RecyclerView
-        mAdapter = new AdaptadorEmpleados(Utilidades.listaEmpleados); // Asegúrate de reemplazar MyAdapter con tu propio adaptador
+        mAdapter = new AdaptadorUsers(Utilidades.listaUsers); // Asegúrate de reemplazar MyAdapter con tu propio adaptador
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v)).getLogin(),Toast.LENGTH_SHORT).show();
 
             }
         });

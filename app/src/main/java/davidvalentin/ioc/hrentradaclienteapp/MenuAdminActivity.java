@@ -6,17 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 public class MenuAdminActivity extends AppCompatActivity {
+    private TextView mensajeNombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_admin);
+        mensajeNombre = findViewById(R.id.textViewMensajeConNombre);
+        mensajeNombre.setText("BIENVENIDO "+Utilidades.nombreUser.toUpperCase());
     }
 
     public void logout(View view) {
@@ -32,8 +37,13 @@ public class MenuAdminActivity extends AppCompatActivity {
     }
 
     public void empleados(View view){
-        //tambla empleados="0", columna="dni", dni="12345678A", "123556895B" crud="0" que es select
-        //SelectEmpleadosAsyn empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0","dni","12345678A","0");
-       // empleadosAsyn.execute();
+        Intent intent = new Intent(this, EmpleadosActivity.class);
+        startActivity(intent);
+    }
+
+    public void users(View view){
+        Toast.makeText(this, "Mensaje: "+"Estoy en el menu de users.. y el metodo", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, UsersActivity.class);
+        startActivity(intent);
     }
 }

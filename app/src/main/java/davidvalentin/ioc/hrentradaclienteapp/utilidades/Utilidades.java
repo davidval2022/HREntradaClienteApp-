@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Empleados;
+import modelo.Users;
 
 public class Utilidades {
     public static final String ip = "127.0.0.1";
@@ -13,6 +14,8 @@ public class Utilidades {
     public static int tipoUser  = 1;//por defecto será solo usuario
     public static String nombreUser = "";
     public static ArrayList<Empleados> listaEmpleados = new ArrayList<>();
+    public static ArrayList<Users> listaUsers = new ArrayList<>();
+    public static String mensajeDelServer = "";
 
 
 

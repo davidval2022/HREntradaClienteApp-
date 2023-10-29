@@ -76,7 +76,8 @@
         android:gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
-        android:text="Users" />
+        android:text="Users"
+        android:onClick="users"/>
 
     <Button
         android:id="@+id/btnLogout"

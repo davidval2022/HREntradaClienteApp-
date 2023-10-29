@@ -19,30 +19,33 @@ public class Empleados implements Serializable, Comparable<Empleados> {
 
     private String dni;
     private String nom;
+
     private String apellido;
-    private String nomEmpresa;
+    private String nomempresa;
     private String departament;
-    private int codiCard;
+    private int codicard;
     private String mail;
-    private int telefono;
+    private int telephon;
 
-    public Empleados(String dni, String nom, String apellido, String nomEmpresa, String departament, int codiCard, String mail, int telefono) {
+    public Empleados(String dni, String nom, String apellido, String nomempresa, String departament, int codicard, String mail, int telefono) {
         this.dni = dni;
         this.nom = nom;
         this.apellido = apellido;
-        this.nomEmpresa = nomEmpresa;
+        this.nomempresa = nomempresa;
         this.departament = departament;
-        this.codiCard = codiCard;
+        this.codicard = codicard;
         this.mail = mail;
-        this.telefono = telefono;
+        this.telephon = telefono;
     }
 
-    public Empleados(String dni, String nom, String apellido, String nomEmpresa) {
+    public Empleados(String dni, String nom, String apellido, String nomempresa) {
         this.dni = dni;
         this.nom = nom;
         this.apellido = apellido;
-        this.nomEmpresa = nomEmpresa;
+        this.nomempresa = nomempresa;
     }
+
+
 
     public Empleados() {
 
@@ -72,12 +75,12 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.apellido = apellido;
     }
 
-    public String getNomEmpresa() {
-        return nomEmpresa;
+    public String getNomempresa() {
+        return nomempresa;
     }
 
-    public void setNomEmpresa(String nomEmpresa) {
-        this.nomEmpresa = nomEmpresa;
+    public void setNomempresa(String nomempresa) {
+        this.nomempresa = nomempresa;
     }
 
     public String getDepartament() {
@@ -88,12 +91,12 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.departament = departament;
     }
 
-    public int getCodiCard() {
-        return codiCard;
+    public int getCodicard() {
+        return codicard;
     }
 
-    public void setCodiCard(int codiCard) {
-        this.codiCard = codiCard;
+    public void setCodicard(int codicard) {
+        this.codicard = codicard;
     }
 
     public String getMail() {
@@ -104,12 +107,12 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.mail = mail;
     }
 
-    public int getTelefono() {
-        return telefono;
+    public int getTelephon() {
+        return telephon;
     }
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
+    public void setTelephon(int telephon) {
+        this.telephon = telephon;
     }
 
     @Override

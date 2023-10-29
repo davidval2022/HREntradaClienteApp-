@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EmpleadosActivity">
+    tools:context=".UsersActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,12 +13,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="EMPLEADOS"
+        android:text="USERS"
         android:textSize="20sp"/>
 
 
     <Spinner
-        android:id="@+id/spinCamposEmpleados"
+        android:id="@+id/spinCamposUsers"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_marginLeft="5dp"
@@ -27,7 +27,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/textFiltroEmpl"
+        android:id="@+id/textFiltroUsers"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="7dp"
@@ -43,9 +43,9 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:onClick="filtrarEmpleados"
+            android:onClick="filtrarUsers"
             android:layout_marginBottom="0dp"
-            android:text="Filtrar" />
+            android:text="Filtrar"/>
         <Button
             android:id="@+id/btn_nuevo"
             android:layout_width="100dp"
@@ -63,19 +63,15 @@
             android:text="Volver" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerEmpleados"
+            android:id="@+id/RecyclerUsers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-
-
-
 
 
 
