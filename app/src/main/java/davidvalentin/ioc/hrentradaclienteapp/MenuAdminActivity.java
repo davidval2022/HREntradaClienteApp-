@@ -46,4 +46,14 @@ public class MenuAdminActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UsersActivity.class);
         startActivity(intent);
     }
+
+    public void empresas(View view) {
+        Intent intent = new Intent(this,  EmpresasActivity.class);
+        startActivity(intent);
+    }
+
+    public void jornadas(View view){
+        Intent intent = new Intent(this,  JornadasActivity.class);
+        startActivity(intent);
+    }
 }

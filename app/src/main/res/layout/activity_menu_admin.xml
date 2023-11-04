@@ -58,6 +58,7 @@
         android:gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
+        android:onClick="empresas"
         android:text="Empresas" />
 
     <Button
@@ -67,6 +68,7 @@
         android:gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
+        android:onClick="jornadas"
         android:text="Jornadas" />
 
     <Button

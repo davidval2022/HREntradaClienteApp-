@@ -3,6 +3,7 @@ package modelo;
 import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Jornada implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
 
     private String dni;
     private String nom;

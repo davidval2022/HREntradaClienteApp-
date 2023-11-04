@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="combo_jornadas">
+        <item>Selecciona un campo a filtrar</item>
+        <item>dni-fecha</item>
+        <item>nom-fecha</item>
+        <item>apellido-fecha</item>
+        <item>nom-apellido</item>
+        <item>codicard-fecha</item>
+    </string-array>
+</resources>

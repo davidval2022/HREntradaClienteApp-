@@ -22,16 +22,18 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
     private Context context;
     private TextView mensaje;
     private Button btnMenu;
+    private Button btnEnviar;
 
 
 
-    public ConexionAsyn(SocketManager socketManager, String usuario, String pass, Context context, TextView mensajeLogin, Button btnMenu) {
+    public ConexionAsyn(SocketManager socketManager, String usuario, String pass, Context context, TextView mensajeLogin, Button btnMenu, Button btnEnviar) {
         this.socketManager = socketManager;
         this.usuario = usuario;
         this.pass = pass;
         this.context = context;
         this.mensaje = mensajeLogin;
         this.btnMenu = btnMenu;
+        this.btnEnviar = btnEnviar;
     }
 
 
@@ -91,6 +93,7 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
                 Toast.makeText(context, "Inicio de sesión exitoso: "+ codigo, Toast.LENGTH_SHORT).show();
                 Log.d("Correcto","Mensaje del server en conexionasyn: "+ codigo);
                 Utilidades.codigo = codigo;
+                btnEnviar.setEnabled(false);
 
 
             //comprobar el tipo de usuario

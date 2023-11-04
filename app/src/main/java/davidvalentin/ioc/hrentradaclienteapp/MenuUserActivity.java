@@ -39,10 +39,16 @@ public class MenuUserActivity extends AppCompatActivity {
     }
 
     public void empleados(View view){
-        //tambla empleados="0", columna="dni", dni="12345678A", "123556895B"
-        //SelectEmpleadosAsyn empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0","dni","12345678A","0");
-
         Intent intent = new Intent(this, EmpleadosActivity.class);
+        startActivity(intent);
+    }
+
+    public void empresas(View view) {
+        Intent intent = new Intent(this,  EmpresasActivity.class);
+        startActivity(intent);
+    }
+    public void jornadas(View view){
+        Intent intent = new Intent(this,  JornadasActivity.class);
         startActivity(intent);
     }
 }

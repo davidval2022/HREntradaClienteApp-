@@ -15,27 +15,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.R;
-import modelo.Empleados;
 
-public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Empleados>> {
+import modelo.Jornada;
+
+public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada>> {
 
 
     private SocketManager socketManager;
     private Context context;
     private String nombreTabla;
-    private String columna;
-    private String filtro;
+    private String columna1;
+    private String filtro1;
+    private String columna2;
+    private String filtro2;
     private String orden;
     private Socket socket;
     private String crud;
     private  RecyclerView recycler;
-    private AdaptadorEmpleados mAdapter;
+    private AdaptadorJornadas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -43,13 +44,15 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
 
-    public SelectEmpleadosAsyn(SocketManager socketManager,Context context,String crud, String nombreTabla,String columna,String filtro,String orden, RecyclerView recycler
-    ,AdaptadorEmpleados mAdapter,RecyclerView.LayoutManager layoutManager) {
+    public SelectJornadaAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna1, String filtro1, String columna2, String filtro2, String orden, RecyclerView recycler
+    , AdaptadorJornadas mAdapter, RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
-        this.columna = columna;
-        this.filtro = filtro;
+        this.columna1 = columna1;
+        this.filtro1 = filtro1;
+        this.columna2 = columna2;
+        this.filtro2 = filtro2;
         this.orden = orden;
         this.crud = crud;
         this.recycler = recycler;
@@ -61,10 +64,12 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
     @Override
-    protected ArrayList<Empleados> doInBackground(String... params) {
+    protected ArrayList<Jornada> doInBackground(String... params) {
 
         try {
             socket = socketManager.getSocket();
+
+
 
 
 
@@ -75,8 +80,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
                 String codigo = "0";
 
-                //String mensajeServer = lector.readLine();   //leemos el mensaje de bienvenidoa del server
-                String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+columna+","+filtro+","+orden;
+                String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+columna1+","+filtro1+","+columna2+","+filtro2+","+orden;
                 //ahora escribimos en servidor , enviandole el login
                 escriptor.write(palabra);
                 escriptor.newLine();
@@ -91,8 +95,9 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
                     Object receivedData = perEnt.readObject();
 
-                    if (receivedData instanceof List) {
-                        Utilidades.listaEmpleados = (ArrayList) receivedData;
+
+                    if (receivedData instanceof ArrayList) {
+                        Utilidades.listaJornadas = (ArrayList) receivedData;
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
@@ -100,11 +105,11 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     }
 
 
-                   // Utilidades.listaEmpleados = (ArrayList) perEnt.readObject();
+
 
 
                 }
-                return Utilidades.listaEmpleados;
+                return Utilidades.listaJornadas;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -113,22 +118,25 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Empleados> result) {
-        //NOTA: ES AQUÍ DONDE HAY QUE LLENAR EL RECYCLERVIEW DE EMPLEADOSACTIVITY
+    protected void onPostExecute(ArrayList<Jornada> result) {
+
         super.onPostExecute(result);
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
         // Crear un adaptador y establecerlo en el RecyclerView
-        mAdapter = new AdaptadorEmpleados(Utilidades.listaEmpleados);
+        mAdapter = new AdaptadorJornadas(Utilidades.listaJornadas);
+
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v)).getDni(),Toast.LENGTH_SHORT).show();
 
             }
         });
         recycler.setAdapter(mAdapter);
+
+
 
 
 

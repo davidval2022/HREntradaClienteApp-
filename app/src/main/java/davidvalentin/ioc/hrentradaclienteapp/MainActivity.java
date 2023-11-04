@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //static String codigo = "0";
     String mensajeLogeado = "";
     Button btnMenu;
+    Button btnEnviar;
 
     //static SocketManager socketManager;
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         editPuerto = findViewById(R.id.edit_puerto);
         textLogeado = findViewById(R.id.TextViewOkLogin);
         btnMenu = findViewById(R.id.btn_menu);
+        btnEnviar = findViewById(R.id.btn_enviar);
 
 
         //iniciamos el sharedPreferences y añadimos la ip guardada
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             Utilidades.socketManager = new SocketManager(ip,Integer.parseInt(puerto) );
             Utilidades.socketManager.openSocket();
-            ConexionAsyn conexionAsyn = new ConexionAsyn(Utilidades.socketManager,usuario,pass,getApplicationContext(),textLogeado,btnMenu);
+            ConexionAsyn conexionAsyn = new ConexionAsyn(Utilidades.socketManager,usuario,pass,getApplicationContext(),textLogeado,btnMenu,btnEnviar);
             conexionAsyn.execute();
 
 

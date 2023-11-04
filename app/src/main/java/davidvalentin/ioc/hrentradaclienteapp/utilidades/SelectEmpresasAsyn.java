@@ -15,15 +15,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.R;
-import modelo.Empleados;
+import modelo.Empresa;
 
-public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Empleados>> {
+public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empresa>> {
 
 
     private SocketManager socketManager;
@@ -35,7 +33,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     private Socket socket;
     private String crud;
     private  RecyclerView recycler;
-    private AdaptadorEmpleados mAdapter;
+    private AdaptadorEmpresas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
 
@@ -43,8 +41,8 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
 
-    public SelectEmpleadosAsyn(SocketManager socketManager,Context context,String crud, String nombreTabla,String columna,String filtro,String orden, RecyclerView recycler
-    ,AdaptadorEmpleados mAdapter,RecyclerView.LayoutManager layoutManager) {
+    public SelectEmpresasAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna, String filtro, String orden, RecyclerView recycler
+    , AdaptadorEmpresas mAdapter, RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
@@ -61,7 +59,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
 
     @Override
-    protected ArrayList<Empleados> doInBackground(String... params) {
+    protected ArrayList<Empresa> doInBackground(String... params) {
 
         try {
             socket = socketManager.getSocket();
@@ -92,7 +90,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     Object receivedData = perEnt.readObject();
 
                     if (receivedData instanceof List) {
-                        Utilidades.listaEmpleados = (ArrayList) receivedData;
+                        Utilidades.listaEmpresas = (ArrayList) receivedData;
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
@@ -100,11 +98,11 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
                     }
 
 
-                   // Utilidades.listaEmpleados = (ArrayList) perEnt.readObject();
+
 
 
                 }
-                return Utilidades.listaEmpleados;
+                return Utilidades.listaEmpresas;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -113,18 +111,18 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Empleados> result) {
+    protected void onPostExecute(ArrayList<Empresa> result) {
         //NOTA: ES AQUÍ DONDE HAY QUE LLENAR EL RECYCLERVIEW DE EMPLEADOSACTIVITY
         super.onPostExecute(result);
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
         // Crear un adaptador y establecerlo en el RecyclerView
-        mAdapter = new AdaptadorEmpleados(Utilidades.listaEmpleados);
+        mAdapter = new AdaptadorEmpresas(Utilidades.listaEmpresas);
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
 
             }
         });

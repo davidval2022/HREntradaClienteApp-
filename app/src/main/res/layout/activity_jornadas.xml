@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EmpleadosActivity">
+    tools:context=".JornadasActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,12 +13,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="EMPLEADOS"
+        android:text="Jornadas"
         android:textSize="20sp"/>
 
 
     <Spinner
-        android:id="@+id/spinCamposEmpleados"
+        android:id="@+id/spinCamposJornadas"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="5dp"
@@ -26,25 +26,52 @@
         android:layout_marginBottom="20dp"
         android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/textFiltroEmpl"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginBottom="10dp"
-        android:hint="Palabra a filtrar"
-        android:textSize="18sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"  >
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/textFiltroJor1"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Palabra a filtrar 1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="10dp"
+            android:text="-"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/textFiltroJor2"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Palabra a filtrar 2"
+            android:textSize="18sp" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
         <Button
-            android:id="@+id/btn_filtrarEmpleados"
+            android:id="@+id/btn_filtrarJornadas"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:onClick="filtrarEmpleados"
             android:layout_marginBottom="0dp"
+            android:onClick="filtrarJornadas"
             android:text="Filtrar" />
         <Button
             android:id="@+id/btn_nuevo"
@@ -69,14 +96,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerEmpleados"
+            android:id="@+id/RecyclerJornadas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-
-
-
-
-
 
 </LinearLayout>

@@ -13,20 +13,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorEmpleados;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorEmpresas;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorUsers;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpresasAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectUsersAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
-public class UsersActivity extends AppCompatActivity {
+public class EmpresasActivity extends AppCompatActivity {
 
-    //necestio que esta activity  implemente la interfaz SelectUsersAsyn
+    //necestio que esta activity  implemente la interfaz SelectEmpresasAsyn
     //para que actualice los datos en tiempo real en la UI
-    Spinner comboCamposUsers;
-    RecyclerView recyclerViewUsers;
-    //RecyclerView.Adapter mAdapter;
-    AdaptadorUsers mAdapter;
+    Spinner comboCamposEmpresas;
+    RecyclerView recyclerEmpresas;
+    AdaptadorEmpresas mAdapter;
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
     EditText editTextFiltro;
@@ -34,17 +33,17 @@ public class UsersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users);
+        setContentView(R.layout.activity_empresas);
 
         nombreCampoFiltro = "0"; //por defecto es 0
 
-        editTextFiltro = findViewById(R.id.textFiltroUsers);//obtenermos la referencia del campo de texto para los filtros
+        editTextFiltro = findViewById(R.id.textFiltroEmpresas);//obtenermos la referencia del campo de texto para los filtros
 
-        comboCamposUsers = (Spinner) findViewById(R.id.spinCamposUsers);
-        ArrayAdapter<CharSequence> adapterCampos = ArrayAdapter.createFromResource(this,R.array.combo_users,
+        comboCamposEmpresas = (Spinner) findViewById(R.id.spinCamposEmpresas);
+        ArrayAdapter<CharSequence> adapterCampos = ArrayAdapter.createFromResource(this,R.array.combo_empresas,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        comboCamposUsers.setAdapter(adapterCampos);
-        comboCamposUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        comboCamposEmpresas.setAdapter(adapterCampos);
+        comboCamposEmpresas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // mostrarToast((String) adapterCampos.getItem(position));
@@ -62,21 +61,20 @@ public class UsersActivity extends AppCompatActivity {
         });
 
 
-        recyclerViewUsers = findViewById(R.id.RecyclerUsers);
+        recyclerEmpresas = findViewById(R.id.RecyclerEmpresas);
         layoutManager = new LinearLayoutManager(this);
-        recyclerViewUsers.setLayoutManager(layoutManager);
-        mAdapter = new AdaptadorUsers(Utilidades.listaUsers);
-        recyclerViewUsers.setAdapter(mAdapter);
+        recyclerEmpresas.setLayoutManager(layoutManager);
+        mAdapter = new AdaptadorEmpresas(Utilidades.listaEmpresas);
+        recyclerEmpresas.setAdapter(mAdapter);
 
 
         //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
-        SelectUsersAsyn usersAsyn = new SelectUsersAsyn(Utilidades.socketManager,getApplicationContext(),"0","1","0","0","0",recyclerViewUsers,mAdapter,layoutManager);
-        usersAsyn.execute();
+        SelectEmpresasAsyn empresasAsyn = new SelectEmpresasAsyn(Utilidades.socketManager,getApplicationContext(),"0","2","0","0","0",recyclerEmpresas,mAdapter,layoutManager);
+        empresasAsyn.execute();
 
         //String m = pruebaMensajeToast();
         // Log.d("Correcto_Em: ",m);
         mAdapter.notifyDataSetChanged();
-
     }
 
     public  void mostrarToast(String mensaje){
@@ -85,24 +83,23 @@ public class UsersActivity extends AppCompatActivity {
 
     }
 
-
-    public void filtrarUsers(View view) {
-        Utilidades.listaUsers.clear();
-        recyclerViewUsers = findViewById(R.id.RecyclerUsers);
+    public void filtrarEmpresas(View view) {
+        Utilidades.listaEmpresas.clear();
+        recyclerEmpresas = findViewById(R.id.RecyclerEmpresas);
         layoutManager = new LinearLayoutManager(this);
-        recyclerViewUsers.setLayoutManager(layoutManager);
-        mAdapter = new AdaptadorUsers(Utilidades.listaUsers);
-        recyclerViewUsers.setAdapter(mAdapter);
+        recyclerEmpresas.setLayoutManager(layoutManager);
+        mAdapter = new AdaptadorEmpresas(Utilidades.listaEmpresas);
+        recyclerEmpresas.setAdapter(mAdapter);
         palabraFiltro = editTextFiltro.getText().toString();
 
-        SelectUsersAsyn usersAsyn;
+        SelectEmpresasAsyn empresasAsyn;
         if(palabraFiltro.equalsIgnoreCase("-1") || palabraFiltro.equalsIgnoreCase("")){
-            usersAsyn = new SelectUsersAsyn(Utilidades.socketManager,getApplicationContext(),"0","1","0","0","0",recyclerViewUsers,mAdapter,layoutManager);
+            empresasAsyn = new SelectEmpresasAsyn(Utilidades.socketManager,getApplicationContext(),"0","2","0","0","0",recyclerEmpresas,mAdapter,layoutManager);
         }else{
-            usersAsyn = new SelectUsersAsyn(Utilidades.socketManager,getApplicationContext(),"0","1",nombreCampoFiltro,palabraFiltro,"0",recyclerViewUsers,mAdapter,layoutManager);
+            empresasAsyn = new SelectEmpresasAsyn(Utilidades.socketManager,getApplicationContext(),"0","2",nombreCampoFiltro,palabraFiltro,"0",recyclerEmpresas,mAdapter,layoutManager);
         }
         //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
-        usersAsyn.execute();
+        empresasAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
             mostrarToast(Utilidades.mensajeDelServer);
@@ -112,7 +109,13 @@ public class UsersActivity extends AppCompatActivity {
     }
 
     public void volver(View view){
-        Intent intent = new Intent(this, MenuAdminActivity.class);
-        startActivity(intent);
+        if(Utilidades.tipoUser == 1){
+            Intent intent = new Intent(this, MenuUserActivity.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(this, MenuAdminActivity.class);
+            startActivity(intent);
+        }
+
     }
 }

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="combo_users">
+    <string-array name="combo_empresas">
         <item>Selecciona un campo a filtrar</item>
-        <item>login</item>
-        <item>numtipe</item>
-        <item>dni</item>
+        <item>nom</item>
     </string-array>
 </resources>

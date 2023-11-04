@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EmpleadosActivity">
+    tools:context=".EmpresasActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,12 +13,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="EMPLEADOS"
+        android:text="EMPRESAS"
         android:textSize="20sp"/>
 
 
     <Spinner
-        android:id="@+id/spinCamposEmpleados"
+        android:id="@+id/spinCamposEmpresas"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="5dp"
@@ -27,7 +27,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/textFiltroEmpl"
+        android:id="@+id/textFiltroEmpresas"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="7dp"
@@ -39,13 +39,13 @@
         android:layout_height="50dp"
         android:orientation="horizontal"  >
         <Button
-            android:id="@+id/btn_filtrarEmpleados"
+            android:id="@+id/btn_filtrarEmpresas"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:onClick="filtrarEmpleados"
+            android:onClick="filtrarEmpresas"
             android:layout_marginBottom="0dp"
-            android:text="Filtrar" />
+            android:text="Filtrar"/>
         <Button
             android:id="@+id/btn_nuevo"
             android:layout_width="100dp"
@@ -63,20 +63,14 @@
             android:text="Volver" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerEmpleados"
+            android:id="@+id/RecyclerEmpresas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-
-
-
-
-
 
 </LinearLayout>

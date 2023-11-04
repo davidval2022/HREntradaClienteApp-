@@ -29,7 +29,7 @@ public class EmpleadosActivity extends AppCompatActivity{
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
     EditText editTextFiltro;
-     String palabraFiltro = "0"; // por defecto la palabra a buscar es tambien 0
+     String palabraFiltro = "-1"; // por defecto la palabra a buscar es tambien 0
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,9 @@ public class EmpleadosActivity extends AppCompatActivity{
                // mostrarToast((String) adapterCampos.getItem(position));
                 //obtenemos el campo a filtrar  seleccionado del spinner
                 nombreCampoFiltro = (String) adapterCampos.getItem(position);
+                if(nombreCampoFiltro.equalsIgnoreCase("Selecciona un campo a filtrar")){
+                    nombreCampoFiltro = "0";
+                };
             }
 
             @Override
@@ -80,18 +83,7 @@ public class EmpleadosActivity extends AppCompatActivity{
 
 
     }
-    /*
-    public String pruebaMensajeToast(){
-        String mensaje = "Primera linea:\n";
-        for(int i = 0; i< Utilidades.listaEmpleados.size(); i++){
-            //mensaje+="Nombre: " + listaEmpleados.get(i).getNom() + " Apellidos: " + listaEmpleados.get(i).getApellido()+ " DNI: "+listaEmpleados.get(i).getDni()+"\n";
-            mensaje+= "Correcto_Em: Nombre: " + Utilidades.listaEmpleados.get(i).getNom() + " Apellidos: " + Utilidades.listaEmpleados.get(i).getApellido()+ " DNI: "+Utilidades.listaEmpleados.get(i).getDni()+
-                    " Apellido: "+Utilidades.listaEmpleados.get(i).getApellido()+" Codicard: "+Utilidades.listaEmpleados.get(i).getCodiCard()+
-                    " Telefono: "+Utilidades.listaEmpleados.get(i).getTelefono()+"\n";
-        }
-        return mensaje;
 
-    }*/
 
 
     public void filtrarEmpleados(View view) {
@@ -102,12 +94,14 @@ public class EmpleadosActivity extends AppCompatActivity{
         mAdapter = new AdaptadorEmpleados(Utilidades.listaEmpleados);
         recyclerViewEmpleados.setAdapter(mAdapter);
         palabraFiltro = editTextFiltro.getText().toString();
-        //mostrarToast("Campo filtro: "+nombreCampoFiltro+" palabra: "+palabraFiltro);
-        if(palabraFiltro.equalsIgnoreCase("")){
-            palabraFiltro = "0";
+        SelectEmpleadosAsyn empleadosAsyn;
+        //si palabraFiltro está vacion devolvemos todos los registros
+        if(palabraFiltro.equalsIgnoreCase("-1") || palabraFiltro.equals("")){
+            empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0","0","0","0",recyclerViewEmpleados,mAdapter,layoutManager);
+        }else{
+             empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0",nombreCampoFiltro,palabraFiltro,"0",recyclerViewEmpleados,mAdapter,layoutManager);
         }
         //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
-        SelectEmpleadosAsyn empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0",nombreCampoFiltro,palabraFiltro,"0",recyclerViewEmpleados,mAdapter,layoutManager);
         empleadosAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
