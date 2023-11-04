@@ -42,7 +42,7 @@ public class MenuAdminActivity extends AppCompatActivity {
     }
 
     public void users(View view){
-        Toast.makeText(this, "Mensaje: "+"Estoy en el menu de users.. y el metodo", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Mensaje: "+"Estoy en el menu de users.. y el metodo", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, UsersActivity.class);
         startActivity(intent);
     }

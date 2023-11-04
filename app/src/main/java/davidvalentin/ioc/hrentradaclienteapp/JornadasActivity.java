@@ -118,6 +118,26 @@ public class JornadasActivity extends AppCompatActivity {
             columna1 = "codicard";
             columna2 = "fecha";
 
+        }else if(nombreCampoFiltro.equals("codicard")){
+            columna1 = "codicard";
+            columna2 = "0";
+            palabraFiltro2 = "0";
+        }else if(nombreCampoFiltro.equals("dni")){
+            columna1 = "dni";
+            columna2 = "0";
+            palabraFiltro2 = "0";
+        }else if(nombreCampoFiltro.equals("nom")){
+            columna1 = "nom";
+            columna2 = "0";
+            palabraFiltro2 = "0";
+        }else if(nombreCampoFiltro.equals("apellido")){
+            columna1 = "apellido";
+            columna2 = "0";
+            palabraFiltro2 = "0";
+        }else if(nombreCampoFiltro.equals("fecha")){
+            columna1 = "fecha";
+            columna2 = "0";
+            palabraFiltro2 = "0";
         }
         //si palabraFiltro está vacion devolvemos todos los registros
         if(palabraFiltro1.equalsIgnoreCase("-1") || palabraFiltro1.equals("") || palabraFiltro2.equalsIgnoreCase("-1") || palabraFiltro2.equals("")  ){

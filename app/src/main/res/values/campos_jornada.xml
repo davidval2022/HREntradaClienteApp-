@@ -2,6 +2,11 @@
 <resources>
     <string-array name="combo_jornadas">
         <item>Selecciona un campo a filtrar</item>
+        <item>dni</item>
+        <item>nom</item>
+        <item>apellido</item>
+        <item>codicard</item>
+        <item>fecha</item>
         <item>dni-fecha</item>
         <item>nom-fecha</item>
         <item>apellido-fecha</item>
