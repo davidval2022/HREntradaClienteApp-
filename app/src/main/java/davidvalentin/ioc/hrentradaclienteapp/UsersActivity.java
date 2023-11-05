@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,8 @@ public class UsersActivity extends AppCompatActivity {
     String palabraFiltro = "-1"; // por defecto la palabra a buscar es tambien 0
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
@@ -105,10 +108,8 @@ public class UsersActivity extends AppCompatActivity {
         usersAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
-            mostrarToast(Utilidades.mensajeDelServer);
-
+            Utilidades.mensajeDelServer = "";
         }
-        Utilidades.mensajeDelServer = "";
     }
 
     public void volver(View view){

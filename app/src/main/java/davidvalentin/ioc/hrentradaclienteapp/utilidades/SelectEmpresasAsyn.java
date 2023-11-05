@@ -91,6 +91,7 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
 
                     if (receivedData instanceof List) {
                         Utilidades.listaEmpresas = (ArrayList) receivedData;
+                        Utilidades.mensajeDelServer = "";
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
@@ -127,10 +128,15 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
             }
         });
         recycler.setAdapter(mAdapter);
+        if(!Utilidades.mensajeDelServer.equals("")){
+            mostrarToast(context.getApplicationContext(),Utilidades.mensajeDelServer );
+        }
 
 
+    }
 
-
+    public static void mostrarToast(Context context, String mensaje){
+        Toast.makeText(context, ""+mensaje, Toast.LENGTH_SHORT).show();
     }
 
 

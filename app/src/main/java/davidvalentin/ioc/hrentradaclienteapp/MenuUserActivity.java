@@ -3,6 +3,7 @@ package davidvalentin.ioc.hrentradaclienteapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +17,11 @@ public class MenuUserActivity extends AppCompatActivity {
     private TextView mensajeNombre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //agrego esta linea de abajo para que mantega la pantalla en vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_user);
+
         mensajeNombre = findViewById(R.id.textViewMensajeConNombre);
         mensajeNombre.setText("BIENVENIDO "+Utilidades.nombreUser.toUpperCase());
 

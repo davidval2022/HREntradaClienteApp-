@@ -100,6 +100,8 @@ public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada
                         Utilidades.listaJornadas = (ArrayList) receivedData;
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
+
+
                     } else {
                         Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                     }
@@ -135,12 +137,17 @@ public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada
             }
         });
         recycler.setAdapter(mAdapter);
+        if(!Utilidades.mensajeDelServer.equals("")){
+            mostrarToast(context.getApplicationContext(),Utilidades.mensajeDelServer );
+        }
 
 
 
 
+    }
 
-
+    public static void mostrarToast(Context context, String mensaje){
+        Toast.makeText(context, ""+mensaje, Toast.LENGTH_SHORT).show();
     }
 
 

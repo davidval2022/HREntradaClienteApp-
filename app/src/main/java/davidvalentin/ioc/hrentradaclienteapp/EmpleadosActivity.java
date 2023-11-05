@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -32,11 +33,12 @@ public class EmpleadosActivity extends AppCompatActivity{
      String palabraFiltro = "-1"; // por defecto la palabra a buscar es tambien 0
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empleados);
 
         nombreCampoFiltro = "0"; //por defecto es 0
-
         editTextFiltro = findViewById(R.id.textFiltroEmpl);//obtenermos la referencia del campo de texto para los filtros
 
         comboCamposEmpleados = (Spinner) findViewById(R.id.spinCamposEmpleados);
@@ -105,10 +107,9 @@ public class EmpleadosActivity extends AppCompatActivity{
         empleadosAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
-            mostrarToast(Utilidades.mensajeDelServer);
-
+            Utilidades.mensajeDelServer = "";
         }
-        Utilidades.mensajeDelServer = "";
+
     }
 
 

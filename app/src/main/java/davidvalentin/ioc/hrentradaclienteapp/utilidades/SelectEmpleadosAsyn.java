@@ -93,6 +93,7 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
 
                     if (receivedData instanceof List) {
                         Utilidades.listaEmpleados = (ArrayList) receivedData;
+                        Utilidades.mensajeDelServer = "";
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
@@ -129,10 +130,15 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
             }
         });
         recycler.setAdapter(mAdapter);
+        if(!Utilidades.mensajeDelServer.equals("")){
+            mostrarToast(context.getApplicationContext(),Utilidades.mensajeDelServer );
+        }
 
 
+    }
 
-
+    public static void mostrarToast(Context context, String mensaje){
+        Toast.makeText(context, ""+mensaje, Toast.LENGTH_SHORT).show();
     }
 
 
