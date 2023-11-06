@@ -122,4 +122,9 @@ public class EmpleadosActivity extends AppCompatActivity{
             startActivity(intent);
         }
     }
+
+    public void insertarEmpleado(View view){
+        Intent intent = new Intent(this, EmpleadosInsertActivity.class);
+        startActivity(intent);
+    }
 }

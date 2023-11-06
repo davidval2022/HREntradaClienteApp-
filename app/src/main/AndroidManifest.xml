@@ -17,6 +17,12 @@
         android:theme="@style/Theme.HREntradaClienteApp"
         tools:targetApi="31">
         <activity
+            android:name=".EmpresaInsertActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpleadosInsertActivity"
+            android:exported="false" />
+        <activity
             android:name=".JornadasActivity"
             android:exported="false" />
         <activity

@@ -55,4 +55,5 @@ public class MenuUserActivity extends AppCompatActivity {
         Intent intent = new Intent(this,  JornadasActivity.class);
         startActivity(intent);
     }
+
 }

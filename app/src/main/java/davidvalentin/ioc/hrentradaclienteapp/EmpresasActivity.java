@@ -119,4 +119,9 @@ public class EmpresasActivity extends AppCompatActivity {
         }
 
     }
+
+    public void irAInsertarEmpresa(View view) {
+        Intent intent = new Intent(this, EmpresaInsertActivity.class);
+        startActivity(intent);
+    }
 }
