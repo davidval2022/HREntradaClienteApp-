@@ -20,17 +20,20 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpresasAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectUsersAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
+/**
+ *  Activity asociada a la pantalla principal de empresas. Desde aquí podemos ver  todas las empresas,
+ *  podemos filtrar por diferentes campos y tenemos un botón para ir a otra pantalla donde
+ *  poder crear nuevas empresas
+ */
 public class EmpresasActivity extends AppCompatActivity {
 
-    //necestio que esta activity  implemente la interfaz SelectEmpresasAsyn
-    //para que actualice los datos en tiempo real en la UI
     Spinner comboCamposEmpresas;
     RecyclerView recyclerEmpresas;
     AdaptadorEmpresas mAdapter;
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
     EditText editTextFiltro;
-    String palabraFiltro = "-1"; // por defecto la palabra a buscar es tambien 0
+    String palabraFiltro = "-1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
@@ -79,13 +82,20 @@ public class EmpresasActivity extends AppCompatActivity {
         // Log.d("Correcto_Em: ",m);
         mAdapter.notifyDataSetChanged();
     }
-
+    /**
+     * Metodo que lanza un mensaje de Toast
+     * @param mensaje es el mensaje que mostrará el Toast
+     */
     public  void mostrarToast(String mensaje){
         Toast.makeText(this, "Mensaje: "+mensaje, Toast.LENGTH_LONG).show();
 
 
     }
-
+    /**
+     * Método asociado al botón 'filtrar', con este método filtramos empresas , dependiendo
+     * de la palabra que introduzcamos y del campo que seleccionemos del spinner.
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void filtrarEmpresas(View view) {
         Utilidades.listaEmpresas.clear();
         recyclerEmpresas = findViewById(R.id.RecyclerEmpresas);
@@ -108,7 +118,11 @@ public class EmpresasActivity extends AppCompatActivity {
             Utilidades.mensajeDelServer = "";
         }
     }
-
+    /**
+     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
+     * bien al MenuAdminActivity,o bien al menú MenuUserActivity dependiendo de si el usuario
+     * es de tipo 1 o 0
+     */
     public void volver(View view){
         if(Utilidades.tipoUser == 1){
             Intent intent = new Intent(this, MenuUserActivity.class);
@@ -119,7 +133,10 @@ public class EmpresasActivity extends AppCompatActivity {
         }
 
     }
-
+    /**
+     * Método asociado al botón 'nuevo'. Somo redirigidos a la activity EmpresaInsertActivity para
+     * desde allí crear una nuevo empresa
+     */
     public void irAInsertarEmpresa(View view) {
         Intent intent = new Intent(this, EmpresaInsertActivity.class);
         startActivity(intent);

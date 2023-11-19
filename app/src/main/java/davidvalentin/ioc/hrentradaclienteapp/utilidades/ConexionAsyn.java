@@ -15,18 +15,40 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+/**
+ * Clase ConexionAsyn: Realiza una conexión asíncrona con el servidor utilizando la clase AsyncTask.
+ * Esta clase maneja la comunicación asíncrona con el servidor para realizar la autenticación de usuario.
+ * Extiende AsyncTask, permitiendo la ejecución de operaciones en segundo plano sin bloquear la interfaz de usuario.
+ */
+
 public class ConexionAsyn extends AsyncTask<String, Void, String> {
+    // Gestor de sockets para manejar la conexión con el servidor
     private SocketManager socketManager;
+    // Credenciales de usuario
     private String usuario;
     private String pass;
+    // Contexto de la aplicación
     private Context context;
+    // Elementos de la interfaz de usuario que se actualizarán durante la conexión
     private TextView mensaje;
     private Button btnMenu;
     private Button btnEnviar;
 
 
+    /**
+     * Constructor de la clase ConexionAsyn.
+     *
+     * @param socketManager Gestor de sockets para manejar la conexión con el servidor.
+     * @param usuario       Nombre de usuario para la autenticación.
+     * @param pass          Contraseña del usuario para la autenticación.
+     * @param context       Contexto de la aplicación.
+     * @param mensajeLogin  TextView que mostrará mensajes relacionados con la conexión.
+     * @param btnMenu       Botón de menú que se habilitará en caso de autenticación exitosa.
+     * @param btnEnviar     Botón de enviar que se deshabilitará durante la conexión.
+     */
 
     public ConexionAsyn(SocketManager socketManager, String usuario, String pass, Context context, TextView mensajeLogin, Button btnMenu, Button btnEnviar) {
+
         this.socketManager = socketManager;
         this.usuario = usuario;
         this.pass = pass;
@@ -37,19 +59,27 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
     }
 
 
-
+    /**
+     * Método ejecutado en segundo plano para realizar la conexión y autenticación con el servidor.
+     *
+     * @param params Parámetros de entrada para la conexión.
+     * @return Código de autenticación recibido del servidor.
+     */
 
     @Override
     protected String doInBackground(String... params) {
 
         try {
+            // Obtiene el socket del gestor de sockets
             Socket socket = socketManager.getSocket();
 
-
+            // Verifica la conexión del socket
             if (socket != null && socket.isConnected()) {
+                // Configura los flujos de entrada y salida para la comunicación con el servidor
                 BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 ObjectInputStream perEnt;
+                // Inicializa el código de autenticación
                 String codigo = "0";
 
                 String mensajeServer = lector.readLine();   //leemos el mensaje de bienvenidoa del server
@@ -58,7 +88,7 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
                 escriptor.write(palabra);
                 escriptor.newLine();
                 escriptor.flush();
-
+                // Maneja la desconexión si el mensaje es "exit"
                 if(palabra.equalsIgnoreCase("exit")){
                     lector.close();
                     escriptor.close();
@@ -78,6 +108,11 @@ public class ConexionAsyn extends AsyncTask<String, Void, String> {
         return null;
     }
 
+    /**
+     * Método ejecutado después de la finalización de la conexión en segundo plano.
+     *
+     * @param codigo Código de autenticación recibido del servidor.
+     */
     @Override
     protected void onPostExecute(String codigo) {
         // Actualiza la interfaz de usuario si es necesario

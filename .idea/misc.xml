@@ -9,16 +9,18 @@
         <entry key="app/src/main/res/layout/activity_empleados.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_empleados_insert.xml" value="0.2722222222222222" />
         <entry key="app/src/main/res/layout/activity_empresa_insert.xml" value="0.2722222222222222" />
-        <entry key="app/src/main/res/layout/activity_empresas.xml" value="0.271875" />
-        <entry key="app/src/main/res/layout/activity_jornadas.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_empresas.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_jornadas.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_jornadas_insert.xml" value="0.22962962962962963" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/activity_menu_admin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_menu_user.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_users.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/layout/activity_users_insert.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/item_empleado.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_empresa.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/item_jornada.xml" value="0.271875" />
+        <entry key="app/src/main/res/layout/item_jornada.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.36041666666666666" />
       </map>
     </option>

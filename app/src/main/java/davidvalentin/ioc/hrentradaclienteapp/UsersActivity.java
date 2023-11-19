@@ -20,13 +20,16 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectUsersAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
+/**
+ *  Activity asociada a la pantalla principal de users. Desde aquí podemos ver  todos los users,
+ *  podemos filtrar por diferentes campos y tenemos un botón para ir a otra pantalla donde
+ *  poder crear nuevos users
+ */
+
 public class UsersActivity extends AppCompatActivity {
 
-    //necestio que esta activity  implemente la interfaz SelectUsersAsyn
-    //para que actualice los datos en tiempo real en la UI
     Spinner comboCamposUsers;
     RecyclerView recyclerViewUsers;
-    //RecyclerView.Adapter mAdapter;
     AdaptadorUsers mAdapter;
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
@@ -42,7 +45,7 @@ public class UsersActivity extends AppCompatActivity {
         nombreCampoFiltro = "0"; //por defecto es 0
 
         editTextFiltro = findViewById(R.id.textFiltroUsers);//obtenermos la referencia del campo de texto para los filtros
-
+        //El spinner mostrará los datos estaticos guardados en campos_users
         comboCamposUsers = (Spinner) findViewById(R.id.spinCamposUsers);
         ArrayAdapter<CharSequence> adapterCampos = ArrayAdapter.createFromResource(this,R.array.combo_users,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -72,7 +75,7 @@ public class UsersActivity extends AppCompatActivity {
         recyclerViewUsers.setAdapter(mAdapter);
 
 
-        //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
+        //Según lo establecido,  el primer 0 es  consulta de tipo select y el 1 es la tabla users
         SelectUsersAsyn usersAsyn = new SelectUsersAsyn(Utilidades.socketManager,getApplicationContext(),"0","1","0","0","0",recyclerViewUsers,mAdapter,layoutManager);
         usersAsyn.execute();
 
@@ -82,13 +85,21 @@ public class UsersActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que lanza un mensaje de Toast
+     * @param mensaje es el mensaje que mostrará el Toast
+     */
     public  void mostrarToast(String mensaje){
         Toast.makeText(this, "Mensaje: "+mensaje, Toast.LENGTH_LONG).show();
 
 
     }
 
-
+    /**
+     * Método asociado al botón 'filtrar', con este método filtramos un usario o varios, dependiendo
+     * de la palabra que introduzcamos y del campo que seleccionemos del spinner.
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void filtrarUsers(View view) {
         Utilidades.listaUsers.clear();
         recyclerViewUsers = findViewById(R.id.RecyclerUsers);
@@ -104,7 +115,6 @@ public class UsersActivity extends AppCompatActivity {
         }else{
             usersAsyn = new SelectUsersAsyn(Utilidades.socketManager,getApplicationContext(),"0","1",nombreCampoFiltro,palabraFiltro,"0",recyclerViewUsers,mAdapter,layoutManager);
         }
-        //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
         usersAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
@@ -112,8 +122,20 @@ public class UsersActivity extends AppCompatActivity {
         }
     }
 
-    public void volver(View view){
+    /**
+     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a MenuAdminActivity
+     */
+    public void volver(){
         Intent intent = new Intent(this, MenuAdminActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Método asociado al botón 'nuevo'. Somo redirigidos a la activity UsersInsertActivity para
+     * desde allí crear un nuevo usuario
+     */
+    public void nuevoUser(){
+        Intent intent = new Intent(this, UsersInsertActivity.class);
         startActivity(intent);
     }
 }

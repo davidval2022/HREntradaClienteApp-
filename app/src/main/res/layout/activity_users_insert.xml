@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmpleadosInsertActivity">
-
+    tools:context=".UsersInsertActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,24 +12,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="0dp"
             android:gravity="left"
             android:orientation="horizontal">
-
             <ImageView
                 android:id="@+id/ImageviewLogo"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 app:srcCompat="@drawable/logo" />
             <TextView
                 android:id="@+id/textViewMensajeConNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="Rellena los campos para crear una nuevo Empleado"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="0dp"
+                android:text="Rellena los campos para crear un nuevo user"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="70dp"
                 android:textSize="20sp"/>
         </LinearLayout>
         <ScrollView
@@ -43,73 +41,45 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/editTextDniEmpl"
+                    android:id="@+id/editTextLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="DNI empleado"
+                    android:hint="Login"
                     android:minHeight="48dp" />
 
                 <EditText
-                    android:id="@+id/editTextNomEmpl"
+                    android:id="@+id/editTextPassUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Nombre empleado"
+                    android:hint="Contraseña"
                     android:minHeight="48dp" />
 
                 <EditText
-                    android:id="@+id/editTextApellido"
+                    android:id="@+id/editTextTipoUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Apellidos empleado"
+                    android:hint="Tipo de usuario (0 - admin/1 - user)"
                     android:minHeight="48dp" />
                 <EditText
-                    android:id="@+id/editTextNomEmpresaEmpl"
+                    android:id="@+id/editTextDniUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Nombre de la empresa"
-                    android:minHeight="48dp" />
-                <EditText
-                    android:id="@+id/editTextDepartament"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Departamento"
-                    android:minHeight="48dp" />
-                <EditText
-                    android:id="@+id/editTextCodicardEmpl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Codicard"
-                    android:minHeight="48dp" />
-                <EditText
-                    android:id="@+id/editTextMail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Mail"
-                    android:minHeight="48dp" />
-                <EditText
-                    android:id="@+id/editTextTelefonoEmpl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Telefono"
+                    android:hint="Dni"
                     android:minHeight="48dp" />
 
 
                 <Button
-                    android:id="@+id/btnGuardarEmpleado"
+                    android:id="@+id/btnGuardarUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="guardar empleado"
-                    android:onClick="insertarEmpleadoBD"
+                    android:text="guardar user"
+                    android:onClick="insertarUsuario"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="0dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
@@ -121,6 +91,7 @@
                     android:text="resetear campos"
                     android:onClick="reset"
                     android:gravity="center_horizontal"
+
                     android:layout_marginBottom="0dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
@@ -132,8 +103,7 @@
                     android:text="volver atras"
                     android:onClick="volver"
                     android:gravity="center_horizontal"
-
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
 
@@ -141,4 +111,5 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
 </RelativeLayout>

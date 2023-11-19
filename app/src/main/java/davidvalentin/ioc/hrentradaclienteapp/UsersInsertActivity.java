@@ -17,27 +17,24 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SocketManager;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 /**
- * Activity asociada a la creación de nuevas empresas. En la parte gráfica tenemos un formulario
+ * Activity asociada a la creación de nuevos users. En la parte gráfica tenemos un formulario
  * donde introduciremos los datos y luego a traves de esta activity seran tratados y enviados
  * al server
  */
-public class EmpresaInsertActivity extends AppCompatActivity {
+public class UsersInsertActivity extends AppCompatActivity {
 
     private Socket socket;
-    private String nombreTabla = "2";//empresa es 2
+    private String nombreTabla = "1";//users es 1
     private String crud = "1";//inserts es el codigo crud 1
     private String orden = "0";//orden no lo utilizamos por lo tanto es siempres será 0
-    private EditText editTextNom;
-    private EditText editTextAddress;
-    private EditText editTextTelefono;
-
-
+    private EditText editTextLogin;
+    private EditText editTextPassUser;
+    private EditText editTextTipoUser;
+    private EditText editTextDniUser;
 
 
     @Override
@@ -45,24 +42,24 @@ public class EmpresaInsertActivity extends AppCompatActivity {
         //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empresa_insert);
+        setContentView(R.layout.activity_users_insert);
 
         socket = Utilidades.socketManager.getSocket();
-
-        editTextNom = findViewById(R.id.editTextNom);
-        editTextAddress = findViewById(R.id.editTextAddress);
-        editTextTelefono = findViewById(R.id.editTextTelefono);
+        editTextLogin = findViewById(R.id.editTextLogin);
+        editTextPassUser = findViewById(R.id.editTextPassUser);
+        editTextTipoUser = findViewById(R.id.editTextTipoUser);
+        editTextDniUser = findViewById(R.id.editTextDniUser);
 
 
     }
     /**
-     * Metodo asociado al boton 'guardar empresa'. Mediante este método enviamos los datos al
-     * server para crear una nueva empresa. En este caso y a diferencia de cuando haciamos los
+     * Metodo asociado al boton 'guardar user'. Mediante este método enviamos los datos al
+     * server para crear un nuevo user. En este caso y a diferencia de cuando haciamos los
      * select, al no cambiar la pantalla en este justo momento no necesitaremos clases de tipo
      * Asyntask, o hacerlo en un hilo diferente del principal que maneja la UI.
      * @param view representa la vista con la que se está interactuando, no utilizado en este caso
      */
-    public void insertarEmpresa(View view){
+    public void insertarUsuario(View view) {
 
         try {
 
@@ -72,20 +69,20 @@ public class EmpresaInsertActivity extends AppCompatActivity {
                 ObjectInputStream perEnt;
 
                 String codigo = "0";
-                String nombre = "0";
-                String address = "0";
-                String telephon = "0";
+                String login = "0";
+                String pass = "0";
+                String tipouser = "0";
+                String dni = "0";
 
-                nombre = editTextNom.getText().toString();
-                address = editTextAddress.getText().toString();
-                telephon = editTextTelefono.getText().toString();
+                login = editTextLogin.getText().toString();
+                pass = editTextPassUser.getText().toString();
+                tipouser = editTextTipoUser.getText().toString();
+                dni = editTextDniUser.getText().toString();
 
-                if(telephon.equals("") || telephon.equals(" ") || telephon.equals(null)){
-                    telephon = "0";
-                }
 
-                if(!nombre.equals("") && !address.equals("")){
-                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",nom,"+nombre+",address,"+address+",telephon,"+telephon+","+orden;
+
+                if(!login.equals("") && !pass.equals("") && !tipouser.equals("") && !dni.equals("")){
+                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",login,"+login+",pass,"+pass+",numtipe,"+Integer.parseInt(tipouser)+",dni,"+dni+","+orden;
                     //ahora escribimos en servidor , enviandole el login
                     escriptor.write(palabra);
                     escriptor.newLine();
@@ -97,11 +94,9 @@ public class EmpresaInsertActivity extends AppCompatActivity {
                         socket.close();
                     }else{
                         perEnt = new ObjectInputStream(socket.getInputStream());
-                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                           // Utilidades.listaEmpleados = (ArrayList) receivedData;
                             Utilidades.mensajeDelServer = "Se ha creado correctamente el registro";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
@@ -112,18 +107,33 @@ public class EmpresaInsertActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar el nombre y direccion de la empresa" );
+                    mostrarToast("Molt malament, tienes que insertar todos los datos" );
                 }
-
-
-
-
 
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
+     * @param view
+     */
+    public void reset(View view) {
+        //falta por rellenar
+    }
+
+    /**
+     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
+     * UsersActivity
+     */
+    public void volver(View view) {
+        Intent intent = new Intent(this, UsersActivity.class);
+        startActivity(intent);
+
+    }
+
     /**
      * Metodo que lanza un mensaje de Toast
      * @param mensaje es el mensaje que mostrará el Toast
@@ -133,24 +143,4 @@ public class EmpresaInsertActivity extends AppCompatActivity {
 
 
     }
-    /**
-     * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
-     * @param view
-     */
-    public void reset(View view) {
-        //falta por rellenar
-    }
-    /**
-     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
-     * EmpresasActivity
-     */
-    public void volver(View view) {
-        Intent intent = new Intent(this, EmpresasActivity.class);
-        startActivity(intent);
-
-    }
-
-
-
-
 }

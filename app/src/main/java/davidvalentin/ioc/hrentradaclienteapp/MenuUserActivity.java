@@ -13,6 +13,9 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
+/**
+ * Activity que asociada al menú de usuario de tipo normal (1)
+ */
 public class MenuUserActivity extends AppCompatActivity {
     private TextView mensajeNombre;
     @Override
@@ -27,7 +30,12 @@ public class MenuUserActivity extends AppCompatActivity {
 
 
     }
-
+    /**
+     * Metodo asociado al botón logout, lo que es desconectarnos del server enviandole un
+     * mensaje para ello. Luego nos reenvia a la pantalla de login.
+     * También utilizamos un clase de tipo Asyntask para hacer el logout
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void logout(View view) {
         try{
             LogoutAsyn logout = new LogoutAsyn(Utilidades.socketManager,getApplicationContext());
@@ -42,15 +50,31 @@ public class MenuUserActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método asociado al botón 'empleados', mediante este método y botón somos redirigidos
+     * a la pantalla de empleados
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void empleados(View view){
         Intent intent = new Intent(this, EmpleadosActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Método asociado al botón 'empresas', mediante este método y botón somos redirigidos
+     * a la pantalla de empresas
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void empresas(View view) {
         Intent intent = new Intent(this,  EmpresasActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * Método asociado al botón 'jornadas', mediante este método y botón somos redirigidos
+     * a la pantalla de jornadas
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void jornadas(View view){
         Intent intent = new Intent(this,  JornadasActivity.class);
         startActivity(intent);

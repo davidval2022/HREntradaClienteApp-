@@ -4,6 +4,7 @@
     package="davidvalentin.ioc.hrentradaclienteapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HREntradaClienteApp"
         tools:targetApi="31">
+        <activity
+            android:name=".JornadasInsertActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UsersInsertActivity"
+            android:exported="false" />
         <activity
             android:name=".EmpresaInsertActivity"
             android:exported="false" />

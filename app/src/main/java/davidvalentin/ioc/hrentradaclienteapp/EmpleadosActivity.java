@@ -20,17 +20,21 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorEmpleados;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
+/**
+ *  Activity asociada a la pantalla principal de empleados. Desde aquí podemos ver  todos los empleados,
+ *  podemos filtrar por diferentes campos y tenemos un botón para ir a otra pantalla donde
+ *  poder crear nuevos empleados
+ */
+
 public class EmpleadosActivity extends AppCompatActivity{
-    //necestio que esta activity  implemente la interfaz SelectEmpleadosAsyn.AsyncResponse
-    //para que actualice los datos en tiempo real en la UI
+
     Spinner comboCamposEmpleados;
     RecyclerView recyclerViewEmpleados;
-    //RecyclerView.Adapter mAdapter;
     AdaptadorEmpleados mAdapter;
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
     EditText editTextFiltro;
-     String palabraFiltro = "-1"; // por defecto la palabra a buscar es tambien 0
+     String palabraFiltro = "-1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
@@ -79,15 +83,21 @@ public class EmpleadosActivity extends AppCompatActivity{
         mAdapter.notifyDataSetChanged();
 
     }
-
+    /**
+     * Metodo que lanza un mensaje de Toast
+     * @param mensaje es el mensaje que mostrará el Toast
+     */
     public  void mostrarToast(String mensaje){
         Toast.makeText(this, "Mensaje: "+mensaje, Toast.LENGTH_LONG).show();
-
 
     }
 
 
-
+    /**
+     * Método asociado al botón 'filtrar', con este método filtramos un empleado o varios, dependiendo
+     * de la palabra que introduzcamos y del campo que seleccionemos del spinner.
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void filtrarEmpleados(View view) {
         Utilidades.listaEmpleados.clear();
         recyclerViewEmpleados = findViewById(R.id.RecyclerEmpleados);
@@ -103,7 +113,6 @@ public class EmpleadosActivity extends AppCompatActivity{
         }else{
              empleadosAsyn = new SelectEmpleadosAsyn(Utilidades.socketManager,getApplicationContext(),"0","0",nombreCampoFiltro,palabraFiltro,"0",recyclerViewEmpleados,mAdapter,layoutManager);
         }
-        //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
         empleadosAsyn.execute();
         mAdapter.notifyDataSetChanged();
         if(!Utilidades.mensajeDelServer.equals("")){
@@ -112,7 +121,11 @@ public class EmpleadosActivity extends AppCompatActivity{
 
     }
 
-
+    /**
+     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
+     * bien al MenuAdminActivity,o bien al menú MenuUserActivity dependiendo de si el usuario
+     * es de tipo 1 o 0
+     */
     public void volver(View view) {
         if(Utilidades.tipoUser == 0){
             Intent intent = new Intent(this, MenuAdminActivity.class);
@@ -122,7 +135,10 @@ public class EmpleadosActivity extends AppCompatActivity{
             startActivity(intent);
         }
     }
-
+    /**
+     * Método asociado al botón 'nuevo'. Somo redirigidos a la activity EmpleadosInsertActivity para
+     * desde allí crear un nuevo empleado
+     */
     public void insertarEmpleado(View view){
         Intent intent = new Intent(this, EmpleadosInsertActivity.class);
         startActivity(intent);

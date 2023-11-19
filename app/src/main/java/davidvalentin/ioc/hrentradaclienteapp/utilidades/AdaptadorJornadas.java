@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Jornada;
 
+/**
+ * Clase AdaptadorJornadas: Adapta y gestiona la presentación de datos de jornadas en un RecyclerView.
+ * Esta clase extiende  de RecyclerView.Adapter y se encarga de manejar la creación de vistas y la vinculación
+ * de datos para la presentación de jornadas en el RecyclerView.
+ */
 public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.ViewHolderJornadas> implements View.OnClickListener {
 
     ArrayList<Jornada> jornadas;
@@ -23,6 +28,14 @@ public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.Vi
         this.jornadas = jornadas;
     }
 
+
+    /**
+     * Método  llamado cuando se crea un nuevo ViewHolder.
+     * @param parent grupo al que se adjuntará la nueva vista.
+     * @param viewType Tipo de vista que se está creando.
+     * @return new ViewHolderJornadas creado para representar un elemento de jornada.
+     */
+
     @NonNull
     @Override
     public ViewHolderJornadas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,6 +44,12 @@ public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.Vi
         return new ViewHolderJornadas(view);
     }
 
+    /**
+     * Método llamado para actualizar la información mostrada en el ViewHolder.
+     *
+     * @param holder   ViewHolder que debe actualizarse con los datos de la jornada.
+     * @param position Posición de la jornada en la lista de jonradas.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolderJornadas holder, int position) {
         holder.dni.setText(jornadas.get(position).getDni());
@@ -46,16 +65,31 @@ public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.Vi
 
     }
 
+    /**
+     * Obtiene el número total de elementos en la lista de jornadas.
+     *
+     * @return Número total de jornadas.
+     */
     @Override
     public int getItemCount() {
         return jornadas.size();
     }
 
+    /**
+     * Establece el objeto de escucha para eventos de clic en elementos del RecyclerView.
+     *
+     * @param listener Objeto de escucha para eventos de clic.
+     */
     public void setOnClickListener(View.OnClickListener listener){
         this.listener = listener;
 
     }
 
+    /**
+     * Método llamado cuando se hace clic en un elemento del RecyclerView.
+     *
+     * @param view Vista en la que se hizo clic.
+     */
     @Override
     public void onClick(View view) {
         if(listener!=null){
@@ -64,6 +98,9 @@ public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.Vi
 
     }
 
+    /**
+     * Clase interna ViewHolderJornadas: Representa la vista de un elemento de jornada en el RecyclerView.
+     */
     public class ViewHolderJornadas extends RecyclerView.ViewHolder {
         TextView dni,nom,apellido,codicard,horaentrada,horasalida,total,fecha;
 

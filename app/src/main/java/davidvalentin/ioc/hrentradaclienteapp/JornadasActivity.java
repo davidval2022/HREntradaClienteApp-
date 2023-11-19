@@ -21,6 +21,16 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectJornadaAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
+/**
+ *  Activity asociada a la pantalla principal de jornadas. Desde aquí podemos ver todas las
+ *  jornadas, podemos filtrar por diferentes campos, en este caso
+ *  y  a diferencia de las otras activitys similares a esta, tenemos dos campos donde poder
+ *  intrudicir los parámetros a buscar dependiendo claro de lo que
+ *  hayamos escogido en el spinner. Tenemos la opción de escoger 1 o 2 campos.
+ *  También tenemos un botón para ir a otra pantalla donde
+ *  poder crear nuevos inicios de jornadas. La jornada completa se completará actualizando la
+ *  salida del empleado.
+ */
 public class JornadasActivity extends AppCompatActivity {
 
     Spinner comboCamposJornadas;
@@ -30,8 +40,8 @@ public class JornadasActivity extends AppCompatActivity {
     String nombreCampoFiltro;//solo tenemos un combo box que incluye una palabra compuesta por dos campos
     EditText editTextFiltro1;
     EditText editTextFiltro2;
-    String palabraFiltro1 = "-1"; // por defecto la palabra a buscar es tambien -1
-    String palabraFiltro2 = "-1"; // por defecto la palabra a buscar es tambien -1
+    String palabraFiltro1 = "-1"; // por defecto la palabra a buscar es  -1
+    String palabraFiltro2 = "-1"; // por defecto la palabra a buscar es  -1
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
@@ -71,7 +81,7 @@ public class JornadasActivity extends AppCompatActivity {
         recyclerJornadas.setAdapter(mAdapter);
 
 
-        //Según lo establecido,  el primer 0 es  consulta de tipo select y el segundo 0 es la tabla empleados
+        //Según lo establecido,  el primer 0 es  consulta de tipo select y el  3 es la tabla jornadas
         SelectJornadaAsyn jornadasAsyn = new SelectJornadaAsyn(Utilidades.socketManager,getApplicationContext(),"0","3","0","0","0","0","0",recyclerJornadas,mAdapter,layoutManager);
         jornadasAsyn.execute();
         mAdapter.notifyDataSetChanged();
@@ -79,15 +89,21 @@ public class JornadasActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Metodo que lanza un mensaje de Toast
+     * @param mensaje es el mensaje que mostrará el Toast
+     */
     public  void mostrarToast(String mensaje){
         Toast.makeText(this, "Mensaje: "+mensaje, Toast.LENGTH_LONG).show();
-
 
     }
 
 
-
+    /**
+     * Método asociado al botón 'filtrar', con este método filtramos una jornada o varias, dependiendo
+     * de la(s) palabra(s) que introduzcamos y del campo que seleccionemos del spinner.
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
     public void filtrarJornadas(View view) {
         Utilidades.listaJornadas.clear();
         recyclerJornadas = findViewById(R.id.RecyclerJornadas);
@@ -158,7 +174,11 @@ public class JornadasActivity extends AppCompatActivity {
 
 
     }
-
+    /**
+     * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
+     * bien al MenuAdminActivity,o bien al menú MenuUserActivity dependiendo de si el usuario
+     * es de tipo 1 o 0
+     */
     public void volver(View view) {
         if(Utilidades.tipoUser == 0){
             Intent intent = new Intent(this, MenuAdminActivity.class);
@@ -168,5 +188,12 @@ public class JornadasActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
+    /**
+     * Método asociado al botón 'nuevo'. Somo redirigidos a la activity JornadasInsertActivity para
+     * desde allí crear un nuevo inicio de jornada
+     */
+    public void nuevaJornada(View view) {
+        Intent intent = new Intent(this, JornadasInsertActivity.class);
+        startActivity(intent);
+    }
 }
