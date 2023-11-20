@@ -67,7 +67,7 @@ public class JornadasInsertActivity extends AppCompatActivity {
      */
     public void insertarJornada(View view) {
         validar();
-        mostrarToast(opcionCampo);
+        //mostrarToast(opcionCampo);
         String codigo = "0";
         String dato = "0";
         String nombreCampo = "codicard";
