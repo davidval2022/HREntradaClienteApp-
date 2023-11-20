@@ -125,7 +125,7 @@ public class UsersActivity extends AppCompatActivity {
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a MenuAdminActivity
      */
-    public void volver(){
+    public void volverAUsers(View view){
         Intent intent = new Intent(this, MenuAdminActivity.class);
         startActivity(intent);
     }
@@ -134,8 +134,10 @@ public class UsersActivity extends AppCompatActivity {
      * Método asociado al botón 'nuevo'. Somo redirigidos a la activity UsersInsertActivity para
      * desde allí crear un nuevo usuario
      */
-    public void nuevoUser(){
+    public void nuevoUser(View view){
         Intent intent = new Intent(this, UsersInsertActivity.class);
         startActivity(intent);
     }
+
+
 }
