@@ -161,7 +161,8 @@ public class EmpleadosInsertActivity extends AppCompatActivity {
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                             Utilidades.listaEmpleados = (ArrayList) receivedData;
+                             //Utilidades.listaEmpleados = (ArrayList) receivedData;
+                            Utilidades.mensajeDelServer = "Se ha creado correctamente el registro";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                             Log.d("Recibido",Utilidades.mensajeDelServer);

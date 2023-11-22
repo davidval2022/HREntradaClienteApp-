@@ -55,7 +55,7 @@ public class AdaptadorJornadas extends RecyclerView.Adapter<AdaptadorJornadas.Vi
         holder.dni.setText(jornadas.get(position).getDni());
         holder.nom.setText(jornadas.get(position).getNom());
         holder.apellido.setText(jornadas.get(position).getApellido());
-        holder.codicard.setText(String.valueOf(jornadas.get(position).getCodicard()));
+        holder.codicard.setText(jornadas.get(position).getCodicard());
         holder.horaentrada.setText(jornadas.get(position).getHoraentrada());
         holder.horasalida.setText(jornadas.get(position).getHorasalida());
         holder.total.setText(jornadas.get(position).getTotal());

@@ -56,7 +56,7 @@ public class AdaptadorEmpleados extends RecyclerView.Adapter<AdaptadorEmpleados.
         holder.apellido.setText(empleados.get(position).getApellido());
         holder.nomempresa.setText(empleados.get(position).getNomempresa());
         holder.departament.setText(empleados.get(position).getDepartament());
-        holder.codicard.setText(String.valueOf(empleados.get(position).getCodicard()));
+        holder.codicard.setText(empleados.get(position).getCodicard());
         holder.mail.setText(empleados.get(position).getMail());
         holder.telephon.setText(String.valueOf(empleados.get(position).getTelephon()));
     }

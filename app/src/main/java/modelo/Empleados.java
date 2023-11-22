@@ -23,11 +23,11 @@ public class Empleados implements Serializable, Comparable<Empleados> {
     private String apellido;
     private String nomempresa;
     private String departament;
-    private int codicard;
+    private String codicard;
     private String mail;
-    private int telephon;
+    private String telephon;
 
-    public Empleados(String dni, String nom, String apellido, String nomempresa, String departament, int codicard, String mail, int telefono) {
+    public Empleados(String dni, String nom, String apellido, String nomempresa, String departament, String codicard, String mail, String telefono) {
         this.dni = dni;
         this.nom = nom;
         this.apellido = apellido;
@@ -91,11 +91,11 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.departament = departament;
     }
 
-    public int getCodicard() {
+    public String getCodicard() {
         return codicard;
     }
 
-    public void setCodicard(int codicard) {
+    public void setCodicard(String codicard) {
         this.codicard = codicard;
     }
 
@@ -107,11 +107,11 @@ public class Empleados implements Serializable, Comparable<Empleados> {
         this.mail = mail;
     }
 
-    public int getTelephon() {
+    public String getTelephon() {
         return telephon;
     }
 
-    public void setTelephon(int telephon) {
+    public void setTelephon(String telephon) {
         this.telephon = telephon;
     }
 
