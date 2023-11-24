@@ -8,12 +8,16 @@ public class Empresa implements Serializable {
 
     private String nom;
     private String address;
-    private int telephon;
+    private String telephon;
 
-    public Empresa(String nom, String address, int telephon) {
+    public Empresa(String nom, String address, String telephon) {
         this.nom = nom;
         this.address = address;
         this.telephon = telephon;
+    }
+
+    public Empresa() {
+
     }
 
     public String getNom() {
@@ -32,11 +36,11 @@ public class Empresa implements Serializable {
         this.address = address;
     }
 
-    public int getTelephon() {
+    public String getTelephon() {
         return telephon;
     }
 
-    public void setTelephon(int telephon) {
+    public void setTelephon(String telephon) {
         this.telephon = telephon;
     }
 

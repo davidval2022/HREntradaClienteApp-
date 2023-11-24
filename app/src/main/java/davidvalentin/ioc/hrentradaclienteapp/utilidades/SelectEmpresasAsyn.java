@@ -1,7 +1,9 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +21,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.EmpleadosActivity;
+import davidvalentin.ioc.hrentradaclienteapp.EmpleadosInsertActivity;
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpresaActivity;
 import modelo.Empresa;
 
 /**
@@ -26,9 +31,9 @@ import modelo.Empresa;
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
  * desde el servidor y actualiza un `RecyclerView` con la lista de empresas obtenida.
  *
- * @param <String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
- * @param <Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param <ArrayList<Empresa>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ * @param \<String\> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
+ * @param \<Void\> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
+ * @param \<ArrayList\<Empresa\>\> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
  *                              que representa la lista de empresas obtenida del servidor.
  */
 
@@ -55,6 +60,8 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
     private  RecyclerView recycler;
     private AdaptadorEmpresas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private Empresa empresa;
 
 
 
@@ -158,6 +165,7 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
     protected void onPostExecute(ArrayList<Empresa> result) {
         // Configura el RecyclerView con la lista de empresas
         super.onPostExecute(result);
+        empresa = new Empresa();
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
@@ -167,7 +175,21 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,"Seleccion: "+Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                //empresa.setNom(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom());
+                //empresa.setAddress(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getAddress());
+                //empresa.setTelephon(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getTelephon());
+
+                empresa = Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v));
+                Log.d("update: ",empresa.getNom());
+                Intent intent=new Intent(context, UpdateDeleteEmpresaActivity.class);
+                // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
+                //activity desde una clase que no es una activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("empresa",empresa);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
 
             }
         });

@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/activity_menu_admin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_menu_user.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_update_delete_empresa.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_users.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/activity_users_insert.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/item_empleado.xml" value="0.25" />
