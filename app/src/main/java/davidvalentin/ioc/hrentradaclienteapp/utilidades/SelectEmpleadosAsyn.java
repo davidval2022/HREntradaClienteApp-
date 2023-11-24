@@ -1,7 +1,9 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import davidvalentin.ioc.hrentradaclienteapp.R;
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpleadosActivity;
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpresaActivity;
 import modelo.Empleados;
 
 /**
@@ -28,9 +32,9 @@ import modelo.Empleados;
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
  * desde el servidor y actualiza un `RecyclerView` con la lista de empleados obtenida.
  *
- * @param <String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
- * @param <Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param <ArrayList<Empleados>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ * @param \<String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
+ * @param \<Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
+ * @param \<ArrayList<Empleados>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
  *                               que representa la lista de empleados obtenida del servidor.
  */
 public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Empleados>> {
@@ -55,6 +59,9 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
     private  RecyclerView recycler;
     private AdaptadorEmpleados mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    //variable que enviaremos en un bundle a la activity UpdateDeleteEmpleados
+    private Empleados empleado;
 
 
 
@@ -169,8 +176,16 @@ public class SelectEmpleadosAsyn extends AsyncTask<String, Void, ArrayList<Emple
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
+                empleado = Utilidades.listaEmpleados.get(recycler.getChildAdapterPosition(v));
+                Intent intent=new Intent(context, UpdateDeleteEmpleadosActivity.class);
+                // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
+                //activity desde una clase que no es una activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("empleado",empleado);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
         recycler.setAdapter(mAdapter);

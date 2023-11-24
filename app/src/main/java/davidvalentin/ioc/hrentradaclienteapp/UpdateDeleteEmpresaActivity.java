@@ -21,18 +21,22 @@ import java.util.List;
 
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Empresa;
-
+/**
+ * Activity asociada a la modificacion de  empresas existentes. En la parte gráfica tenemos un formulario
+ * donde introduciremos las modificaciones y luego a traves de esta activity seran tratados y enviados
+ * al server
+ */
 
 public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
     private Bundle empresaRecibida;//recibidos el bundle desde SelectEmpresaAsyn
-    private Empresa empresa;//La utilizamos como variable empresa, que muestramos/modificamos
+    private Empresa empresa;//La utilizamos como variable empresa, que mostramos/modificamos
 
     private Socket socket;//socket
     private String nombreTabla = "2";//empresa es 2
     private String crud = "2";//update es el codigo crud 2
     private String orden = "0";//orden no lo utilizamos por lo tanto es siempres será 0
-    private String nombreOriginal = "";//Nombre original, lo utilizaremos en el envio de datos
+    private String nombreOriginal = "";//Nombre original, lo utilizaremos en el envio de datos, campo base en consulta
 
     //campos de texto de la activity
     private EditText editTextNomEmpresaUpdate;
@@ -60,18 +64,9 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
             //nos quedamos con el nombre original, para luego saber a que registro hacemos el update
             nombreOriginal = empresa.getNom();
 
-            if(!empresa.getNom().equals("")){
-                editTextNomEmpresaUpdate.setText(empresa.getNom());
-            }
-            if(!empresa.getTelephon().equals("")){
-                editTextAddressEmpresaUpdate.setText(empresa.getAddress());
-            }
-
-            if(!empresa.getTelephon().equals("")){
-                editTextTelefonoEmpresaUpdate.setText(empresa.getTelephon());
-            }
-
-
+            editTextNomEmpresaUpdate.setText(empresa.getNom());
+            editTextAddressEmpresaUpdate.setText(empresa.getAddress());
+            editTextTelefonoEmpresaUpdate.setText(empresa.getTelephon());
 
         }
     }

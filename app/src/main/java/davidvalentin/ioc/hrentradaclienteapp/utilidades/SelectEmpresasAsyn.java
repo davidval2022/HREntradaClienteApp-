@@ -60,7 +60,7 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
     private  RecyclerView recycler;
     private AdaptadorEmpresas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
+    //variable que enviaremos en un bundle a la activty UpdateDeleteActivity
     private Empresa empresa;
 
 
