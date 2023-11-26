@@ -1,7 +1,9 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +21,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpleadosActivity;
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteUsersActivity;
 import modelo.Empleados;
 import modelo.Users;
 
@@ -27,9 +31,9 @@ import modelo.Users;
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
  * desde el servidor y actualiza un `RecyclerView` con la lista de usuarios obtenida.
  *
- * @param <String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
- * @param <Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param <ArrayList<Users>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ * @param \<String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
+ * @param \<Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
+ * @param \<ArrayList<Users>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
  *                            que representa la lista de usuarios obtenida del servidor.
  */
 public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
@@ -55,7 +59,8 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
     private AdaptadorUsers mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-
+    //variable que enviaremos en un bundle a la activity UpdateDeleteEmpleados
+    private Users user;
 
     /**
      * Constructor de la clase `SelectUsersAsyn`.
@@ -164,7 +169,16 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v)).getLogin(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v)).getLogin(),Toast.LENGTH_SHORT).show();
+                user = Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v));
+                Intent intent=new Intent(context, UpdateDeleteUsersActivity.class);
+                // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
+                //activity desde una clase que no es una activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user",user);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
 
             }
         });

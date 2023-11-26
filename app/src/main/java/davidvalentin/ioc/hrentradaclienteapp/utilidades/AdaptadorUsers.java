@@ -53,7 +53,6 @@ public class AdaptadorUsers extends RecyclerView.Adapter<AdaptadorUsers.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolderUsers holder, int position) {
         holder.login.setText(users.get(position).getLogin());
-        holder.pass.setText(users.get(position).getPass());
         holder.numtipe.setText(String.valueOf(users.get(position).getNumtipe()));
         holder.dni.setText(users.get(position).getDni());
 
@@ -96,13 +95,12 @@ public class AdaptadorUsers extends RecyclerView.Adapter<AdaptadorUsers.ViewHold
      * Clase interna ViewHolderUsers: Representa la vista de un elemento de user en el RecyclerView.
      */
     public class ViewHolderUsers extends RecyclerView.ViewHolder {
-        TextView login,pass,numtipe,dni;
+        TextView login,numtipe,dni;
 
         public ViewHolderUsers(@NonNull View itemView) {
             super(itemView);
             dni = (TextView) itemView.findViewById(R.id.dni);
             login = (TextView) itemView.findViewById(R.id.login);
-            pass = (TextView) itemView.findViewById(R.id.pass);
             numtipe = (TextView) itemView.findViewById(R.id.numtipe);
 
         }
