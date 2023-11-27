@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateDeleteUsersActivity">
+    tools:context=".UpdateDeleteJornadaActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,9 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="Modifica los campos para actualizar a un usuario"
+                android:text="Rellena los campos para cerrar la jornada jornada"
                 android:layout_marginTop="50dp"
-                android:layout_marginLeft="0dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginBottom="70dp"
                 android:textSize="20sp"/>
         </LinearLayout>
@@ -40,64 +41,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona el tipo de dato que vas a introducir"
+                    android:gravity="center"
+                    android:textSize="17sp" />
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:id="@+id/idCodicardRadioCerrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Codicard"
+                        android:checked="true"/>
+                    <RadioButton
+                        android:id="@+id/idDniRadioCerrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dni" />
+
+                </RadioGroup>
+
 
                 <EditText
-                    android:id="@+id/editTextLoginUpDel"
+                    android:id="@+id/editTextDniJornadaCerrar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Login"
-                    android:enabled="false"
-                    android:minHeight="48dp" />
-
-                <EditText
-                    android:id="@+id/editTextPassUserUpDel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Contraseña"
-                    android:minHeight="48dp" />
-
-                <EditText
-                    android:id="@+id/editTextTipoUserUpDel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Tipo de usuario (0 - admin/1 - user)"
-                    android:minHeight="48dp" />
-                <EditText
-                    android:id="@+id/editTextDniUserUpDel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Dni"
-                    android:enabled="false"
+                    android:hint="Dni o Codicard"
                     android:minHeight="48dp" />
 
 
                 <Button
-                    android:id="@+id/btnGuardarUser"
+                    android:id="@+id/btnGuardarJornada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="guardar user"
-                    android:onClick="actualizarUsuario"
+                    android:text="Cerrar jornada"
+                    android:onClick="cerrarJornada"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"/>
-                <Button
-                    android:id="@+id/btnEliminarUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="eliminar user"
-                    android:onClick="actualizarUsuario"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
 
+                <Button
+                    android:id="@+id/btnReset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="resetear campos"
+                    android:onClick="reset"
+                    android:gravity="center_horizontal"
+
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"/>
 
                 <Button
                     android:id="@+id/btnVolver"
@@ -106,7 +106,8 @@
                     android:text="volver atras"
                     android:onClick="volver"
                     android:gravity="center_horizontal"
-                    android:layout_marginBottom="0dp"
+
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
 

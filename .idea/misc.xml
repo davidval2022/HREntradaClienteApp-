@@ -18,6 +18,7 @@
         <entry key="app/src/main/res/layout/activity_menu_user.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_update_delete_empleados.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/activity_update_delete_empresa.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_update_delete_jornada.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_update_delete_users.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/activity_users.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/activity_users_insert.xml" value="0.36041666666666666" />

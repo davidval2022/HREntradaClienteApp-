@@ -1,7 +1,9 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpleadosActivity;
+import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteJornadaActivity;
+import modelo.Empleados;
 import modelo.Jornada;
 
 /**
@@ -27,9 +32,9 @@ import modelo.Jornada;
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
  * desde el servidor y actualiza un `RecyclerView` con la lista de jornadas obtenida.
  *
- * @param <String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
- * @param <Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param <ArrayList<Jornada>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ * @param \<String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
+ * @param \<Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
+ * @param \<ArrayList<Jornada>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
  *                               que representa la lista de jornadas obtenida del servidor.
  */
 public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada>> {
@@ -56,6 +61,9 @@ public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada
     private  RecyclerView recycler;
     private AdaptadorJornadas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    //variable que enviaremos en un bundle a la activity UpdateDeleteEmpleados
+    private Jornada jornada;
 
 
 
@@ -170,8 +178,16 @@ public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v)).getDni(),Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v)).getDni(),Toast.LENGTH_SHORT).show();
+                jornada = Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v));
+                Intent intent=new Intent(context, UpdateDeleteJornadaActivity.class);
+                // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
+                //activity desde una clase que no es una activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("jornada",jornada);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
         recycler.setAdapter(mAdapter);
