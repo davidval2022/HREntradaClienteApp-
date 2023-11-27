@@ -107,7 +107,7 @@ public class UsersInsertActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar todos los datos" );
+                    mostrarToast("Tienes que insertar todos los datos" );
                 }
 
             }
@@ -121,7 +121,10 @@ public class UsersInsertActivity extends AppCompatActivity {
      * @param view
      */
     public void reset(View view) {
-        //falta por rellenar
+        editTextLogin.setText("");
+        editTextPassUser.setText("");
+        editTextTipoUser.setText("");
+        editTextDniUser.setText("");
     }
 
     /**

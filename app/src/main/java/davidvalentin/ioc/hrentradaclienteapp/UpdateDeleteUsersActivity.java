@@ -146,7 +146,7 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tiene que estar rellenos el campo contraseña y tipo de usuario" );
+                    mostrarToast("Tienen que estar rellenos el campo contraseña y tipo de usuario" );
                 }
 
 

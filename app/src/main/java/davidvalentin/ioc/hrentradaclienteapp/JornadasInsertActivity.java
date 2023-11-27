@@ -116,7 +116,7 @@ public class JornadasInsertActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar el dni, nombre,apellido y nombre de empresa al menos (el codicard no)" );
+                    mostrarToast("Tienes que insertar el dni o codicard dependiendo de seleccion" );
                 }
 
             }
@@ -126,13 +126,7 @@ public class JornadasInsertActivity extends AppCompatActivity {
 
 
     }
-    /**
-     * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
-     * @param view
-     */
-    public void reset(View view) {
-        //falta por rellenar
-    }
+
 
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a

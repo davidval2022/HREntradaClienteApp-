@@ -134,7 +134,9 @@ public class EmpresaInsertActivity extends AppCompatActivity {
      * @param view
      */
     public void reset(View view) {
-        //falta por rellenar
+        editTextNom.setText("");
+        editTextAddress.setText("");
+        editTextTelefono.setText("");
     }
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a

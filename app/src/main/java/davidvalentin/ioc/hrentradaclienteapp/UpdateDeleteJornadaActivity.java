@@ -23,6 +23,7 @@ import java.util.List;
 
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Empleados;
+import modelo.Empresa;
 import modelo.Jornada;
 
 /**
@@ -42,6 +43,8 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
     private String nombreTabla = "3";//jornadas es 3
     private String crud = "2";//update es el codigo crud 2
     private String orden = "0";//orden no lo utilizamos por lo tanto es siempres será 0
+    private String codicard = "0";//Codicard para cerrar la jornada o para borrar el registro
+
 
     private EditText editTextDniJornada;//vale tanto para el codicard como para el dni
 
@@ -58,6 +61,21 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
         opc_codi = (RadioButton) findViewById(R.id.idCodicardRadioCerrar);
         opc_dni = (RadioButton) findViewById(R.id.idDniRadioCerrar);
         editTextDniJornada = findViewById(R.id.editTextDniJornadaCerrar);
+
+        jornadaRecibida = getIntent().getExtras();
+        if(jornadaRecibida != null){
+            //guardamos en la variable empresa la empresa recibida
+            jornada=(Jornada) jornadaRecibida.getSerializable("jornada");
+            //nos quedamos con el nombre original, para luego saber a que registro hacemos el update
+            codicard = jornada.getCodicard();
+            //es campo sale como dni pero acordarse que podia ser dni o codicard.. se le puso de
+            //nombre dni, aunque en este caso siempres será codicard o no se que el usuario lo
+            //cambie intencionadamente
+            editTextDniJornada.setText(codicard);
+
+
+        }
+
     }
 
     /**
@@ -115,7 +133,7 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, debes introducir el dni o codicard.. dependediendo de tu seleccion" );
+                    mostrarToast("Tienes que introducir el dni o codicard..dependiendo de tu seleccion" );
                 }
 
             }
@@ -124,12 +142,7 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
-     * @param view
-     */
-    public void reset(View view) {
-    }
+
 
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
@@ -167,5 +180,8 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
         if(opc_codi.isChecked()==true){
             opcionCampo = "codicard";
         }
+    }
+
+    public void deleteJorndada(View view) {
     }
 }

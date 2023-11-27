@@ -87,7 +87,7 @@ public class EmpleadosInsertActivity extends AppCompatActivity {
      * @param mensaje es el mensaje que mostrará el Toast
      */
     public  void mostrarToast(String mensaje){
-        Toast.makeText(this, ""+mensaje, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
 
 
     }
@@ -173,12 +173,8 @@ public class EmpleadosInsertActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar el dni, nombre,apellido y nombre de empresa al menos (el codicard no)" );
+                    mostrarToast("Tienes que insertar dni,nombre,apellido y nombre de empresa" );
                 }
-
-
-
-
 
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -192,6 +188,13 @@ public class EmpleadosInsertActivity extends AppCompatActivity {
      * @param view
      */
     public void reset(View view) {
-        //falta por rellenar
+        editTextDniEmpl.setText("");
+        editTextNomEmpl.setText("");
+        editTextApellido.setText("");
+        editTextNomEmpresaEmpl.setText("");
+        editTextDepartament.setText("");
+        editTextCodicardEmpl.setText("");
+        editTextMail.setText("");
+        editTextTelefonoEmpl.setText("");
     }
 }

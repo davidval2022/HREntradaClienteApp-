@@ -129,7 +129,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar el nombre y direccion de la empresa" );
+                    mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
                 }
 
             }
@@ -172,5 +172,55 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
      */
 
     public void eliminarEmpresa(View view) {
+        try {
+
+            if (socket != null && socket.isConnected()) {
+                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                ObjectInputStream perEnt;
+
+                String codigo = "0";
+                String nombre = "0";
+                //IMPORTANTE, el codigo crud para que sea delete.. es el 3, crearé una variable
+                //de método para no cambiar el valor de la de clase
+                String crud = "3";
+                nombre = editTextNomEmpresaUpdate.getText().toString();
+
+
+                if(!nombre.equals("")){
+                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",nom,"+nombre+","+orden;
+                    //ahora escribimos en servidor , enviandole el login
+                    escriptor.write(palabra);
+                    escriptor.newLine();
+                    escriptor.flush();
+                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
+                    if(palabra.equalsIgnoreCase("exit")){
+                        lector.close();
+                        escriptor.close();
+                        socket.close();
+                    }else{
+                        perEnt = new ObjectInputStream(socket.getInputStream());
+                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                        Object receivedData = perEnt.readObject();
+
+                        if (receivedData instanceof List) {
+                            // Utilidades.listaEmpleados = (ArrayList) receivedData;
+                            Utilidades.mensajeDelServer = "Se ha  eliminado el registro correctamente";
+                        } else if (receivedData instanceof String) {
+                            Utilidades.mensajeDelServer = (String) receivedData;
+                        } else {
+                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                        }
+                        mostrarToast(Utilidades.mensajeDelServer );
+
+                    }
+                }else{
+                    mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
+                }
+
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

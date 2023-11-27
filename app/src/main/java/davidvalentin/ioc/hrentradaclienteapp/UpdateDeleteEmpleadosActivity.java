@@ -174,7 +174,7 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Molt malament, tienes que insertar el dni, nombre,apellido y nombre de empresa al menos (el codicard no)" );
+                    mostrarToast("Tienes que insertar el dni, nombre,apellido y nombre de empresa" );
                 }
 
 
