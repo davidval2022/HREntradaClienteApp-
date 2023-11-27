@@ -102,7 +102,7 @@ public class EmpresaInsertActivity extends AppCompatActivity {
 
                         if (receivedData instanceof List) {
                            // Utilidades.listaEmpleados = (ArrayList) receivedData;
-                            Utilidades.mensajeDelServer = "Se ha creado correctamente el registro";
+                            Utilidades.mensajeDelServer = "Se ha creado correctamente la empresa";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                         } else {

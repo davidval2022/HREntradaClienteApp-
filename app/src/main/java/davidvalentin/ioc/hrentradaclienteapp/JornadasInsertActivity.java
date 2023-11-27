@@ -105,7 +105,7 @@ public class JornadasInsertActivity extends AppCompatActivity {
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                            Utilidades.mensajeDelServer = "Se ha creado correctamente el registro";
+                            Utilidades.mensajeDelServer = "Se ha creado correctamente el inicio de jornada";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                             Log.d("Recibido",Utilidades.mensajeDelServer);

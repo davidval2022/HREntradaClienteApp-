@@ -2,6 +2,8 @@ package davidvalentin.ioc.hrentradaclienteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -119,7 +121,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
                         if (receivedData instanceof List) {
                             // Utilidades.listaEmpleados = (ArrayList) receivedData;
-                            Utilidades.mensajeDelServer = "Se ha  modificado el registro correctamente";
+                            Utilidades.mensajeDelServer = "Se ha  modificado la empresa correctamente";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                         } else {
@@ -129,7 +131,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
+                    mostrarToast("Error, tienes que poner el nombre y direccion de la empresa" );
                 }
 
             }
@@ -166,61 +168,111 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
     }
 
+    private void mostrarDialogoConfirmacion(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro de que quieres borrar?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí colocas el código para realizar la acción de borrar
+                        // Por ejemplo, llamar a un método para borrar datos
+                        eliminarEmpresa(view);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí puedes poner código si el usuario decide no realizar la acción
+                        Toast.makeText(getApplicationContext(), "Acción cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Mostrar el cuadro de diálogo
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
     /**
      * Metodo para eliminar una empresa
      * @param view
      */
 
     public void eliminarEmpresa(View view) {
-        try {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro de que quieres eliminar esta empresa?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí colocas el código para realizar la acción de borrar
+                        // Por ejemplo, llamar a un método para borrar datos
+                        try {
 
-            if (socket != null && socket.isConnected()) {
-                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                ObjectInputStream perEnt;
+                            if (socket != null && socket.isConnected()) {
+                                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                ObjectInputStream perEnt;
 
-                String codigo = "0";
-                String nombre = "0";
-                //IMPORTANTE, el codigo crud para que sea delete.. es el 3, crearé una variable
-                //de método para no cambiar el valor de la de clase
-                String crud = "3";
-                nombre = editTextNomEmpresaUpdate.getText().toString();
+                                String codigo = "0";
+                                String nombre = "0";
+                                //IMPORTANTE, el codigo crud para que sea delete.. es el 3, crearé una variable
+                                //de método para no cambiar el valor de la de clase
+                                String crud = "3";
+                                nombre = editTextNomEmpresaUpdate.getText().toString();
 
 
-                if(!nombre.equals("")){
-                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",nom,"+nombre+","+orden;
-                    //ahora escribimos en servidor , enviandole el login
-                    escriptor.write(palabra);
-                    escriptor.newLine();
-                    escriptor.flush();
-                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
-                    if(palabra.equalsIgnoreCase("exit")){
-                        lector.close();
-                        escriptor.close();
-                        socket.close();
-                    }else{
-                        perEnt = new ObjectInputStream(socket.getInputStream());
-                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
-                        Object receivedData = perEnt.readObject();
+                                if(!nombre.equals("")){
+                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",nom,"+nombre+","+orden;
+                                    //ahora escribimos en servidor , enviandole el login
+                                    escriptor.write(palabra);
+                                    escriptor.newLine();
+                                    escriptor.flush();
+                                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
+                                    if(palabra.equalsIgnoreCase("exit")){
+                                        lector.close();
+                                        escriptor.close();
+                                        socket.close();
+                                    }else{
+                                        perEnt = new ObjectInputStream(socket.getInputStream());
+                                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                                        Object receivedData = perEnt.readObject();
 
-                        if (receivedData instanceof List) {
-                            // Utilidades.listaEmpleados = (ArrayList) receivedData;
-                            Utilidades.mensajeDelServer = "Se ha  eliminado el registro correctamente";
-                        } else if (receivedData instanceof String) {
-                            Utilidades.mensajeDelServer = (String) receivedData;
-                        } else {
-                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                                        if (receivedData instanceof List) {
+                                            // Utilidades.listaEmpleados = (ArrayList) receivedData;
+                                            Utilidades.mensajeDelServer = "Se ha  eliminado la empresa correctamente";
+                                        } else if (receivedData instanceof String) {
+                                            Utilidades.mensajeDelServer = (String) receivedData;
+                                        } else {
+                                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                                        }
+                                        mostrarToast(Utilidades.mensajeDelServer );
+
+                                    }
+                                }else{
+                                    mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
+                                }
+
+                            }
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
                         }
-                        mostrarToast(Utilidades.mensajeDelServer );
-
                     }
-                }else{
-                    mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
-                }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí puedes poner código si el usuario decide no realizar la acción
+                        Toast.makeText(getApplicationContext(), "Acción cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        // Mostrar el cuadro de diálogo
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
     }
 }

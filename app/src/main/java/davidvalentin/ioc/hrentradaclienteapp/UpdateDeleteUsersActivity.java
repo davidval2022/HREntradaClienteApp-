@@ -135,7 +135,7 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                            Utilidades.mensajeDelServer = "Se ha modificado correctamente el  registro";
+                            Utilidades.mensajeDelServer = "Se ha modificado correctamente el usuario";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                             Log.d("Recibido",Utilidades.mensajeDelServer);

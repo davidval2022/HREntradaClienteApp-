@@ -163,7 +163,7 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
 
                         if (receivedData instanceof List) {
                             //Utilidades.listaEmpleados = (ArrayList) receivedData;
-                            Utilidades.mensajeDelServer = "Se ha modificado correctamente el  registro";
+                            Utilidades.mensajeDelServer = "Se ha modificado correctamente el empleado";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                             Log.d("Recibido",Utilidades.mensajeDelServer);
@@ -174,7 +174,7 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Tienes que insertar el dni, nombre,apellido y nombre de empresa" );
+                    mostrarToast("Tienes que poner el dni, nombre,apellido y nombre de empresa" );
                 }
 
 
