@@ -2,6 +2,8 @@ package davidvalentin.ioc.hrentradaclienteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -187,7 +189,7 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
 
     /**
      * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
-     * @param view
+     * @param view representa la vista con la que se está interactuando, no utilizado aquí
      */
     public void reset(View view) {
         editTextDniEmpl.setText("");
@@ -217,5 +219,81 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
         Toast.makeText(this, ""+mensaje, Toast.LENGTH_LONG).show();
 
 
+    }
+
+    /**
+     * Metodo para eliminar un empleado
+     * @param view representa la vista con la que se está interactuando
+     */
+    public void eliminarEmpleadoBD(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro de que quieres eliminar este empleado?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            //Log.d("Enviado", "Aqui no enviamos nada pero estamos en actualizarEmpleadoBD");
+                            if (socket != null && socket.isConnected()) {
+                                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                ObjectInputStream perEnt;
+
+                                String codigo = "0";
+                                String dni = "0";
+
+                                dni = editTextDniEmpl.getText().toString();
+                                String crud = "3";
+
+                                if(!dni.equals("")){
+                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",dni,"+dni+","+orden;
+                                    //ahora escribimos en servidor , enviandole el login
+                                    escriptor.write(palabra);
+                                    escriptor.newLine();
+                                    escriptor.flush();
+                                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
+                                    if(palabra.equalsIgnoreCase("exit")){
+                                        lector.close();
+                                        escriptor.close();
+                                        socket.close();
+                                    }else{
+                                        perEnt = new ObjectInputStream(socket.getInputStream());
+                                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                                        Object receivedData = perEnt.readObject();
+
+                                        if (receivedData instanceof List) {
+                                            //Utilidades.listaEmpleados = (ArrayList) receivedData;
+                                            Utilidades.mensajeDelServer = "Se ha eliminado correctamente el empleado";
+                                        } else if (receivedData instanceof String) {
+                                            Utilidades.mensajeDelServer = (String) receivedData;
+                                            Log.d("Recibido",Utilidades.mensajeDelServer);
+                                        } else {
+                                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                                        }
+                                        mostrarToast(Utilidades.mensajeDelServer );
+
+                                    }
+                                }else{
+                                    mostrarToast("Tienes que poner el dni, nombre,apellido y nombre de empresa" );
+                                }
+
+                            }
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí puedes poner código si el usuario decide no realizar la acción
+                        Toast.makeText(getApplicationContext(), "Acción cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Mostrar el cuadro de diálogo
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

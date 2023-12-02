@@ -168,6 +168,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
 
     }
 
+    /*
     private void mostrarDialogoConfirmacion(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirmar acción")
@@ -175,8 +176,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Aquí colocas el código para realizar la acción de borrar
-                        // Por ejemplo, llamar a un método para borrar datos
+                        //aqui ponemos el codigo que queremos que se ejecute
                         eliminarEmpresa(view);
                     }
                 })
@@ -192,6 +192,8 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    */
+
 
 
     /**
@@ -206,8 +208,6 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Aquí colocas el código para realizar la acción de borrar
-                        // Por ejemplo, llamar a un método para borrar datos
                         try {
 
                             if (socket != null && socket.isConnected()) {
@@ -230,26 +230,22 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
                                     escriptor.newLine();
                                     escriptor.flush();
                                     Log.d("Enviado", "Le enviamos esto al server: "+palabra);
-                                    if(palabra.equalsIgnoreCase("exit")){
-                                        lector.close();
-                                        escriptor.close();
-                                        socket.close();
-                                    }else{
-                                        perEnt = new ObjectInputStream(socket.getInputStream());
-                                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
-                                        Object receivedData = perEnt.readObject();
 
-                                        if (receivedData instanceof List) {
-                                            // Utilidades.listaEmpleados = (ArrayList) receivedData;
-                                            Utilidades.mensajeDelServer = "Se ha  eliminado la empresa correctamente";
-                                        } else if (receivedData instanceof String) {
-                                            Utilidades.mensajeDelServer = (String) receivedData;
-                                        } else {
-                                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
-                                        }
-                                        mostrarToast(Utilidades.mensajeDelServer );
+                                    perEnt = new ObjectInputStream(socket.getInputStream());
+                                    //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                                    Object receivedData = perEnt.readObject();
 
+                                    if (receivedData instanceof List) {
+                                        // Utilidades.listaEmpleados = (ArrayList) receivedData;
+                                        Utilidades.mensajeDelServer = "Se ha  eliminado la empresa correctamente";
+                                    } else if (receivedData instanceof String) {
+                                        Utilidades.mensajeDelServer = (String) receivedData;
+                                    } else {
+                                        Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                                     }
+                                    mostrarToast(Utilidades.mensajeDelServer );
+
+
                                 }else{
                                     mostrarToast("Error, tienes que insertar el nombre y direccion de la empresa" );
                                 }

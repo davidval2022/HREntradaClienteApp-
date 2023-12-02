@@ -2,6 +2,8 @@ package davidvalentin.ioc.hrentradaclienteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -158,13 +160,7 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
      * @param mensaje es el mensaje que mostrará el Toast
      */
     public  void mostrarToast(String mensaje){
-        Toast toast = Toast.makeText(this, mensaje, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.show();
-
-
-
-
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -182,6 +178,74 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
         }
     }
 
-    public void deleteJorndada(View view) {
+    public void eliminarJornada(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro de que quieres eliminar esta jornada?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String crud = "3";
+                        String fecha = jornada.getFecha();
+                        String dni = jornada.getDni();
+
+
+                        try {
+
+                            if (socket != null && socket.isConnected()) {
+                                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                ObjectInputStream perEnt;
+
+                                if(!dni.equals("")){
+                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",dni,"+dni+",fecha,"+fecha+","+orden;
+                                    escriptor.write(palabra);
+                                    escriptor.newLine();
+                                    escriptor.flush();
+                                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
+                                    if(palabra.equalsIgnoreCase("exit")){
+                                        lector.close();
+                                        escriptor.close();
+                                        socket.close();
+                                    }else{
+                                        perEnt = new ObjectInputStream(socket.getInputStream());
+                                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                                        Object receivedData = perEnt.readObject();
+
+                                        if (receivedData instanceof List) {
+                                            Utilidades.mensajeDelServer = "Se ha eliminado la jornada correctamente";
+                                        } else if (receivedData instanceof String) {
+                                            Utilidades.mensajeDelServer = (String) receivedData;
+                                            Log.d("Recibido",Utilidades.mensajeDelServer);
+
+                                        } else {
+                                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                                        }
+                                        mostrarToast(Utilidades.mensajeDelServer );
+
+                                    }
+                                }else{
+                                    mostrarToast("Tienes que introducir el dni o codicard..dependiendo de tu seleccion" );
+                                }
+
+                            }
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí puedes poner código si el usuario decide no realizar la acción
+                        Toast.makeText(getApplicationContext(), "Acción cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Mostrar el cuadro de diálogo
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

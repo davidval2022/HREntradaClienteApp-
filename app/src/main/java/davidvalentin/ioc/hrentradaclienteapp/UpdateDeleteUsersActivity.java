@@ -2,6 +2,8 @@ package davidvalentin.ioc.hrentradaclienteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -113,11 +115,6 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                 //si la pass esta vacia, ponemos la pass anterior, es decir que no la cambiamos
 
 
-
-
-
-
-
                 if(!dniOriginal.equals("") && !numtipe.equals("") && !pass.equals("") && !loginOriginal.equals("")){
                     String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",passNuevo,"+pass+",numtipeNuevo,"+numtipe+",login,"+loginOriginal+","+orden;
                     //ahora escribimos en servidor , enviandole el login
@@ -201,5 +198,78 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
         }
 
         return hexString.toString();
+    }
+
+    public void eliminarUser(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro de que quieres eliminar este usuario?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+
+                            if (socket != null && socket.isConnected()) {
+                                BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                ObjectInputStream perEnt;
+
+                                String codigo = "0";
+                                String crud = "3";
+                                String dni = editTextDniUser.getText().toString();
+
+
+                                //si la pass esta vacia, ponemos la pass anterior, es decir que no la cambiamos
+
+
+                                if(!dni.equals("")){
+                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",dni,"+dni+","+orden;
+                                    //ahora escribimos en servidor , enviandole el login
+                                    escriptor.write(palabra);
+                                    escriptor.newLine();
+                                    escriptor.flush();
+                                    Log.d("Enviado", "Le enviamos esto al server: "+palabra);
+                                    if(palabra.equalsIgnoreCase("exit")){
+                                        lector.close();
+                                        escriptor.close();
+                                        socket.close();
+                                    }else{
+                                        perEnt = new ObjectInputStream(socket.getInputStream());
+                                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
+                                        Object receivedData = perEnt.readObject();
+
+                                        if (receivedData instanceof List) {
+                                            Utilidades.mensajeDelServer = "Se ha eliminado correctamente el usuario";
+                                        } else if (receivedData instanceof String) {
+                                            Utilidades.mensajeDelServer = (String) receivedData;
+                                            Log.d("Recibido",Utilidades.mensajeDelServer);
+                                        } else {
+                                            Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
+                                        }
+                                        mostrarToast(Utilidades.mensajeDelServer );
+
+                                    }
+                                }else{
+                                    mostrarToast("Tienen que estar rellenos el campo contraseña y tipo de usuario" );
+                                }
+
+
+                            }
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Aquí puedes poner código si el usuario decide no realizar la acción
+                        Toast.makeText(getApplicationContext(), "Acción cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Mostrar el cuadro de diálogo
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
