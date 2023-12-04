@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.empleados.EmpleadosActivity;
+import davidvalentin.ioc.hrentradaclienteapp.empresas.EmpresasActivity;
+import davidvalentin.ioc.hrentradaclienteapp.jornadas.JornadasActivity;
+import davidvalentin.ioc.hrentradaclienteapp.users.UsersActivity;
+import davidvalentin.ioc.hrentradaclienteapp.login.LogoutAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**

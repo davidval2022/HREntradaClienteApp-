@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.users;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,24 +21,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.EmpleadosActivity;
-import davidvalentin.ioc.hrentradaclienteapp.EmpleadosInsertActivity;
-import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpresaActivity;
-import modelo.Empresa;
+import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
+import modelo.Users;
 
 /**
- * La clase `SelectEmpresasAsyn` es una subclase de `AsyncTask` diseñada para realizar operaciones
+ * La clase `SelectUsersAsyn` es una subclase de `AsyncTask` diseñada para realizar operaciones
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
- * desde el servidor y actualiza un `RecyclerView` con la lista de empresas obtenida.
+ * desde el servidor y actualiza un `RecyclerView` con la lista de usuarios obtenida.
  *
- * @param \<String\> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
- * @param \<Void\> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param \<ArrayList\<Empresa\>\> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
- *                              que representa la lista de empresas obtenida del servidor.
+ * @param \<String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
+ * @param \<Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
+ * @param \<ArrayList<Users>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ *                            que representa la lista de usuarios obtenida del servidor.
  */
-
-
-public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empresa>> {
+public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
 
     // Gestor de sockets para manejar la conexión con el servidor
     private SocketManager socketManager;
@@ -58,16 +55,14 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
 
     // Componentes de la interfaz de usuario
     private  RecyclerView recycler;
-    private AdaptadorEmpresas mAdapter;
+    private AdaptadorUsers mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    //variable que enviaremos en un bundle a la activty UpdateDeleteActivity
-    private Empresa empresa;
 
-
-
+    //variable que enviaremos en un bundle a la activity UpdateDeleteEmpleados
+    private Users user;
 
     /**
-     * Constructor de la clase `SelectEmpresasAsyn`.
+     * Constructor de la clase `SelectUsersAsyn`.
      *
      * @param socketManager Instancia de `SocketManager` utilizada para gestionar la conexión del socket.
      * @param context       Contexto de la aplicación utilizado para interactuar con la interfaz de usuario.
@@ -76,13 +71,13 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
      * @param columna       Nombre de la columna a utilizar en la consulta.
      * @param filtro        Filtro a aplicar en la consulta.
      * @param orden         Orden de los resultados de la consulta.
-     * @param recycler      Instancia de `RecyclerView` para mostrar la lista de empresas.
+     * @param recycler      Instancia de `RecyclerView` para mostrar la lista de usuarios.
      * @param mAdapter      Adaptador para el `RecyclerView`.
      * @param layoutManager Administrador de diseño para el `RecyclerView`.
      */
 
-    public SelectEmpresasAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna, String filtro, String orden, RecyclerView recycler
-    , AdaptadorEmpresas mAdapter, RecyclerView.LayoutManager layoutManager) {
+    public SelectUsersAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna, String filtro, String orden, RecyclerView recycler
+    , AdaptadorUsers mAdapter, RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
@@ -99,13 +94,13 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
 
 
     /**
-     * Método que se ejecuta en segundo plano para realizar la consulta al servidor y obtener la lista de empresas.
+     * Método que se ejecuta en segundo plano para realizar la consulta al servidor y obtener la lista de usuarios.
      *
      * @param params Parámetros de entrada que representan la operación CRUD.
-     * @return Lista de empresas obtenida del servidor.
+     * @return Lista de usuarios obtenida del servidor.
      */
     @Override
-    protected ArrayList<Empresa> doInBackground(String... params) {
+    protected ArrayList<Users> doInBackground(String... params) {
 
         try {
             // Obtiene el socket del SocketManager
@@ -118,11 +113,9 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
                 BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 ObjectInputStream perEnt;
 
-                //String mensajeServer = lector.readLine();   //leemos el mensaje de bienvenidoa del server
                 // Construye la cadena de consulta
                 String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+columna+","+filtro+","+orden;
                 //ahora escribimos en servidor , enviandole el login
-                // Envia la cadena de consulta al servidor
                 escriptor.write(palabra);
                 escriptor.newLine();
                 escriptor.flush();
@@ -134,20 +127,21 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
                     escriptor.close();
                     socket.close();
                 }else{
-                    // Lee los datos del servidor y actualiza la lista de empresas
+                    // Lee los datos del servidor y actualiza la lista de usuarios
                     perEnt = new ObjectInputStream(socket.getInputStream());
                     Object receivedData = perEnt.readObject();
 
                     if (receivedData instanceof List) {
-                        Utilidades.listaEmpresas = (ArrayList) receivedData;
+                        Utilidades.listaUsers = (ArrayList) receivedData;
                         Utilidades.mensajeDelServer = "";
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
                         Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                     }
+
                 }
-                return Utilidades.listaEmpresas;
+                return Utilidades.listaUsers;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -159,35 +153,29 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
     /**
      * Método que se ejecuta en el hilo principal después de que se completa la tarea en segundo plano.
      *
-     * @param result Lista de empresas obtenida del servidor.
+     * @param result Lista de usuarios obtenida del servidor.
      */
     @Override
-    protected void onPostExecute(ArrayList<Empresa> result) {
-        // Configura el RecyclerView con la lista de empresas
+    protected void onPostExecute(ArrayList<Users> result) {
+        // Configura el RecyclerView con la lista de usuarios
         super.onPostExecute(result);
-        empresa = new Empresa();
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
 
         // Crea un adaptador y lo establece en el RecyclerView
-        mAdapter = new AdaptadorEmpresas(Utilidades.listaEmpresas);
+        mAdapter = new AdaptadorUsers(Utilidades.listaUsers);
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context,"Seleccion: "+Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom(),Toast.LENGTH_SHORT).show();
-                //empresa.setNom(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getNom());
-                //empresa.setAddress(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getAddress());
-                //empresa.setTelephon(Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v)).getTelephon());
-
-                empresa = Utilidades.listaEmpresas.get(recycler.getChildAdapterPosition(v));
-                Log.d("update: ",empresa.getNom());
-                Intent intent=new Intent(context, UpdateDeleteEmpresaActivity.class);
+                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v)).getLogin(),Toast.LENGTH_SHORT).show();
+                user = Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v));
+                Intent intent=new Intent(context, UpdateDeleteUsersActivity.class);
                 // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
                 //activity desde una clase que no es una activity
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("empresa",empresa);
+                bundle.putSerializable("user",user);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
 
@@ -209,11 +197,9 @@ public class SelectEmpresasAsyn extends AsyncTask<String, Void, ArrayList<Empres
      * @param context Contexto de la aplicación.
      * @param mensaje Mensaje a mostrar en el Toast.
      */
-
     public static void mostrarToast(Context context, String mensaje){
         Toast.makeText(context, ""+mensaje, Toast.LENGTH_SHORT).show();
     }
-
 
 
 

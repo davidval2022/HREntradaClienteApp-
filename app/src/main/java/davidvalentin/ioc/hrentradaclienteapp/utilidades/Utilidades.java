@@ -1,8 +1,8 @@
 package davidvalentin.ioc.hrentradaclienteapp.utilidades;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
 import modelo.Empleados;
 import modelo.Empresa;
 import modelo.Jornada;
@@ -27,9 +27,5 @@ public class Utilidades {
     public static ArrayList<Jornada> listaJornadas = new ArrayList<>();
 
     public static String mensajeDelServer = ""; //mensaje del server que iremos mostrando al usuario
-
-
-
-
 
 }

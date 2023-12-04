@@ -1,10 +1,8 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.login;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -14,8 +12,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-
-import davidvalentin.ioc.hrentradaclienteapp.MenuAdminActivity;
 
 /**
  * La clase `LogoutAsyn` es una subclase de `AsyncTask` que se utiliza para manejar la desconexión

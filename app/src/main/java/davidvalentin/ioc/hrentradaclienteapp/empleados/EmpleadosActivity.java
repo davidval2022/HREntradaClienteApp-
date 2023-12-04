@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.empleados;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,8 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorEmpleados;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpleadosAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.MenuAdminActivity;
+import davidvalentin.ioc.hrentradaclienteapp.MenuUserActivity;
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**

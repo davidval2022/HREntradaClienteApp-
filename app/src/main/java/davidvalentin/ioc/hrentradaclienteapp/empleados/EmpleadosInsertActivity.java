@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.empleados;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,10 +17,10 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SocketManager;
+import davidvalentin.ioc.hrentradaclienteapp.R;
+import davidvalentin.ioc.hrentradaclienteapp.empleados.EmpleadosActivity;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**

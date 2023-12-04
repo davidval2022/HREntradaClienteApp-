@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.empresas;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,10 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorEmpresas;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.AdaptadorUsers;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectEmpresasAsyn;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SelectUsersAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.MenuAdminActivity;
+import davidvalentin.ioc.hrentradaclienteapp.MenuUserActivity;
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**

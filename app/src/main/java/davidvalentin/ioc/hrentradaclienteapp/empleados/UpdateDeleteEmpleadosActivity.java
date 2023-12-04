@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.empleados;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,9 +21,10 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.R;
+import davidvalentin.ioc.hrentradaclienteapp.empleados.EmpleadosActivity;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Empleados;
-import modelo.Empresa;
 
 /**
  * Activity asociada a la modificacion de  empleados existentes. En la parte gráfica tenemos un formulario

@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.empleados;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +17,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.R;
-import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpleadosActivity;
-import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpresaActivity;
+import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Empleados;
 
 /**

@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.login;
 
 import java.io.IOException;
 import java.net.Socket;

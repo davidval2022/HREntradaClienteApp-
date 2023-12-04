@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.jornadas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -19,47 +21,63 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 /**
- * Activity asociada a la creación de nuevos users. En la parte gráfica tenemos un formulario
+ * Activity asociada a la creación de nuevas jornadas. En la parte gráfica tenemos un formulario
  * donde introduciremos los datos y luego a traves de esta activity seran tratados y enviados
  * al server
  */
-public class UsersInsertActivity extends AppCompatActivity {
+public class JornadasInsertActivity extends AppCompatActivity {
+
+    private RadioButton opc_codi,opc_dni;
+    private String opcionCampo = "";
 
     private Socket socket;
-    private String nombreTabla = "1";//users es 1
+    private String nombreTabla = "3";//jornadas es 3
     private String crud = "1";//inserts es el codigo crud 1
     private String orden = "0";//orden no lo utilizamos por lo tanto es siempres será 0
-    private EditText editTextLogin;
-    private EditText editTextPassUser;
-    private EditText editTextTipoUser;
-    private EditText editTextDniUser;
+
+    private EditText editTextDniJornada;//vale tanto para el codicard como dni
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
+        //Agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users_insert);
+        setContentView(R.layout.activity_jornadas_insert);
 
         socket = Utilidades.socketManager.getSocket();
-        editTextLogin = findViewById(R.id.editTextLogin);
-        editTextPassUser = findViewById(R.id.editTextPassUser);
-        editTextTipoUser = findViewById(R.id.editTextTipoUser);
-        editTextDniUser = findViewById(R.id.editTextDniUser);
+
+
+        opc_codi = (RadioButton) findViewById(R.id.idCodicardRadio);
+        opc_dni = (RadioButton) findViewById(R.id.idDniRadio);
+        editTextDniJornada = findViewById(R.id.editTextDniJornada);
+
 
 
     }
+
     /**
-     * Metodo asociado al boton 'guardar user'. Mediante este método enviamos los datos al
-     * server para crear un nuevo user. En este caso y a diferencia de cuando haciamos los
+     * Metodo asociado al boton 'crear inicio  jornada'. Mediante este método enviamos los datos al
+     * server para crear una nueva jornada. En este caso y a diferencia de cuando haciamos los
      * select, al no cambiar la pantalla en este justo momento no necesitaremos clases de tipo
      * Asyntask, o hacerlo en un hilo diferente del principal que maneja la UI.
      * @param view representa la vista con la que se está interactuando, no utilizado en este caso
      */
-    public void insertarUsuario(View view) {
+    public void insertarJornada(View view) {
+        validar();
+        //mostrarToast(opcionCampo);
+        String codigo = "0";
+        String dato = "0";
+        String nombreCampo = "codicard";
+        dato = editTextDniJornada.getText().toString();
+        if(opcionCampo.equalsIgnoreCase("dni")){
+            nombreCampo = "dni";
+        }else if(opcionCampo.equalsIgnoreCase("dni")){
+            nombreCampo = "codicard";
+        }
 
         try {
 
@@ -68,22 +86,11 @@ public class UsersInsertActivity extends AppCompatActivity {
                 BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 ObjectInputStream perEnt;
 
-                String codigo = "0";
-                String login = "0";
-                String pass = "0";
-                String tipouser = "0";
-                String dni = "0";
-
-                login = editTextLogin.getText().toString();
-                pass = editTextPassUser.getText().toString();
-                tipouser = editTextTipoUser.getText().toString();
-                dni = editTextDniUser.getText().toString();
-
-
-
-                if(!login.equals("") && !pass.equals("") && !tipouser.equals("") && !dni.equals("")){
-                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",login,"+login+",pass,"+pass+",numtipe,"+Integer.parseInt(tipouser)+",dni,"+dni+","+orden;
+                if(!nombreCampo.equals("") &&!dato.equalsIgnoreCase("")){
+                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+nombreCampo+","+dato+","+orden;
                     //ahora escribimos en servidor , enviandole el login
+                    //A32826,1,3,codicard,1,0
+                   // palabra = Utilidades.codigo+",1,3,codicard,2,0";
                     escriptor.write(palabra);
                     escriptor.newLine();
                     escriptor.flush();
@@ -94,12 +101,14 @@ public class UsersInsertActivity extends AppCompatActivity {
                         socket.close();
                     }else{
                         perEnt = new ObjectInputStream(socket.getInputStream());
+                        //leemos los datos del objeto y comprobamos que sea un arrayList, sino un String
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                            Utilidades.mensajeDelServer = "Se ha creado correctamente el usuario";
+                            Utilidades.mensajeDelServer = "Se ha creado correctamente el inicio de jornada";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
+                            Log.d("Recibido",Utilidades.mensajeDelServer);
                         } else {
                             Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                         }
@@ -107,32 +116,24 @@ public class UsersInsertActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Tienes que insertar todos los datos" );
+                    mostrarToast("Tienes que insertar el dni o codicard dependiendo de seleccion" );
                 }
 
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+
     }
 
-    /**
-     * Método asociado al boton 'resetear campos' para borrar todos los datos introducidos.
-     * @param view
-     */
-    public void reset(View view) {
-        editTextLogin.setText("");
-        editTextPassUser.setText("");
-        editTextTipoUser.setText("");
-        editTextDniUser.setText("");
-    }
 
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
-     * UsersActivity
+     * JornadasActivity
      */
     public void volver(View view) {
-        Intent intent = new Intent(this, UsersActivity.class);
+        Intent intent = new Intent(this, JornadasActivity.class);
         startActivity(intent);
 
     }
@@ -142,8 +143,25 @@ public class UsersInsertActivity extends AppCompatActivity {
      * @param mensaje es el mensaje que mostrará el Toast
      */
     public  void mostrarToast(String mensaje){
-        Toast.makeText(this, ""+mensaje, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(this, mensaje, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
 
 
+    }
+
+    /**
+     * Este método es para saber a que campo nos estamos refiriendo al introducir el texto
+     * en el EditText..
+     * Es decir, que podemos crear el inicio de jornada del empleado introduciendo o bién su
+     * dni o bien su codicard, y con este campo elegimos el tipo de dato que vamos a introducir.
+     */
+    public void validar(){
+        if(opc_dni.isChecked()==true){
+            opcionCampo = "dni";
+        }
+        if(opc_codi.isChecked()==true){
+            opcionCampo = "codicard";
+        }
     }
 }

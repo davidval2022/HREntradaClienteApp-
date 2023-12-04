@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.jornadas;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,24 +19,23 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
-import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteEmpleadosActivity;
-import davidvalentin.ioc.hrentradaclienteapp.UpdateDeleteUsersActivity;
-import modelo.Empleados;
-import modelo.Users;
+
+import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
+import modelo.Jornada;
 
 /**
- * La clase `SelectUsersAsyn` es una subclase de `AsyncTask` diseñada para realizar operaciones
+ * La clase `SelectJornadaAsyn` es una subclase de `AsyncTask` diseñada para realizar operaciones
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
- * desde el servidor y actualiza un `RecyclerView` con la lista de usuarios obtenida.
+ * desde el servidor y actualiza un `RecyclerView` con la lista de jornadas obtenida.
  *
  * @param \<String> Tipo de parámetro de entrada para el método `doInBackground`, que representa la operación CRUD.
  * @param \<Void> Tipo de parámetro de progreso para el método `onProgressUpdate` (no utilizado en esta implementación).
- * @param \<ArrayList<Users>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
- *                            que representa la lista de usuarios obtenida del servidor.
+ * @param \<ArrayList<Jornada>> Tipo de resultado devuelto por el método `doInBackground` y pasado al método `onPostExecute`,
+ *                               que representa la lista de jornadas obtenida del servidor.
  */
-public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
+public class SelectJornadaAsyn extends AsyncTask<String, Void, ArrayList<Jornada>> {
 
     // Gestor de sockets para manejar la conexión con el servidor
     private SocketManager socketManager;
@@ -46,8 +45,10 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
 
     // Detalles de la consulta al servidor
     private String nombreTabla;
-    private String columna;
-    private String filtro;
+    private String columna1;
+    private String filtro1;
+    private String columna2;
+    private String filtro2;
     private String orden;
     private String crud;
 
@@ -56,34 +57,41 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
 
     // Componentes de la interfaz de usuario
     private  RecyclerView recycler;
-    private AdaptadorUsers mAdapter;
+    private AdaptadorJornadas mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     //variable que enviaremos en un bundle a la activity UpdateDeleteEmpleados
-    private Users user;
+    private Jornada jornada;
+
+
+
 
     /**
-     * Constructor de la clase `SelectUsersAsyn`.
+     * Constructor de la clase `SelectJornadaAsyn`.
      *
      * @param socketManager Instancia de `SocketManager` utilizada para gestionar la conexión del socket.
      * @param context       Contexto de la aplicación utilizado para interactuar con la interfaz de usuario.
      * @param crud          Operación CRUD a realizar en el servidor (Create, Read, Update, Delete).
      * @param nombreTabla   Nombre de la tabla en la base de datos del servidor.
-     * @param columna       Nombre de la columna a utilizar en la consulta.
-     * @param filtro        Filtro a aplicar en la consulta.
+     * @param columna1      Nombre de la primera columna a utilizar en la consulta.
+     * @param filtro1       Filtro para la primera columna en la consulta.
+     * @param columna2      Nombre de la segunda columna a utilizar en la consulta.
+     * @param filtro2       Filtro para la segunda columna en la consulta.
      * @param orden         Orden de los resultados de la consulta.
-     * @param recycler      Instancia de `RecyclerView` para mostrar la lista de usuarios.
+     * @param recycler      Instancia de `RecyclerView` para mostrar la lista de jornadas.
      * @param mAdapter      Adaptador para el `RecyclerView`.
      * @param layoutManager Administrador de diseño para el `RecyclerView`.
      */
 
-    public SelectUsersAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna, String filtro, String orden, RecyclerView recycler
-    , AdaptadorUsers mAdapter, RecyclerView.LayoutManager layoutManager) {
+    public SelectJornadaAsyn(SocketManager socketManager, Context context, String crud, String nombreTabla, String columna1, String filtro1, String columna2, String filtro2, String orden, RecyclerView recycler
+    , AdaptadorJornadas mAdapter, RecyclerView.LayoutManager layoutManager) {
         this.socketManager = socketManager;
         this.context = context;
         this.nombreTabla = nombreTabla;
-        this.columna = columna;
-        this.filtro = filtro;
+        this.columna1 = columna1;
+        this.filtro1 = filtro1;
+        this.columna2 = columna2;
+        this.filtro2 = filtro2;
         this.orden = orden;
         this.crud = crud;
         this.recycler = recycler;
@@ -95,13 +103,13 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
 
 
     /**
-     * Método que se ejecuta en segundo plano para realizar la consulta al servidor y obtener la lista de usuarios.
+     * Método que se ejecuta en segundo plano para realizar la consulta al servidor y obtener la lista de jornadas.
      *
      * @param params Parámetros de entrada que representan la operación CRUD.
-     * @return Lista de usuarios obtenida del servidor.
+     * @return Lista de jornadas obtenida del servidor.
      */
     @Override
-    protected ArrayList<Users> doInBackground(String... params) {
+    protected ArrayList<Jornada> doInBackground(String... params) {
 
         try {
             // Obtiene el socket del SocketManager
@@ -115,7 +123,7 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
                 ObjectInputStream perEnt;
 
                 // Construye la cadena de consulta
-                String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+columna+","+filtro+","+orden;
+                String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+columna1+","+filtro1+","+columna2+","+filtro2+","+orden;
                 //ahora escribimos en servidor , enviandole el login
                 escriptor.write(palabra);
                 escriptor.newLine();
@@ -128,21 +136,20 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
                     escriptor.close();
                     socket.close();
                 }else{
-                    // Lee los datos del servidor y actualiza la lista de usuarios
+                    // Lee los datos del servidor y actualiza la lista de jornadas
                     perEnt = new ObjectInputStream(socket.getInputStream());
                     Object receivedData = perEnt.readObject();
 
-                    if (receivedData instanceof List) {
-                        Utilidades.listaUsers = (ArrayList) receivedData;
-                        Utilidades.mensajeDelServer = "";
+
+                    if (receivedData instanceof ArrayList) {
+                        Utilidades.listaJornadas = (ArrayList) receivedData;
                     } else if (receivedData instanceof String) {
                         Utilidades.mensajeDelServer = (String) receivedData;
                     } else {
                         Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                     }
-
                 }
-                return Utilidades.listaUsers;
+                return Utilidades.listaJornadas;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -154,32 +161,31 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
     /**
      * Método que se ejecuta en el hilo principal después de que se completa la tarea en segundo plano.
      *
-     * @param result Lista de usuarios obtenida del servidor.
+     * @param result Lista de jornadas obtenida del servidor.
      */
     @Override
-    protected void onPostExecute(ArrayList<Users> result) {
-        // Configura el RecyclerView con la lista de usuarios
+    protected void onPostExecute(ArrayList<Jornada> result) {
+        // Configura el RecyclerView con la lista de jornadas
         super.onPostExecute(result);
 
         layoutManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(layoutManager);
 
         // Crea un adaptador y lo establece en el RecyclerView
-        mAdapter = new AdaptadorUsers(Utilidades.listaUsers);
+        mAdapter = new AdaptadorJornadas(Utilidades.listaJornadas);
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v)).getLogin(),Toast.LENGTH_SHORT).show();
-                user = Utilidades.listaUsers.get(recycler.getChildAdapterPosition(v));
-                Intent intent=new Intent(context, UpdateDeleteUsersActivity.class);
+                //Toast.makeText(context.getApplicationContext(),"Seleccion: "+Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v)).getDni(),Toast.LENGTH_SHORT).show();
+                jornada = Utilidades.listaJornadas.get(recycler.getChildAdapterPosition(v));
+                Intent intent=new Intent(context, UpdateDeleteJornadaActivity.class);
                 // Agregar el flag FLAG_ACTIVITY_NEW_TASK para que me deje enviar los datos a una
                 //activity desde una clase que no es una activity
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user",user);
+                bundle.putSerializable("jornada",jornada);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
-
             }
         });
         recycler.setAdapter(mAdapter);
@@ -188,8 +194,6 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
         if(!Utilidades.mensajeDelServer.equals("")){
             mostrarToast(context.getApplicationContext(),Utilidades.mensajeDelServer );
         }
-
-
     }
 
     /**
@@ -201,6 +205,7 @@ public class SelectUsersAsyn extends AsyncTask<String, Void, ArrayList<Users>> {
     public static void mostrarToast(Context context, String mensaje){
         Toast.makeText(context, ""+mensaje, Toast.LENGTH_SHORT).show();
     }
+
 
 
 

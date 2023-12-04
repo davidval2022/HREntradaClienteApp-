@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.empresas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +21,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Empresa;
 /**

@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.login;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+
+import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
  * Clase ConexionAsyn: Realiza una conexión asíncrona con el servidor utilizando la clase AsyncTask.

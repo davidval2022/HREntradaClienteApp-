@@ -21,9 +21,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.ConexionAsyn;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.LogoutAsyn;
-import davidvalentin.ioc.hrentradaclienteapp.utilidades.SocketManager;
+import davidvalentin.ioc.hrentradaclienteapp.login.ConexionAsyn;
+import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**

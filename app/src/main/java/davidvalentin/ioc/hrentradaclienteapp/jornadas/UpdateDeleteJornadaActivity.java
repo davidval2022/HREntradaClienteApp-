@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp;
+package davidvalentin.ioc.hrentradaclienteapp.jornadas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -18,84 +19,85 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
-import modelo.Empleados;
-import modelo.Users;
+import modelo.Jornada;
+
 /**
- * Activity asociada a la modificacion de  users existentes. En la parte gráfica tenemos un formulario
+ * Activity asociada al cierre  de una jornada existentes. En la parte gráfica tenemos un formulario
  * donde introduciremos las modificaciones y luego a traves de esta activity seran tratados y enviados
  * al server
  */
-public class UpdateDeleteUsersActivity extends AppCompatActivity {
+public class UpdateDeleteJornadaActivity extends AppCompatActivity {
 
-    private Bundle userRecibido;//recibidos el bundle desde SelectUsersAsyn
-    private Users user;//la utilizamos com variable users que mostramos/modificamos
+    private Bundle jornadaRecibida;//recibidos el bundle desde SelectJornadaAsyn
+    private Jornada jornada;//la utilizamos como variable jornada que cerramos, ya que la tenemos abierta
+
+    private RadioButton opc_codi,opc_dni;
+    private String opcionCampo = "";
 
     private Socket socket;
-    private String nombreTabla = "1";//users es 0
+    private String nombreTabla = "3";//jornadas es 3
     private String crud = "2";//update es el codigo crud 2
     private String orden = "0";//orden no lo utilizamos por lo tanto es siempres será 0
-    private String loginOriginal = "";//login original, lo utilizaremos en el envio de datos, campo base en consulta
-    private String dniOriginal = "";//dni original, lo utilizaremos en el envio de datos, campo base en consulta
-    private String passOriginal = "";//Si la pass es diferente de que obtendremos como original la cambiamos
+    private String codicard = "0";//Codicard para cerrar la jornada o para borrar el registro
 
-    private EditText editTextLogin;
-    private EditText editTextPassUser;
-    private EditText editTextTipoUser;
-    private EditText editTextDniUser;
 
+    private EditText editTextDniJornada;//vale tanto para el codicard como para el dni
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
+        //Agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_delete_users);
+        setContentView(R.layout.activity_update_delete_jornada);
 
         socket = Utilidades.socketManager.getSocket();
 
-        editTextLogin = findViewById(R.id.editTextLoginUpDel);
-        editTextPassUser = findViewById(R.id.editTextPassUserUpDel);
-        editTextTipoUser = findViewById(R.id.editTextTipoUserUpDel);
-        editTextDniUser = findViewById(R.id.editTextDniUserUpDel);
 
-        //parte para rellenar los campos con los datos recibidos de SelectEmpleadosAsyn
-        userRecibido = getIntent().getExtras();
-        user = null;
-        if(userRecibido != null){
+        opc_codi = (RadioButton) findViewById(R.id.idCodicardRadioCerrar);
+        opc_dni = (RadioButton) findViewById(R.id.idDniRadioCerrar);
+        editTextDniJornada = findViewById(R.id.editTextDniJornadaCerrar);
+
+        jornadaRecibida = getIntent().getExtras();
+        if(jornadaRecibida != null){
             //guardamos en la variable empresa la empresa recibida
-            user=(Users) userRecibido.getSerializable("user");
+            jornada=(Jornada) jornadaRecibida.getSerializable("jornada");
             //nos quedamos con el nombre original, para luego saber a que registro hacemos el update
-            loginOriginal = user.getLogin();
-            dniOriginal = user.getDni();
-            passOriginal = user.getPass();
+            codicard = jornada.getCodicard();
+            //es campo sale como dni pero acordarse que podia ser dni o codicard.. se le puso de
+            //nombre dni, aunque en este caso siempres será codicard o no se que el usuario lo
+            //cambie intencionadamente
+            editTextDniJornada.setText(codicard);
 
-            editTextDniUser.setText(user.getDni());
-            editTextLogin.setText(user.getLogin());
-            //editTextPassUser.setText(user.getPass());
-            //editTextPassUser.setText("");
-            editTextTipoUser.setText(String.valueOf(user.getNumtipe()));
 
         }
+
     }
 
     /**
-     * Metodo asociado al boton 'guardar user'. Mediante este método enviamos los datos al
-     * server para actualizar un  user. En este caso y a diferencia de cuando haciamos los
+     * Metodo asociado al boton 'cerrar  jornada'. Mediante este método enviamos los datos al
+     * server para cerrar una jornada iniciada. En este caso y a diferencia de cuando haciamos los
      * select, al no cambiar la pantalla en este justo momento no necesitaremos clases de tipo
      * Asyntask, o hacerlo en un hilo diferente del principal que maneja la UI.
-     * Además solo podemos modificar, o la contraseña o el tipo de empledo, ni login ni dni
-     * para eso creamos un nuevo y borramos este
      * @param view representa la vista con la que se está interactuando, no utilizado en este caso
      */
-    public void actualizarUsuario(View view) {
+    public void cerrarJornada(View view) {
+        validar();
+        //mostrarToast(opcionCampo);
+        String codigo = "0";
+        String dato = "0";
+        String nombreCampo = "codicard";
+        dato = editTextDniJornada.getText().toString();
+        if(opcionCampo.equalsIgnoreCase("dni")){
+            nombreCampo = "dni";
+        }else if(opcionCampo.equalsIgnoreCase("dni")){
+            nombreCampo = "codicard";
+        }
+
         try {
 
             if (socket != null && socket.isConnected()) {
@@ -103,21 +105,8 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                 BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 ObjectInputStream perEnt;
 
-                String codigo = "0";
-                String numtipe = "0";
-                String pass = "0";
-
-
-                //solo nos quedaremos con los datos de numtipe y pass ya que el resto de los
-                //campos no se modifica
-                numtipe = editTextTipoUser.getText().toString();
-                pass = editTextPassUser.getText().toString();
-                //si la pass esta vacia, ponemos la pass anterior, es decir que no la cambiamos
-
-
-                if(!dniOriginal.equals("") && !numtipe.equals("") && !pass.equals("") && !loginOriginal.equals("")){
-                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",passNuevo,"+pass+",numtipeNuevo,"+numtipe+",login,"+loginOriginal+","+orden;
-                    //ahora escribimos en servidor , enviandole el login
+                if(!nombreCampo.equals("") &&!dato.equalsIgnoreCase("")){
+                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+","+nombreCampo+","+dato+","+orden;
                     escriptor.write(palabra);
                     escriptor.newLine();
                     escriptor.flush();
@@ -132,10 +121,11 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                         Object receivedData = perEnt.readObject();
 
                         if (receivedData instanceof List) {
-                            Utilidades.mensajeDelServer = "Se ha modificado correctamente el usuario";
+                            Utilidades.mensajeDelServer = "Se ha cerrado la jornada correctamente";
                         } else if (receivedData instanceof String) {
                             Utilidades.mensajeDelServer = (String) receivedData;
                             Log.d("Recibido",Utilidades.mensajeDelServer);
+
                         } else {
                             Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                         }
@@ -143,9 +133,8 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
 
                     }
                 }else{
-                    mostrarToast("Tienen que estar rellenos el campo contraseña y tipo de usuario" );
+                    mostrarToast("Tienes que introducir el dni o codicard..dependiendo de tu seleccion" );
                 }
-
 
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -154,12 +143,13 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
     }
 
 
+
     /**
      * Metodo asociado al botón 'volver'. Con este método somo redirigidos a
-     * UsersActivity
+     * JornadasActivity
      */
     public void volver(View view) {
-        Intent intent = new Intent(this, UsersActivity.class);
+        Intent intent = new Intent(this, JornadasActivity.class);
         startActivity(intent);
     }
 
@@ -168,45 +158,38 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
      * @param mensaje es el mensaje que mostrará el Toast
      */
     public  void mostrarToast(String mensaje){
-        Toast.makeText(this, ""+mensaje, Toast.LENGTH_LONG).show();
-
-
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 
     /**
-     *
-     * @param password
-     * @return
-     * @throws UnsupportedEncodingException
+     * Este método es para saber a que campo nos estamos refiriendo al introducir el texto
+     * en el EditText..
+     * Es decir, que podemos crear el inicio de jornada del empleado introduciendo o bién su
+     * dni o bien su codicard, y con este campo elegimos el tipo de dato que vamos a introducir.
      */
-    public static String hashPassword(String password)  {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+    public void validar(){
+        if(opc_dni.isChecked()==true){
+            opcionCampo = "dni";
         }
-        byte[] encodedHash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-
-        StringBuilder hexString = new StringBuilder(2 * encodedHash.length);
-        for (byte b : encodedHash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
+        if(opc_codi.isChecked()==true){
+            opcionCampo = "codicard";
         }
-
-        return hexString.toString();
     }
 
-    public void eliminarUser(View view){
+    public void eliminarJornada(View view) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirmar acción")
-                .setMessage("¿Estás seguro de que quieres eliminar este usuario?")
+                .setMessage("¿Estás seguro de que quieres eliminar esta jornada?")
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        String crud = "3";
+                        String fecha = jornada.getFecha();
+                        String dni = jornada.getDni();
+
+
                         try {
 
                             if (socket != null && socket.isConnected()) {
@@ -214,17 +197,8 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                                 BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                                 ObjectInputStream perEnt;
 
-                                String codigo = "0";
-                                String crud = "3";
-                                String dni = editTextDniUser.getText().toString();
-
-
-                                //si la pass esta vacia, ponemos la pass anterior, es decir que no la cambiamos
-
-
                                 if(!dni.equals("")){
-                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",dni,"+dni+","+orden;
-                                    //ahora escribimos en servidor , enviandole el login
+                                    String palabra = Utilidades.codigo+","+crud+","+nombreTabla+",dni,"+dni+",fecha,"+fecha+","+orden;
                                     escriptor.write(palabra);
                                     escriptor.newLine();
                                     escriptor.flush();
@@ -239,10 +213,11 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
                                         Object receivedData = perEnt.readObject();
 
                                         if (receivedData instanceof List) {
-                                            Utilidades.mensajeDelServer = "Se ha eliminado correctamente el usuario";
+                                            Utilidades.mensajeDelServer = "Se ha eliminado la jornada correctamente";
                                         } else if (receivedData instanceof String) {
                                             Utilidades.mensajeDelServer = (String) receivedData;
                                             Log.d("Recibido",Utilidades.mensajeDelServer);
+
                                         } else {
                                             Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                                         }
@@ -250,9 +225,8 @@ public class UpdateDeleteUsersActivity extends AppCompatActivity {
 
                                     }
                                 }else{
-                                    mostrarToast("Tienen que estar rellenos el campo contraseña y tipo de usuario" );
+                                    mostrarToast("Tienes que introducir el dni o codicard..dependiendo de tu seleccion" );
                                 }
-
 
                             }
                         } catch (IOException | ClassNotFoundException e) {

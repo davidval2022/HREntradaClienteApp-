@@ -1,4 +1,4 @@
-package davidvalentin.ioc.hrentradaclienteapp.utilidades;
+package davidvalentin.ioc.hrentradaclienteapp.empleados;
 
 import android.view.LayoutInflater;
 import android.view.View;
