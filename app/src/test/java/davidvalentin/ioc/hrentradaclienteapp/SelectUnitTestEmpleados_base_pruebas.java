@@ -23,7 +23,7 @@ import modelo.Empleados;
  */
 
 //info: https://www.nestoralmeida.com/testing-con-junit-4/
-public class SelectUnitTest_base {
+public class SelectUnitTestEmpleados_base_pruebas {
 
 
      String ip = "192.168.1.12";

@@ -51,6 +51,12 @@ public class UsersUnitTest {
          1 - insert
          2 - update
          3 - delete
+
+         codigos tablas:
+         0 - empleados
+         1 - users
+         2 - empresa
+         3 - jornada
      */
 
     /*
