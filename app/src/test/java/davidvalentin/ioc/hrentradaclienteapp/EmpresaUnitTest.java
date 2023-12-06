@@ -106,7 +106,7 @@ public class EmpresaUnitTest {
             //Ahora vamos a dejar como estaba los update (los insert no hace falta porqué
             // lo eliminamos en la parte de test de delete)
             ObjectInputStream perEnt;
-            ArrayList<Empleados> ListaEmpresa = new ArrayList<>();
+            ArrayList<Empresa> ListaEmpresa = new ArrayList<>();
             String mensaje = "";
             String palabra = "";
             Object receivedData;
@@ -413,7 +413,7 @@ public class EmpresaUnitTest {
      * Test nª06. En este test comprobamos que no podemos insertar una Empresa que ya existe
      *
      */
-    //@Test
+    @Test
     public  void insertEmpresa_NG()  {
 
         try {

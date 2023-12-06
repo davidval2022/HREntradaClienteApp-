@@ -628,10 +628,9 @@ public class EmpleadosUnitTest {
             } else if (receivedData instanceof String) {
                 mensaje = (String) receivedData;
             }
-            // FASE - 2  comprobamos que no existe.. para eso comprobamos que esta vacio el arrayList
             assertTrue(listaEmpleados.isEmpty());
             assertEquals("\nEl Dni no existe en el registro",mensaje);
-
+            // FASE - 2  comprobamos que no existe.. para eso comprobamos que esta vacio el arrayList
             //Ahora  creamos al empleado con dni 12L
             palabra = codigo+",1,"+nombreTabla+",dni"+",12345678Z"+",nom"+",Juanito"+",apellido"+",Muntes"+",nomempresa"+
                     ",Frigo"+",departament"+",Produccion"+",codicard"+",0"+",mail"+",juanito@gmail.com"+
