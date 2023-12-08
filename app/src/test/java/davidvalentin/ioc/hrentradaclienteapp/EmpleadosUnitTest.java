@@ -5,19 +5,46 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
+
+//import androidx.test.ext.junit.runners.AndroidJUnit4;
+//import androidx.test.ext.junit.runners.android.AndroidJUnit4;
+//import androidx.test.runner.AndroidJUnit4;
+//import android.support.test.runner.AndroidJUnit4;
+//teoricamente este es el bueno.. el de abajo
+//import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import androidx.test.core.app.ApplicationProvider;
+//import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider; //esto es muy importante y fijarse también en el build.gradle en la declaracion de la dependencia
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import modelo.Empleados;
 
@@ -28,6 +55,7 @@ import modelo.Empleados;
  */
 
 //info: https://www.nestoralmeida.com/testing-con-junit-4/
+
 public class EmpleadosUnitTest {
 
 
@@ -39,6 +67,10 @@ public class EmpleadosUnitTest {
     static BufferedWriter escriptor;
     static String nombreTabla = "0";
     static String orden = "0";
+
+    private static Context context;
+
+
     /*
          1 - Selects (1-13)
          2 - Inserts (14-15)
@@ -83,11 +115,45 @@ public class EmpleadosUnitTest {
     /**
      * Lo primero antes de comenzar los test
      */
+/*
+    @BeforeClass
+    public static void setUp() {
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        login();
+    }
+*/
+
     @BeforeClass
     public  static void login(){
 
         try {
-            socket = new Socket(ip, puerto);
+            //NOTA: esta parte es para cargar el certificado.. además de necesitar alguna dependecia *****************************************************
+            //Hay que guardar la carpeta certificados dentro de Test/resources .. IMPORTANTE: esta carpeta resources no existe y hay que crearla a mano..
+            //esto es para poder utilizar el metoodo getResourceAsStream.
+            //la ruta completa en este caso es: /home/david/AndroidStudioProjects/HREntradaClienteApp/app/src/test/resources/certificados/
+            ClassLoader classLoader = EmpleadosUnitTest_2.class.getClassLoader();
+            InputStream keystoreInputStream = classLoader.getResourceAsStream("certificados/client/clientTrustedCerts.bks");
+            //InputStream keystoreInputStream = new FileInputStream(file);
+            if (keystoreInputStream == null) {
+                System.out.println("No se pudo encontrar el archivo en el classpath.");
+                return;
+            }
+            Security.addProvider(new BouncyCastleProvider());//linea necesaria también.. he cargado la dependencia y el import
+
+            KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
+            trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(trustStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+            SSLSocketFactory clientFactory = sslContext.getSocketFactory();
+
+            socket = clientFactory.createSocket(ip, puerto);
+            // hasta aquí la creacion del socket con el certificado.. si la conexion no fuese cifrada bastaría con la linea de aquí abajo**********************
+            //socket = new Socket(ip, puerto);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
@@ -99,10 +165,21 @@ public class EmpleadosUnitTest {
             codigo = lector.readLine();
 
 
-        } catch (IOException e) {
+
+        } catch (IOException | KeyStoreException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }
+
+
+
+
 
     /**
      * Al final, cuando finalicen los test nos desconectamos
@@ -121,7 +198,7 @@ public class EmpleadosUnitTest {
             Object receivedData;
             //Dejamos el empleado David tal y como estaba al principio de los test
             palabra = codigo+",2,"+nombreTabla+",dniNuevo"+",11111111A"+",nomNuevo,"+"David"+",apellidoNuevo"+","+"Valentin M"+",nomempresaNuevo"+
-                    ",Frigo"+",departamentNuevo"+",Produccion"+",codicardNuevo"+","+"32624"+",mailNuevo"+",davicito@gmail.com"+
+                    ",Frigo"+",departamentNuevo"+",Produccion"+",codicardNuevo"+","+"32624"+",mailNuevo"+",david@gmail.com"+
                     ",telephonNuevo"+",34+12345678"+",dni,"+"11111111A"+","+orden;
             escriptor.write(palabra);
             escriptor.newLine();
@@ -142,6 +219,11 @@ public class EmpleadosUnitTest {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    public static void insertarEmpleadosInicio(){
 
     }
 
@@ -217,7 +299,7 @@ public class EmpleadosUnitTest {
 
             ObjectInputStream perEnt;
             ArrayList<Empleados> listaEmpleados = new ArrayList<>();
-            String mensaje;
+            String mensaje = "";
 
             String palabra = codigo+",0,"+nombreTabla+",dni"+",11111111W"+","+orden;
             escriptor.write(palabra);
@@ -232,6 +314,9 @@ public class EmpleadosUnitTest {
                 mensaje = (String) receivedData;
             }
             assertTrue(listaEmpleados.isEmpty());
+            assertEquals("\n" +
+                    "El Dni no existe en el registro",mensaje);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -616,7 +701,7 @@ public class EmpleadosUnitTest {
             Object receivedData;
 
             // FASE 1 - Lo primero es comprobar que no existe ese dni el la BD
-            palabra = codigo+",0,"+nombreTabla+",dni"+",12L"+","+orden;
+            palabra = codigo+",0,"+nombreTabla+",dni"+",12345678Z"+","+orden;
             escriptor.write(palabra);
             escriptor.newLine();
             escriptor.flush();
@@ -684,7 +769,7 @@ public class EmpleadosUnitTest {
             Object receivedData;
 
 
-            //Ahora  creamos al empleado Juanita aunque no lo creara, dara un error
+            //Ahora  creamos al empleado Juanita aunque no lo creara, dara un error porque la empresa no existe
             palabra = codigo+",1,"+nombreTabla+",dni"+",12345678P"+",nom"+",Juanita"+",apellido"+",Martinez"+",nomempresa"+
                     ",EstaEmpresaNoExiste"+",departament"+",Produccion"+",codicard"+",0"+",mail"+",juanita@gmail.com"+
                     ",telephon"+",12345679"+","+orden;
@@ -763,7 +848,7 @@ public class EmpleadosUnitTest {
             // FASE - 2  comprobamos  existe.. para eso comprobamos que esta vacio el arrayList
             Empleados empleado = listaEmpleados.get(0);
 
-            //Ahora  modificamos el empleado el teléfono con dni 11111111A (que es nuestro empleado David)
+            //Ahora  modificamos el empleado el teléfono con dni 11111111A (que es nuestro empleado David), y su mail para que sea davicito@ en lugar de david@
             palabra = codigo+",2,"+nombreTabla+",dniNuevo"+",11111111A"+",nomNuevo,"+empleado.getNom()+",apellidoNuevo"+","+empleado.getApellido()+",nomempresaNuevo"+
                     ",Frigo"+",departamentNuevo"+",Produccion"+",codicardNuevo"+","+empleado.getCodicard()+",mailNuevo"+",davicito@gmail.com"+
                     ",telephonNuevo"+",ALMERIA"+",dni,"+listaEmpleados.get(0).getDni()+","+orden;

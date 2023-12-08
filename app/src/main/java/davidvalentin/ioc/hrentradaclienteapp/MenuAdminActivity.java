@@ -92,4 +92,13 @@ public class MenuAdminActivity extends AppCompatActivity {
         Intent intent = new Intent(this,  JornadasActivity.class);
         startActivity(intent);
     }
+
+    /**
+     *  Metodo que nos lleva a la activity para cambiar la contraseña
+     * @param view representa la vista con la que se está interactuando, no utilizado en este caso
+     */
+    public void irACambiarPass(View view) {
+        Intent intent = new Intent(this,  CambioPassActivity.class);
+        startActivity(intent);
+    }
 }

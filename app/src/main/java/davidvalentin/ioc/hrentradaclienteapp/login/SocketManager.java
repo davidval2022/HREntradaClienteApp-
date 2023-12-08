@@ -1,7 +1,20 @@
 package davidvalentin.ioc.hrentradaclienteapp.login;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 /**
  * La clase `SocketManager` gestiona la creación, obtención y cierre de un socket para la comunicación
@@ -14,6 +27,10 @@ public class SocketManager {
     private String serverAddress;
     // Puerto del servidor
     private int serverPort;
+    //nuevo para cifrado
+    private InputStream keystoreInputStream;
+    private Context context;
+
 
 
     /**
@@ -22,9 +39,10 @@ public class SocketManager {
      * @param serverAddress Dirección IP del servidor.
      * @param serverPort    Puerto del servidor.
      */
-    public SocketManager(String serverAddress, int serverPort) {
+    public SocketManager(String serverAddress, int serverPort, Context context) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
+        this.context = context;
     }
 
     /**
@@ -32,8 +50,41 @@ public class SocketManager {
      */
     public void openSocket() {
         try {
-            socket = new Socket(serverAddress, serverPort);
-        } catch (IOException e) {
+            /*
+            //Para comprobar que el archivo pueda leerse.. pruebas
+            try {
+                String[] assets = context.getAssets().list("certificados/client");
+                for (String asset : assets) {
+                    Log.d("Assets", "Asset in certificados/client: " + asset);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            */
+            // ESTA PARTE ES PARA CIFRAR.. DESDE AQUÍ
+            InputStream keystoreInputStream = context.getAssets().open("certificados/client/clientTrustedCerts.bks");  // Cambié la extensión a .bks
+            KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
+            trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(trustStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+            SSLSocketFactory clientFactory = sslContext.getSocketFactory();
+
+            socket = clientFactory.createSocket(serverAddress, serverPort);
+            //HASTA AQUI
+            //SI SE QUIERE SIN CIFRAR COMENTAR LAS ANTERIORES LINEAS Y DESCOMENTAR LA DE ABAJO
+           // socket = new Socket(serverAddress, serverPort);//manera sin cifrar..
+        } catch (IOException | KeyStoreException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }

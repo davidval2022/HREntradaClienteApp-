@@ -18,6 +18,9 @@
         android:theme="@style/Theme.HREntradaClienteApp"
         tools:targetApi="31">
         <activity
+            android:name=".CambioPassActivity"
+            android:exported="false" />
+        <activity
             android:name=".jornadas.UpdateDeleteJornadaActivity"
             android:exported="false" />
         <activity

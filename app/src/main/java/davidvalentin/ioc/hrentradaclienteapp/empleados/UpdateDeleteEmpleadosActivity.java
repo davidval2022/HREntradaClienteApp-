@@ -268,6 +268,7 @@ public class UpdateDeleteEmpleadosActivity extends AppCompatActivity {
                                             Utilidades.mensajeDelServer = "Se ha eliminado correctamente el empleado";
                                         } else if (receivedData instanceof String) {
                                             Utilidades.mensajeDelServer = (String) receivedData;
+                                            volver(view);
                                             Log.d("Recibido",Utilidades.mensajeDelServer);
                                         } else {
                                             Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";

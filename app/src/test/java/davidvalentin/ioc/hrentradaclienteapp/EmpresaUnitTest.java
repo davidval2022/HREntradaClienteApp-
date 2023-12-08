@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,12 +12,23 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import modelo.Empleados;
 import modelo.Empresa;
@@ -40,10 +52,10 @@ public class EmpresaUnitTest {
     static String nombreTabla = "2";
     static String orden = "0";
     /*
-         1 - Selects (1-5)
-         2 - Inserts (6-7)
-         3 - Update  (8)
-         4 - Delete  (9-10)
+         1 - Selects (1-4)
+         2 - Inserts (5-6)
+         3 - Update  (7)
+         4 - Delete  (8-9)
 
          codigos CRUD:
          0 - select
@@ -75,11 +87,37 @@ public class EmpresaUnitTest {
     public  static void login(){
 
         try {
-            socket = new Socket(ip, puerto);
+            //NOTA: esta parte es para cargar el certificado.. además de necesitar alguna dependecia *****************************************************
+            //Hay que guardar la carpeta certificados dentro de Test/resources .. IMPORTANTE: esta carpeta resources no existe y hay que crearla a mano..
+            //esto es para poder utilizar el metoodo getResourceAsStream.
+            //la ruta completa en este caso es: /home/david/AndroidStudioProjects/HREntradaClienteApp/app/src/test/resources/certificados/
+            ClassLoader classLoader = EmpleadosUnitTest_2.class.getClassLoader();
+            InputStream keystoreInputStream = classLoader.getResourceAsStream("certificados/client/clientTrustedCerts.bks");
+            //InputStream keystoreInputStream = new FileInputStream(file);
+            if (keystoreInputStream == null) {
+                System.out.println("No se pudo encontrar el archivo en el classpath.");
+                return;
+            }
+            Security.addProvider(new BouncyCastleProvider());//linea necesaria también.. he cargado la dependencia y el import
+
+            KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
+            trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(trustStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+            SSLSocketFactory clientFactory = sslContext.getSocketFactory();
+
+            socket = clientFactory.createSocket(ip, puerto);
+            // hasta aquí la creacion del socket con el certificado.. si la conexion no fuese cifrada bastaría con la linea de aquí abajo**********************
+            //socket = new Socket(ip, puerto);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            String mensajeServer = lector.readLine();//leemos el mensaje de bienvenida del server
+            String mensajeServer = lector.readLine();
             //enviamos los datos de un usuario administrador
             escriptor.write("admin,admin");
             escriptor.newLine();
@@ -88,7 +126,13 @@ public class EmpresaUnitTest {
             insertEmpresaInicio();//creamos los datos de inicio.. en este caso una empresa que borraremos
             //en el test de deleteEmpresa
 
-        } catch (IOException e) {
+        } catch (IOException | KeyStoreException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }
@@ -336,7 +380,7 @@ public class EmpresaUnitTest {
     /*
          Pruebas  Inserts
          05 - insert Empresa OK  ---------------------- insertEmpresa
-         06 - insert Empresa NG  ---------------------- insertEmpresa_NG (falta el nombre)
+         06 - insert Empresa NG  ---------------------- insertEmpresa_NG (la empresa ya existe)
          (Creamos al usuario Juanito
 
      */
@@ -466,9 +510,8 @@ public class EmpresaUnitTest {
     /**
      * Test nª07. En este caso lo que hacemos es actualizar una empresa en la BD
      * Para comprobar el test, primero buscamos un empresa y guardamos sus datos
-     * luego modificamos uno de sus datos.. en este caso el tipo de user.
-     * Ademas luego buscaremos un empleado de esa empresa que hemos modificado y veremos que
-     * también ha cambiado de empresa.
+     * luego modificamos uno de sus datos.. en este caso la dirección.. en principio es de
+     * Tarragona pero le vamos a dar la direccion de Japon
      */
 
     @Test
@@ -644,8 +687,8 @@ public class EmpresaUnitTest {
             } else if (receivedData instanceof String) {
                 mensaje = (String) receivedData;
             }
-            assertTrue(ListaEmpresa.isEmpty());//comprobamos que no tenemos un empleado con ese dni
-            // y comprobamos el mensaje del server, que no puede eliminar al empleado
+            assertTrue(ListaEmpresa.isEmpty());//comprobamos el arrayList está vacio
+            // y comprobamos el mensaje del server, que la empresa no existe en el registro
             assertEquals("\nEl nombre de la empresa no existe en el registro",mensaje);
 
 

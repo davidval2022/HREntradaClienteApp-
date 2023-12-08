@@ -20,6 +20,7 @@ public class Utilidades {
     public static SocketManager socketManager = null;
     public static int tipoUser  = 1;//por defecto será solo usuario normal y no admin
     public static String nombreUser = "";
+    public static Users usuario = null;//lo necesito para el cambio de contraseña
     //variables necesarias para los diferentes arraylist
     public static ArrayList<Empleados> listaEmpleados = new ArrayList<>();
     public static ArrayList<Users> listaUsers = new ArrayList<>();

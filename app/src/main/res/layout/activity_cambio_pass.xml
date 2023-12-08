@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CambioPassActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/ImageviewLogo"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                app:srcCompat="@drawable/logo" />
+            <TextView
+                android:id="@+id/textViewMensajeConNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Si quieres modificar tu contraseña puedes hacerlo desde aquí"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="40dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/editTextLoginUpDel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:ems="10"
+                    android:hint="Cambia tu contraseña:"
+                    android:textSize="20sp"
+                    android:enabled="false"
+                    android:minHeight="40dp" />
+
+                <EditText
+                    android:id="@+id/editTextPassNueva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Nueva contraseña"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/editTextPassNuevaComprobacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Vuelve a escribir nueva contrseña"
+                    android:minHeight="48dp" />
+
+
+
+                <Button
+                    android:id="@+id/btnGuardarUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="guardar contraseña"
+                    android:onClick="cambiarPass"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"/>
+
+
+                <Button
+                    android:id="@+id/btnVolver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="volver atras"
+                    android:onClick="volver"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"/>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

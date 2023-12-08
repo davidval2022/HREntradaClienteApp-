@@ -241,6 +241,7 @@ public class UpdateDeleteEmpresaActivity extends AppCompatActivity {
                                         Utilidades.mensajeDelServer = "Se ha  eliminado la empresa correctamente";
                                     } else if (receivedData instanceof String) {
                                         Utilidades.mensajeDelServer = (String) receivedData;
+                                        volver(view);
                                     } else {
                                         Utilidades.mensajeDelServer ="Datos inesperados recibidos del servidor";
                                     }

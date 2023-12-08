@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             if (networkInfo != null && networkInfo.isConnected()){
                 //mostrarToast("Valor de redActiva: "+redActiva);
                 redActiva = true;
-                Utilidades.socketManager = new SocketManager(ip,Integer.parseInt(puerto) );
+                Utilidades.socketManager = new SocketManager(ip,Integer.parseInt(puerto),this );
                 Utilidades.socketManager.openSocket();
                 conexionAsyn = new ConexionAsyn(Utilidades.socketManager,usuario,pass,this,textLogeado,btnMenu,btnEnviar);
                 conexionAsyn.execute();

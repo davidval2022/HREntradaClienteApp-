@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,13 +13,24 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import modelo.Jornada;
 
@@ -43,10 +55,10 @@ public class JornadaUnitTest {
     static String orden = "0";
 
     /*
-         1 - Selects (1-5)
-         2 - Inserts (6-7)
-         3 - Update  (8)
-         4 - Delete  (9-10)
+         1 - Selects (1-18)
+         2 - Inserts (19-24)
+         3 - Update  (25-30)
+         4 - Delete  (31-32)
 
          codigos CRUD:
          0 - select
@@ -93,11 +105,37 @@ public class JornadaUnitTest {
     public  static void login(){
 
         try {
-            socket = new Socket(ip, puerto);
+            //NOTA: esta parte es para cargar el certificado.. además de necesitar alguna dependecia *****************************************************
+            //Hay que guardar la carpeta certificados dentro de Test/resources .. IMPORTANTE: esta carpeta resources no existe y hay que crearla a mano..
+            //esto es para poder utilizar el metoodo getResourceAsStream.
+            //la ruta completa en este caso es: /home/david/AndroidStudioProjects/HREntradaClienteApp/app/src/test/resources/certificados/
+            ClassLoader classLoader = EmpleadosUnitTest_2.class.getClassLoader();
+            InputStream keystoreInputStream = classLoader.getResourceAsStream("certificados/client/clientTrustedCerts.bks");
+            //InputStream keystoreInputStream = new FileInputStream(file);
+            if (keystoreInputStream == null) {
+                System.out.println("No se pudo encontrar el archivo en el classpath.");
+                return;
+            }
+            Security.addProvider(new BouncyCastleProvider());//linea necesaria también.. he cargado la dependencia y el import
+
+            KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
+            trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(trustStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+            SSLSocketFactory clientFactory = sslContext.getSocketFactory();
+
+            socket = clientFactory.createSocket(ip, puerto);
+            // hasta aquí la creacion del socket con el certificado.. si la conexion no fuese cifrada bastaría con la linea de aquí abajo**********************
+            //socket = new Socket(ip, puerto);
             lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            String mensajeServer = lector.readLine();//leemos el mensaje de bienvenida del server
+            String mensajeServer = lector.readLine();
             //enviamos los datos de un usuario administrador
             escriptor.write("admin,admin");
             escriptor.newLine();
@@ -107,7 +145,13 @@ public class JornadaUnitTest {
             //empleados diferentes, 2 para los test del update que se borraran con el metodo logout
             //al acabar los test y otros 2 que se eliminaran con los test del delete
 
-        } catch (IOException e) {
+        } catch (IOException | KeyStoreException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }
@@ -227,7 +271,7 @@ public class JornadaUnitTest {
     }
 
     /**
-     * Método que no forma parte de los test, se ejecuta una vez al inicio para iniciar las 4 Jornadas que utilizaremos en
+     * Método que no forma parte de los test en sí, se ejecuta una vez al inicio para iniciar las 4 Jornadas que utilizaremos en
      * updateJorndas y en deleteJorndadas..
      * 2 de ellas las utilizaremos en UpdateJorndas para cerrar las jornadas y las otras dos en deleteJornadas. Luego al fina
      * en el metodo logout eliminaremos las dos jorndas utilizadas en UpdateJorndas.
@@ -955,8 +999,8 @@ public class JornadaUnitTest {
          20 - insert Jornada dni NG  --------------------------- insertJornada_dni_NG (dni ya tiene jornada iniciada)
          21 - insert Jornada dni NG_2  ------------------------- insertJornada_dni_NG_2 (dni no existe en la tabla joranda)
          22 - insert Jornada codicard OK  ---------------------- insertJornada_codicard_OK
-         22 - insert Jornada codicard NG  ---------------------- insertJornada_codicard_NG (codicard no existe en tabla empleados)
-         23 - insert Jornada codicard NG  ---------------------- insertJornada_codicard_NG (codicard ya tiene iniciada sesion)
+         23 - insert Jornada codicard NG  ---------------------- insertJornada_codicard_NG (codicard no existe en tabla empleados)
+         24 - insert Jornada codicard NG 2  ---------------------- insertJornada_codicard_NG_2 (codicard ya tiene iniciada sesion)
 
      */
 
@@ -1305,10 +1349,12 @@ public class JornadaUnitTest {
          momento.
          La Jornada, al igual que cuando se crea, se puede cerrar por dni o por codicard
          Pruebas  Update
-         25 - update Jornada dni OK  --------------------------- updateJornada_dni_OK
-         26 - update Jornada dni NG  --------------------------- updateJornada_NG
-         27 - update Jornada codicard OK  ---------------------- updateJornada_dni_OK
-         26 - update Jornada codicard NG  ---------------------- updateJornada_NG
+         25 - update Jornada dni OK  --------------------------- updateJornada_dni_OK (cerramos jornada con dni)
+         26 - update Jornada dni NG  --------------------------- updateJornada_dni_NG (porque ya estaba cerrada, utilizamos dni)
+         27 - update Jornada dni NG 2  ------------------------- updateJornada_dni_NG_2 (porque no se ha iniciado, no se encuentra dni)
+         28 - update Jornada codicard OK  ---------------------- updateJornada_codicard_OK (cerramos jornada con codicard)
+         29 - update Jornada codicard NG  ---------------------- updateJornada_codicard_NG (ya tenia jornada iniciada, lo hacemos con codicard)
+         30 - update Jornada codicard NG  ---------------------- updateJornada_codicard_NG_2 (no tenía jornada iniciada, lo hacemos con codicard)
      */
     /**
      * Test nº 25 . En este test vamos ha cerrar un jornada iniciada. Esta jornada la hemos
@@ -1627,6 +1673,8 @@ public class JornadaUnitTest {
          no la hemos implementado en nuestro programa ya que creemos que no hay ningún motivo para
          implementar esta opcion en una app o aplicacion de escritorio.. si hiciese falta se prodría
          hacer directamente desde la BD.
+         En estos test solo lo vamos a hacer con el dni.. (haré un prueba con codicard en la parte
+         gráfica de la app en el video)
 
      */
     /**

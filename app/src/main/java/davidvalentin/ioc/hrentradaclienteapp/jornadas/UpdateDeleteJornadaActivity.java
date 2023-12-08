@@ -216,6 +216,7 @@ public class UpdateDeleteJornadaActivity extends AppCompatActivity {
                                             Utilidades.mensajeDelServer = "Se ha eliminado la jornada correctamente";
                                         } else if (receivedData instanceof String) {
                                             Utilidades.mensajeDelServer = (String) receivedData;
+                                            volver(view);
                                             Log.d("Recibido",Utilidades.mensajeDelServer);
 
                                         } else {
