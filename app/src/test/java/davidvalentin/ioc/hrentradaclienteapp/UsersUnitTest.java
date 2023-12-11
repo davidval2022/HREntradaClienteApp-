@@ -436,7 +436,7 @@ public class UsersUnitTest {
          08 - insert User OK  ---------------------- insertUser
          09 - insert User NG  ---------------------- insertUser_NG (ya esta registrado)
          10 - insert User NG 2  -------------------- insertUser_NG_2 (no existe dni)
-         (Creamos al usuario Juanito
+
 
      */
 

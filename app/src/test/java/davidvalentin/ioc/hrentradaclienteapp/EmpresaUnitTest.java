@@ -75,8 +75,8 @@ public class EmpresaUnitTest {
          Pruebas  Select iniciales
          01 - nombre empresa OK  ---------------------- selectEmpresa_nom_OK
          02 - nombre empresa NG  ---------------------- selectEmpresa_nom_NG
-         04 - direccion   OK -------------------------- selectAddress_OK
-         05 - direccion   NG -------------------------- selectAddress_NG
+         03 - direccion   OK -------------------------- selectAddress_OK
+         04 - direccion   NG -------------------------- selectAddress_NG
 
      */
 
@@ -381,7 +381,6 @@ public class EmpresaUnitTest {
          Pruebas  Inserts
          05 - insert Empresa OK  ---------------------- insertEmpresa
          06 - insert Empresa NG  ---------------------- insertEmpresa_NG (la empresa ya existe)
-         (Creamos al usuario Juanito
 
      */
 

@@ -41,21 +41,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/editTextLoginUpDel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:ems="10"
-                    android:hint="Cambia tu contraseña:"
-                    android:textSize="20sp"
-                    android:enabled="false"
-                    android:minHeight="40dp" />
+
 
                 <EditText
                     android:id="@+id/editTextPassNueva"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     android:ems="10"
                     android:hint="Nueva contraseña"
                     android:minHeight="48dp" />
@@ -64,8 +56,9 @@
                     android:id="@+id/editTextPassNuevaComprobacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     android:ems="10"
-                    android:hint="Vuelve a escribir nueva contrseña"
+                    android:hint="Vuelve a escribir la nueva contraseña"
                     android:minHeight="48dp" />
 
 

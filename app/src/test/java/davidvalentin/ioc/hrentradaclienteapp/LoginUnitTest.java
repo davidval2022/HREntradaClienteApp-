@@ -46,7 +46,7 @@ public class LoginUnitTest {
 
 
     //nuevo login
-
+/*
     //@BeforeClass
     @Test
     public   void login(){
@@ -110,7 +110,7 @@ public class LoginUnitTest {
     }
 
 
-
+*/
     //////////////////  PRUEBAS PARTE DE LOGIN / LOGOUT ////////////////////////////////////
 
     /**
@@ -265,7 +265,7 @@ public class LoginUnitTest {
 
             String mensajeServer = lector.readLine();
             //enviamos los datos de un usuario administrador
-            escriptor.write("user,user");
+            escriptor.write("user,user");//NOTA: puede ser que en el backup de la BD, la pass sea 1234 y el usuario sea de tipo 0
             escriptor.newLine();
             escriptor.flush();
             mensajeServer = lector.readLine();

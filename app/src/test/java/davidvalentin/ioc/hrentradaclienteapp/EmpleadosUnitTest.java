@@ -677,7 +677,7 @@ public class EmpleadosUnitTest {
          Pruebas  Inserts
          14 - insert Empleado OK  ---------------------- insertEmpleado
          15 - insert Empleado NG  ---------------------- insertEmpleado_NG
-         (Creamos al usuario Juanito
+
 
      */
 
@@ -1010,7 +1010,7 @@ public class EmpleadosUnitTest {
     }
 
     /**
-     * Test nª19. En este caso lo que hacemos es  intentareliminar un empleado
+     * Test nª19. En este caso lo que hacemos es  intentar eliminar un empleado
      * que no existe en la BD.
      * El servidor nos enviará un error que compararemos con nuestro mensaje
      */

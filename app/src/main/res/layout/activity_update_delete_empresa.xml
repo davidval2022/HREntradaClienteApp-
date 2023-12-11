@@ -88,17 +88,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
-                <Button
-                    android:id="@+id/btnReset"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="resetear campos"
-                    android:onClick="reset"
-                    android:gravity="center_horizontal"
 
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"/>
 
                 <Button
                     android:id="@+id/btnVolver"
