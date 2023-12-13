@@ -16,6 +16,7 @@ import davidvalentin.ioc.hrentradaclienteapp.login.LogoutAsyn;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  * Activity que asociada al menú de usuario de tipo normal (1)
  */
 public class MenuUserActivity extends AppCompatActivity {

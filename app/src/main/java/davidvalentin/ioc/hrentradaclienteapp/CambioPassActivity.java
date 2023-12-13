@@ -24,6 +24,7 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Users;
 
 /**
+ * @author David Valentin Mateo
  * Activity creada para que los usuarios (admin o users) cambien sus contraseñas
  * Los Administradores pueden también cambiar las contraseñas de cualquier usuario
  * desde la ventana de Actualizar/Eliminar users.

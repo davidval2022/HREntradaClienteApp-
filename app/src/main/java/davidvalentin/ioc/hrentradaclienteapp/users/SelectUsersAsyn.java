@@ -26,6 +26,7 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Users;
 
 /**
+ * @author David Valentin Mateo
  * La clase `SelectUsersAsyn` es una subclase de `AsyncTask` diseñada para realizar operaciones
  * de consulta en segundo plano en un servidor utilizando sockets. Esta clase maneja la obtención de datos
  * desde el servidor y actualiza un `RecyclerView` con la lista de usuarios obtenida.

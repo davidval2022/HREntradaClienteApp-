@@ -30,6 +30,7 @@ import davidvalentin.ioc.hrentradaclienteapp.users.UsersActivity;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Users;
 /**
+ * @author David Valentin Mateo
  * Activity asociada a la modificacion de  users existentes. En la parte gráfica tenemos un formulario
  * donde introduciremos las modificaciones y luego a traves de esta activity seran tratados y enviados
  * al server

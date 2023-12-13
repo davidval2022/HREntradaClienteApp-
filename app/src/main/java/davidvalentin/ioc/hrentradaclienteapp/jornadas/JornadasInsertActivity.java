@@ -24,6 +24,7 @@ import java.util.List;
 import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 /**
+ * @author David Valentin Mateo
  * Activity asociada a la creación de nuevas jornadas. En la parte gráfica tenemos un formulario
  * donde introduciremos los datos y luego a traves de esta activity seran tratados y enviados
  * al server

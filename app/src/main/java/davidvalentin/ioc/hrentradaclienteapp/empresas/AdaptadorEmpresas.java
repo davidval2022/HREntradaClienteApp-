@@ -14,6 +14,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Empresa;
 
 /**
+ * @author David Valentin Mateo
  * Clase AdaptadorEmpresas: Adapta y gestiona la presentación de datos de empresas en un RecyclerView.
  * Esta clase extiende  de RecyclerView.Adapter y se encarga de manejar la creación de vistas y la vinculación
  * de datos para la presentación de empresas en el RecyclerView.

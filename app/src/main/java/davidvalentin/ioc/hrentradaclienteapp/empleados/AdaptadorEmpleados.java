@@ -14,6 +14,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Empleados;
 
 /**
+ * @author David Valentin Mateo
  * Clase AdaptadorEmpleados: Adapta y gestiona la presentación de datos de empleados en un RecyclerView.
  * Esta clase extiende  de RecyclerView.Adapter y se encarga de manejar la creación de vistas y la vinculación
  * de datos para la presentación de empleados en el RecyclerView.

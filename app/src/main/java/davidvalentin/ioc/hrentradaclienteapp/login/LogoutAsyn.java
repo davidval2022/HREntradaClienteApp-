@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /**
+ * @author David Valentin Mateo
  * La clase `LogoutAsyn` es una subclase de `AsyncTask` que se utiliza para manejar la desconexión
  * de un socket del servidor en segundo plano. Esta clase realiza la desconexión y muestra un mensaje
  * del servidor a través de un `Toast` después de completar la tarea.

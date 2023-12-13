@@ -18,6 +18,7 @@ import java.net.Socket;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  * Clase ConexionAsyn: Realiza una conexión asíncrona con el servidor utilizando la clase AsyncTask.
  * Esta clase maneja la comunicación asíncrona con el servidor para realizar la autenticación de usuario.
  * Extiende AsyncTask, permitiendo la ejecución de operaciones en segundo plano sin bloquear la interfaz de usuario.

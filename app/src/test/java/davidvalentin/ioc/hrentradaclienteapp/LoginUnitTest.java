@@ -45,72 +45,9 @@ public class LoginUnitTest {
 
 
 
-    //nuevo login
-/*
-    //@BeforeClass
-    @Test
-    public   void login(){
-
-        try {
-            //NOTA: esta parte es para cargar el certificado.. además de necesitar alguna dependecia *****************************************************
-            //Hay que guardar la carpeta certificados dentro de Test/resources .. IMPORTANTE: esta carpeta resources no existe y hay que crearla a mano..
-            //esto es para poder utilizar el metoodo getResourceAsStream.
-            //la ruta completa en este caso es: /home/david/AndroidStudioProjects/HREntradaClienteApp/app/src/test/resources/certificados/
-            ClassLoader classLoader = LoginUnitTest.class.getClassLoader();
-            InputStream keystoreInputStream = classLoader.getResourceAsStream("certificados/client/clientTrustedCerts.bks");
-            if (keystoreInputStream == null) {
-                System.out.println("No se pudo encontrar el archivo en el classpath.");
-                return;
-            }
-            Security.addProvider(new BouncyCastleProvider());
-            //KeyStore trustStore = KeyStore.getInstance("BKS");
-            //trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());
-            KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
-            trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load
-
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(trustStore);
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-
-            SSLSocketFactory clientFactory = sslContext.getSocketFactory();
-
-            Socket socket = clientFactory.createSocket(ip, puerto);
-
-            BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedWriter escriptor = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-            String mensajeServer = lector.readLine();
-            //enviamos los datos de un usuario administrador
-            escriptor.write("admin,admin");
-            escriptor.newLine();
-            escriptor.flush();
-            mensajeServer = lector.readLine();
-            //El primer carácter del codigo recibido debe ser una A (admin)(notar que la A va entre '' por se character)
-            assertEquals('A',mensajeServer.charAt(0));
-            //cerramos sesion
-            escriptor.write("exit");
-            escriptor.newLine();
-            escriptor.flush();
-            //leemos el último mensaje  que nos envia el server para poder cerrar correctamente
-            mensajeServer = lector.readLine();
-            socket.close();
 
 
-        } catch (IOException | KeyStoreException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-    }
 
-
-*/
     //////////////////  PRUEBAS PARTE DE LOGIN / LOGOUT ////////////////////////////////////
 
     /**

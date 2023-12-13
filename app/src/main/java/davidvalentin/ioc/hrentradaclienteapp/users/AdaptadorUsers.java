@@ -14,6 +14,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import modelo.Users;
 
 /**
+ * @author David Valentin Mateo
  * Clase AdaptadorUsers: Adapta y gestiona la presentación de datos de users en un RecyclerView.
  * Esta clase extiende  de RecyclerView.Adapter y se encarga de manejar la creación de vistas y la vinculación
  * de datos para la presentación de users en el RecyclerView.

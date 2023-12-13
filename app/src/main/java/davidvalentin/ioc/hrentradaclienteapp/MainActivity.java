@@ -26,6 +26,7 @@ import davidvalentin.ioc.hrentradaclienteapp.login.SocketManager;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  *  Activity principal, es el menú de login. Desde aquí una vez logeados iremos al menú que corresponda que pueden ser
  *  2, o menu de usuario normal o menu de usuario administrador
  */

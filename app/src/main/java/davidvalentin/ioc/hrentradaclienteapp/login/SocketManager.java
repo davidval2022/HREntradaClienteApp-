@@ -17,6 +17,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 /**
+ * @author David Valentin Mateo
  * La clase `SocketManager` gestiona la creación, obtención y cierre de un socket para la comunicación
  * con un servidor remoto utilizando una dirección IP y un puerto específicos.
  */
@@ -61,7 +62,7 @@ public class SocketManager {
                 e.printStackTrace();
             }
             */
-            // ESTA PARTE ES PARA CIFRAR.. DESDE AQUÍ
+            // ESTA PARTE ES PARA CIFRAR.. DESDE AQUÍ (la carpeta assets hay que crearla a mano)
             InputStream keystoreInputStream = context.getAssets().open("certificados/client/clientTrustedCerts.bks");  // Cambié la extensión a .bks
             KeyStore trustStore = KeyStore.getInstance("BKS");  // Cambié el tipo de almacén a BKS
             trustStore.load(keystoreInputStream, "254535fd32_A".toCharArray());  // Cambié la contraseña y el método load

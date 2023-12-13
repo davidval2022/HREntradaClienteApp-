@@ -20,6 +20,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  *  Activity asociada a la pantalla principal de jornadas. Desde aquí podemos ver todas las
  *  jornadas, podemos filtrar por diferentes campos, en este caso
  *  y  a diferencia de las otras activitys similares a esta, tenemos dos campos donde poder

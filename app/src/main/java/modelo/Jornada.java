@@ -1,6 +1,11 @@
 package modelo;
 
 import java.io.Serializable;
+/**
+ *
+ * @author david
+ * Es una clase persistente y representa  en la BD a la tabla Jornada
+ */
 @SuppressWarnings("serial")
 public class Jornada implements Serializable {
     private static final long serialVersionUID = 6529685098267757690L;

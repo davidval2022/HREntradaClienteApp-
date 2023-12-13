@@ -19,6 +19,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  *  Activity asociada a la pantalla principal de users. Desde aquí podemos ver  todos los users,
  *  podemos filtrar por diferentes campos y tenemos un botón para ir a otra pantalla donde
  *  poder crear nuevos users

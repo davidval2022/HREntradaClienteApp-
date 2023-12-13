@@ -20,6 +20,7 @@ import davidvalentin.ioc.hrentradaclienteapp.R;
 import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 
 /**
+ * @author David Valentin Mateo
  *  Activity asociada a la pantalla principal de empresas. Desde aquí podemos ver  todas las empresas,
  *  podemos filtrar por diferentes campos y tenemos un botón para ir a otra pantalla donde
  *  poder crear nuevas empresas

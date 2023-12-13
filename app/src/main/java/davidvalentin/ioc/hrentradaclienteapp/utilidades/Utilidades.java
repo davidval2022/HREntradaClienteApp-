@@ -9,6 +9,7 @@ import modelo.Jornada;
 import modelo.Users;
 
 /**
+ * @author David Valentin Mateo
  *  Esta clase simplemente contiene variables que se utilizarán (algunas) durante todo el programa
  *  Se podría hacer de otra manera, es decir crear un clase que no solo fuesen variables estaticas
  *  y luego instanciar esta clase y ir pasandola como parámetro pero he preferido hacerlo así.

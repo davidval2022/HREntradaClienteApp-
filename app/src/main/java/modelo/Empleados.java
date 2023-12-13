@@ -8,6 +8,7 @@ package modelo;
 /**
  *
  * @author david
+ * Es una clase persistente y representa  en la BD a la tabla Empleados
  */
 import java.io.Serializable;
 

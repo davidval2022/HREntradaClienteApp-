@@ -27,6 +27,7 @@ import davidvalentin.ioc.hrentradaclienteapp.utilidades.Utilidades;
 import modelo.Jornada;
 
 /**
+ * @author David Valentin Mateo
  * Activity asociada al cierre  de una jornada existentes. En la parte gráfica tenemos un formulario
  * donde introduciremos las modificaciones y luego a traves de esta activity seran tratados y enviados
  * al server
