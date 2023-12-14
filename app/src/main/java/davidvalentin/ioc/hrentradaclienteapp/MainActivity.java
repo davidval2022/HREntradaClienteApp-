@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
+            //aunque respecto a esto de arriba, lo de esconder el teclado la forma de hacerlo es desde
+            //el archivo manifest añadiendo esto a la activity (ver el archivo manifest)
+            //android:windowSoftInputMode="stateHidden"
 
         }catch(Exception e){
             Log.d("Error","Errores en login: "+e);

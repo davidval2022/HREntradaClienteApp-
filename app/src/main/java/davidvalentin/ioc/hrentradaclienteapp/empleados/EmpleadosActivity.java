@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -34,7 +36,7 @@ public class EmpleadosActivity extends AppCompatActivity{
     RecyclerView.LayoutManager layoutManager;
     String nombreCampoFiltro;
     EditText editTextFiltro;
-     String palabraFiltro = "-1";
+    String palabraFiltro = "-1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //agrego esta linea de abajo para que mantega la pantalla en vertical y tiene que ir justa aquí
@@ -81,6 +83,8 @@ public class EmpleadosActivity extends AppCompatActivity{
         //String m = pruebaMensajeToast();
        // Log.d("Correcto_Em: ",m);
         mAdapter.notifyDataSetChanged();
+
+
 
     }
     /**

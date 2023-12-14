@@ -19,51 +19,67 @@
         tools:targetApi="31">
         <activity
             android:name=".CambioPassActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".jornadas.UpdateDeleteJornadaActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".users.UpdateDeleteUsersActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empleados.UpdateDeleteEmpleadosActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empresas.UpdateDeleteEmpresaActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".jornadas.JornadasInsertActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".users.UsersInsertActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empresas.EmpresaInsertActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empleados.EmpleadosInsertActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".jornadas.JornadasActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empresas.EmpresasActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".users.UsersActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".empleados.EmpleadosActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".MenuAdminActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".MenuUserActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
